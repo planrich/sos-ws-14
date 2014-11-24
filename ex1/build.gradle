@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.5
+version = '1.0'
+mainClassName = 'jade.Boot'
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'net.sf.ingenias:jade:4.2'
+}
+
+run {
+    systemProperties System.getProperties()
+    args ["-cp ex1/build/classes/main","-host 127.0.0.1"] + System.getProperty("exec.args").split()
+
+}
