@@ -17,6 +17,6 @@ dependencies {
 
 run {
     systemProperties System.getProperties()
-    args ["-cp ex1/build/classes/main","-host 127.0.0.1"] + System.getProperty("exec.args").split()
+    args System.getProperty("exec.args").split()
 
 }
