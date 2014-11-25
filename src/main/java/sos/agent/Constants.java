@@ -1,3 +1,5 @@
+package sos.agent;
+
 /**
  * @author rich
  * 24.11.14.

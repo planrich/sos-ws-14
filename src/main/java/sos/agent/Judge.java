@@ -1,4 +1,7 @@
+package sos.agent;
+
 import jade.core.Agent;
+import sos.agent.behaviour.JudgeBehaviour;
 
 import java.util.logging.Logger;
 

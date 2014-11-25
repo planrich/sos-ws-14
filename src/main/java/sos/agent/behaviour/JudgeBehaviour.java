@@ -1,7 +1,10 @@
+package sos.agent.behaviour;
+
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sos.agent.Constants;
 
 import java.util.logging.Logger;
 

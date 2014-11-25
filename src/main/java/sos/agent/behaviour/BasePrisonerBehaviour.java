@@ -1,8 +1,11 @@
+package sos.agent.behaviour;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sos.agent.Round;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +104,6 @@ public abstract class BasePrisonerBehaviour extends Behaviour {
 
     @Override
     public boolean done() {
-        return roundList.size() - 1 >= countTimes;
+        return roundList.size() >= countTimes;
     }
 }

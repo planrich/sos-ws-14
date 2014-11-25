@@ -1,4 +1,7 @@
+package sos.agent.behaviour;
+
 import jade.core.Agent;
+import sos.agent.Round;
 
 import java.util.List;
 

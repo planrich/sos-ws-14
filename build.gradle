@@ -20,7 +20,7 @@ task judge(type:JavaExec, dependsOn: classes) {
     classpath = runtimeClasspath
     main = 'jade.Boot'
     systemProperties System.getProperties()
-    args "-name dilemma -gui -agents judge:Judge".split()
+    args "-name dilemma -gui -agents judge:sos.agent.Judge".split()
 }
 
 task prisoner(type:JavaExec, dependsOn: classes) {

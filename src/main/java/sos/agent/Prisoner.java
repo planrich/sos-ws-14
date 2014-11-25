@@ -1,4 +1,8 @@
+package sos.agent;
+
 import jade.core.Agent;
+import sos.agent.behaviour.RandomBehaviour;
+import sos.agent.behaviour.StaticBehaviour;
 
 import java.util.logging.Logger;
 
@@ -12,10 +16,10 @@ public class Prisoner extends Agent {
 
     private void usage() {
         System.out.println();
-        System.out.println("usage: ./gradlew ex1:run [-Drounds=X] prisonerName:Prisoner(<modus>, <param>)");
+        System.out.println("usage: ./gradlew ex1:run [-Drounds=X] prisonerName:sos.agent.Prisoner(<modus>, <param>)");
         System.out.println();
         System.out.println("       rounds: default 10");
-        System.out.println("       modus 'static': param should be one of "+Constants.ACCUSE_OTHER+"|"+Constants.SILENT);
+        System.out.println("       modus 'static': param should be one of "+ Constants.ACCUSE_OTHER+"|"+Constants.SILENT);
         System.out.println("       modus 'random': no param. will always gamble");
         System.exit(-1);
     }
