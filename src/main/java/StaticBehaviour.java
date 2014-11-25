@@ -3,7 +3,8 @@ import jade.core.Agent;
 import java.util.List;
 
 /**
- * Created by rich on 24.11.14.
+ * @author rich
+ * 24.11.14.
  */
 public class StaticBehaviour extends BasePrisonerBehaviour {
 
@@ -16,6 +17,6 @@ public class StaticBehaviour extends BasePrisonerBehaviour {
 
     @Override
     protected String decide(List<Round> rounds) {
-        return null;
+        return decide;
     }
 }

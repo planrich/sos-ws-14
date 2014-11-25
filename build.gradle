@@ -1,0 +1,32 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+version = '1.0'
+mainClassName = 'jade.Boot'
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile files('libs/jade.jar')
+}
+
+task judge(type:JavaExec, dependsOn: classes) {
+    classpath = runtimeClasspath
+    main = 'jade.Boot'
+    systemProperties System.getProperties()
+    args "-name dilemma -gui -agents judge:Judge".split()
+}
+
+task prisoner(type:JavaExec, dependsOn: classes) {
+    classpath = runtimeClasspath
+    main = 'jade.Boot'
+    systemProperties System.getProperties()
+    args "-container -name dilemma -agents ${System.getProperty("agent")}".split()
+}
+
