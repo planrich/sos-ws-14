@@ -5,6 +5,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sos.agent.Constants;
 import sos.agent.Round;
 
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public abstract class BasePrisonerBehaviour extends Behaviour {
             System.out.println();
             System.out.println("   my years sum: " + sum);
             System.out.println("other years sum: " + otherSum);
+            System.out.println("both years  sum: " + (otherSum + sum));
             System.out.println();
             System.out.println();
             System.out.println();
@@ -99,7 +101,25 @@ public abstract class BasePrisonerBehaviour extends Behaviour {
     }
 
     protected void addRound(int round, int year, String decision) {
-        roundList.add(new Round(round, year, decision));
+        String otherDecision = Constants.SILENT;
+        if (year == 3) {
+            otherDecision = Constants.ACCUSE_OTHER;
+        } else if (year == 2) {
+            otherDecision = Constants.ACCUSE_OTHER;
+        } else if (year == 1) {
+            otherDecision = Constants.SILENT;
+        } else if (year == 0) {
+            otherDecision = Constants.SILENT;
+        }
+        roundList.add(new Round(round, year, decision, otherDecision));
+    }
+
+
+    public Round getLastRound() {
+        if (roundList.size() == 0) {
+            return null;
+        }
+        return roundList.get(roundList.size() - 1);
     }
 
     @Override

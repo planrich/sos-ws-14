@@ -8,11 +8,17 @@ public class Round {
     private int round;
     private int year;
     private String descicion;
+    private String otherDecision;
 
-    public Round(int round, int year, String decision) {
+    public Round(int round, int year, String decision, String otherDecision) {
         this.round = round;
         this.year = year;
         this.descicion = decision;
+        this.otherDecision = otherDecision;
+    }
+
+    public String getOtherDecision() {
+        return otherDecision;
     }
 
     public int getRound() {
@@ -23,7 +29,7 @@ public class Round {
         return year;
     }
 
-    public String getDescicion() {
+    public String getDecision() {
         return descicion;
     }
 }
