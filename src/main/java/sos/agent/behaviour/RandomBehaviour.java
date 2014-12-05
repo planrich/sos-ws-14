@@ -11,6 +11,8 @@ import java.util.Random;
 /**
  * @author rich
  * 25.11.14.
+ *
+ * Randomly choose ACCUSE|SILENT!
  */
 public class RandomBehaviour extends BasePrisonerBehaviour {
 

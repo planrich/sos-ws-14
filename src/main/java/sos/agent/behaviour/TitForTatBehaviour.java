@@ -8,7 +8,9 @@ import java.util.List;
 
 /**
  * @author rich
- *         27.11.14.
+ * 27.11.14
+ * Take This for That! Behaviour that replays the last round. In
+ * the first round it plays silent!
  */
 public class TitForTatBehaviour extends BasePrisonerBehaviour {
     public TitForTatBehaviour(Agent a, int countTimes) {

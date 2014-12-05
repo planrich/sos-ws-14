@@ -15,6 +15,9 @@ import java.util.logging.Logger;
 /**
  * @author rich
  * 24.11.14.
+ *
+ * This is the base behaviour. It abstracts away the communication.
+ * A new behaviour should only implement the decide method.
  */
 public abstract class BasePrisonerBehaviour extends Behaviour {
     private static Logger logger = Logger.getLogger(BasePrisonerBehaviour.class.getSimpleName());
@@ -25,9 +28,9 @@ public abstract class BasePrisonerBehaviour extends Behaviour {
     private AID judgeAID = new AID("judge@dilemma", true);
     private String decision = null;
 
-    public BasePrisonerBehaviour(Agent a, int countTimes) {
-        super(a);
-        this.countTimes = countTimes;
+    public BasePrisonerBehaviour(Agent agent, int rounds) {
+        super(agent);
+        this.countTimes = rounds;
     }
 
     protected abstract String decide(List<Round> rounds);
@@ -58,60 +61,92 @@ public abstract class BasePrisonerBehaviour extends Behaviour {
         sent = false;
 
         if (done()) {
-            // print out stats!
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println(" prisoner stats: " + roundList.size() + " round(s)");
-            System.out.print("       my years: ");
-            int sum = 0;
-            for (int i = 0; i < roundList.size(); i++) {
-                Round round = roundList.get(i);
-                System.out.print(Integer.toString(round.getYears())+"y,");
-                sum += round.getYears();
-            }
-            System.out.println();
-            System.out.print("    other years: ");
-            int otherSum = 0;
-            for (int i = 0; i < roundList.size(); i++) {
-                Round round = roundList.get(i);
-                int otherYears = round.getYears();
-                if (otherYears == 0) {
-                    otherYears = 3;
-                } else if (otherYears == 1) {
-                    otherYears = 1;
-                } else if (otherYears == 2) {
-                    otherYears = 2;
-                } else if (otherYears == 3) {
-                    otherYears = 0;
-                }
-                System.out.print(Integer.toString(otherYears)+"y,");
-                otherSum += otherYears;
-            }
-            System.out.println();
-            System.out.println("   my years sum: " + sum);
-            System.out.println("other years sum: " + otherSum);
-            System.out.println("both years  sum: " + (otherSum + sum));
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
+            debugPrintStats();
             myAgent.doDelete();
         }
     }
 
+    private void debugPrintStats() {
+        // print out stats!
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println(" prisoner stats: " + roundList.size() + " round(s)");
+        System.out.println("   my behaviour: " + getClass().getSimpleName());
+        System.out.print("       my years: 000");
+        for (int i = 0; i < roundList.size(); i++) {
+            Round round = roundList.get(i);
+            System.out.print(Integer.toString(round.getYears())+"y,");
+            if (i % 20 == 0) {
+                System.out.print(String.format("\n                 %03d ", i));
+            }
+        }
+        System.out.println("MY YEARS:\n000: ");
+        // print my years
+        for (int i = 0; i < roundList.size(); i++) {
+            Round round = roundList.get(i);
+            int otherYears = round.getOtherYears();
+            System.out.print(Integer.toString(otherYears)+"y,");
+            if (i % 20 == 0) {
+                System.out.print(String.format("\n%03d: ", i));
+            }
+        }
+        System.out.println("OTHER YEARS:\n000: ");
+        // print other years
+        for (int i = 0; i < roundList.size(); i++) {
+            Round round = roundList.get(i);
+            System.out.print(Integer.toString(round.getOtherYears())+"y,");
+            if (i % 20 == 0) {
+                System.out.print(String.format("\n%03d: ", i));
+            }
+        }
+        int years = 0;
+        int otherYears = 0;
+        int rYears = 0;
+        int rOtherYears = 0;
+        System.out.println();
+        // print sum of years
+        for (int i = 0; i < roundList.size(); i++) {
+            Round round = roundList.get(i);
+            years += round.getYears();
+            otherYears += round.getOtherYears();
+            rYears += round.getYears();
+            rOtherYears += round.getOtherYears();
+            if (i % 10 == 0) {
+                System.out.println(String.format("Round: %03dy MY sum: %d|%d, OTHER sum: %d|%d, BOTH sum: %d|%d",
+                        i, years, rYears, otherYears, rOtherYears, (years+otherYears), (rYears + rOtherYears)));
+                rYears = 0;
+                rOtherYears = 0;
+            }
+        }
+        System.out.println();
+        System.out.println("   my years sum (grand total): " + years);
+        System.out.println("other years sum (grand total): " + otherYears);
+        System.out.println("both years  sum (grand total): " + (otherYears + years));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+    }
+
+
     protected void addRound(int round, int year, String decision) {
         String otherDecision = Constants.SILENT;
+        int otherYear = 0;
         if (year == 3) {
             otherDecision = Constants.ACCUSE_OTHER;
+            otherYear = 0;
         } else if (year == 2) {
             otherDecision = Constants.ACCUSE_OTHER;
+            otherYear = 2;
         } else if (year == 1) {
             otherDecision = Constants.SILENT;
+            otherYear = 1;
         } else if (year == 0) {
             otherDecision = Constants.SILENT;
+            otherYear = 3;
         }
-        roundList.add(new Round(round, year, decision, otherDecision));
+        roundList.add(new Round(round, year, otherYear, decision, otherDecision));
     }
 
 
