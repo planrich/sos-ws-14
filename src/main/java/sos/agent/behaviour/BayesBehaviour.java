@@ -36,6 +36,9 @@ public class BayesBehaviour extends BasePrisonerBehaviour {
                 modelRounds.add(getLastRound());
             }
             return behaviour.decide(rounds);
+        } else {
+            modelRounds.remove(0);
+            modelRounds.add(getLastRound());
         }
 
         double [][] frequency = new double[2][2];

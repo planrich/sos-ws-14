@@ -21,10 +21,10 @@ public class Prisoner extends Agent {
         System.out.println("       modus 'static': param 1: one of silent|accuse");
         System.out.println("       modus 'random'. random silent|accuse");
         System.out.println("       modus 'titfortat'. replays the previous decision of the other prisoner");
-        System.out.println("       modus 'aggresive': param 1: <history count>, param 2: <threshold in [0.0..1.0]>");
+        System.out.println("       modus 'aggressive': param 1: <window>, param 2: <threshold in [0.0..1.0]>");
         System.out.println("                          param 3: modus (one of static, random, ...) and the parameters");
-        System.out.println("       modus 'optimist':  param 1: <fooled count> [param 2: <reset count>]");
-        System.out.println("       modus 'bayes':     param 1: <learn rounds> param 2: modus (one of static, random, ...) and the parameters");
+        System.out.println("       modus 'optimist':  param 1: <trust level> [param 2: <reset count>]");
+        System.out.println("       modus 'bayes':     param 1: <window for model> param 2: modus (one of static, random, ...) and the parameters");
         System.exit(-1);
     }
 
@@ -53,7 +53,7 @@ public class Prisoner extends Agent {
             return new RandomBehaviour(this, rounds);
         } else if (modus.equals("titfortat")) {
             return new TitForTatBehaviour(this, rounds);
-        } else if (modus.equals("aggresive")) {
+        } else if (modus.equals("aggressive")) {
             ensureParam(args, i+1);
             ensureParam(args, i+2);
             ensureParam(args, i+3);

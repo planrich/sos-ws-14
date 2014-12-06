@@ -71,33 +71,27 @@ public abstract class BasePrisonerBehaviour extends Behaviour {
         System.out.println();
         System.out.println();
         System.out.println();
-        System.out.println(" prisoner stats: " + roundList.size() + " round(s)");
-        System.out.println("   my behaviour: " + getClass().getSimpleName());
-        System.out.print("       my years: 000");
-        for (int i = 0; i < roundList.size(); i++) {
-            Round round = roundList.get(i);
-            System.out.print(Integer.toString(round.getYears())+"y,");
-            if (i % 20 == 0) {
-                System.out.print(String.format("\n                 %03d ", i));
-            }
-        }
-        System.out.println("MY YEARS:\n000: ");
+        System.out.println("rounds: " + roundList.size() + " round(s)");
+        System.out.println("MY behaviour: " + getClass().getSimpleName());
+        System.out.println();
+        System.out.println("MY years:\n  0: ");
         // print my years
         for (int i = 0; i < roundList.size(); i++) {
             Round round = roundList.get(i);
-            int otherYears = round.getOtherYears();
+            int otherYears = round.getYears();
             System.out.print(Integer.toString(otherYears)+"y,");
-            if (i % 20 == 0) {
-                System.out.print(String.format("\n%03d: ", i));
+            if (i % 20 == 0 && i != 0) {
+                System.out.print(String.format("\n% 3d: ", i));
             }
         }
-        System.out.println("OTHER YEARS:\n000: ");
+        System.out.println();
+        System.out.println("OTHER years:\n  0: ");
         // print other years
         for (int i = 0; i < roundList.size(); i++) {
             Round round = roundList.get(i);
             System.out.print(Integer.toString(round.getOtherYears())+"y,");
-            if (i % 20 == 0) {
-                System.out.print(String.format("\n%03d: ", i));
+            if (i % 20 == 0 && i != 0) {
+                System.out.print(String.format("\n% 3d: ", i));
             }
         }
         int years = 0;
@@ -106,15 +100,16 @@ public abstract class BasePrisonerBehaviour extends Behaviour {
         int rOtherYears = 0;
         System.out.println();
         // print sum of years
+        System.out.println();
         for (int i = 0; i < roundList.size(); i++) {
             Round round = roundList.get(i);
             years += round.getYears();
             otherYears += round.getOtherYears();
             rYears += round.getYears();
             rOtherYears += round.getOtherYears();
-            if (i % 10 == 0) {
-                System.out.println(String.format("Round: %03dy MY sum: %d|%d, OTHER sum: %d|%d, BOTH sum: %d|%d",
-                        i, years, rYears, otherYears, rOtherYears, (years+otherYears), (rYears + rOtherYears)));
+            if (i % 9 == 0 && i != 0 || i == roundList.size()-1) {
+                System.out.println(String.format("Round: % 3d MY sum: % 3d|% 3d, OTHER sum: % 3d|% 3d, BOTH sum: % 3d|% 3d",
+                        i+1, years, rYears, otherYears, rOtherYears, (years+otherYears), (rYears + rOtherYears)));
                 rYears = 0;
                 rOtherYears = 0;
             }
