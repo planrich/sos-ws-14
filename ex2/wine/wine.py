@@ -114,14 +114,14 @@ if __name__ == "__main__":
     csv_fd.write(",".join(header[col_start:col_end])+"\n")
 
     clazz_fd.write("$TYPE class_information\n")
-    clazz_fd.write("$NUM_CLASSES 2\n")
-    clazz_fd.write("$CLASS_NAMES white_wine red_wine\n")
+    clazz_fd.write("$NUM_CLASSES 6\n")
+    clazz_fd.write("$CLASS_NAMES poor_rw poor_ww average_rw average_ww high_rw hight_ww\n")
     clazz_fd.write("$XDIM 2\n")
 
     vt_fd.write("$TYPE template\n")
     vt_fd.write("$XDIM 2\n")
     vt_fd.write("$YDIM "+str(len(frows))+"\n")
-    vt_fd.write("$VEC_DIM 12\n")
+    vt_fd.write("$VEC_DIM 11\n")
     for i,h in enumerate(header[col_start:col_end]):
         h = h.replace(" ","_")
         vt_fd.write(str(i) + " " + str(h) + "\n")

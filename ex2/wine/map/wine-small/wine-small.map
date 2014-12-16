@@ -1,0 +1,37 @@
+$TYPE som
+$GRID_TOPOLOGY planar
+$GRID_LAYOUT rectangular
+$XDIM 5
+$YDIM 5
+$ZDIM 1
+$VEC_DIM 11
+$STORAGE_DATE 12/16/14 1:48 PM
+$TRAINING_TIME 
+$LEARNRATE_TYPE exponential
+$LEARNRATE_INIT 0.75
+$NEIGHBORHOOD_TYPE exponential
+$NEIGHBORHOOD_INIT 2.5
+$RAND_INIT 7
+$ITERATIONS_TOTAL 1500
+$NR_TRAINVEC_TOTAL 6454
+$ADAPTIVE_COORDINATES_THRESHOLD 
+$VEC_NORMALIZED false
+$QUANTERROR_MAP 425.066943664536
+$QUANTERROR_VEC 0.06586100769515588
+$URL_TRAINING_VEC /home/rich/proj/sos/ex2/wine/wq-n.vec
+$URL_TRAINING_VEC_DESCR 
+$URL_WEIGHT_VEC /home/rich/proj/sos/ex2/wine/map/wine-small/wine-small.wgt
+$URL_QUANTERR_MAP 
+$URL_MAPPED_INPUT_VEC 
+$URL_MAPPED_INPUT_VEC_DESCR 
+$URL_UNIT_DESCR /home/rich/proj/sos/ex2/wine/map/wine-small/wine-small.unit
+$URL_TEMPLATE_VECTOR /home/rich/proj/sos/ex2/wine/wq-n.tv
+$URL_DATA_WINNER_MAPPING /home/rich/proj/sos/ex2/wine/map/wine-small/wine-small.dwm
+$URL_CLASS_INFO 
+$URL_LABELS 
+$METRIC at.tuwien.ifs.somtoolbox.layers.metrics.L2Metric
+$LAYER_REVISION $Revision: 4245 $
+$DESCRIPTION 
+$AVAILABLE_VIS 
+$DATA_TYPE unknown
+$DATA_DIM 
