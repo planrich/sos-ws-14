@@ -2,3 +2,4 @@ APDescription.txt
 MTPs-Main-Container.txt
 build/
 .gradle/
+*.swp
