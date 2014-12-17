@@ -1,0 +1,18 @@
+#SOM20x16 prop file
+# somtoolbox [GrowingSOM, --numberWinners, 300, --cpus, 4, 
+#   C:\DFiles\SOMOutput\WineQuality\Reduced\SOM20x16\SOM20x16.prop]
+#
+#Wed Dec 17 20:57:50 CET 2014
+namePrefix=SOM20x16
+vectorFileName=C\:\\DFiles\\Machine Learning Datasets\\Wine Quiality\\Richard\\REduced\\wq-n.vec
+learnrate=0.7
+outputDirectory=C\:\\DFiles\\SOMOutput\\WineQuality\\Reduced\\SOM20x16
+tau=1.0
+sparseData=no
+workingDirectory=C\:\\DFiles\\SOMOutput\\WineQuality\\Reduced\\SOM20x16
+isNormalized=yes
+numIterations=1500
+randomSeed=7
+ySize=16
+templateFileName=C\:\\DFiles\\Machine Learning Datasets\\Wine Quiality\\Richard\\REduced\\wq-n.tv
+xSize=20

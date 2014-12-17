@@ -64,6 +64,7 @@ WQ has 12 different attributes and more than 6500 instances of red and white win
     \item Sulphates
     \item Alcohol
     \item Quality (A score between 0 and 10)
+    \item Wine type (Red or white wine)
 \end{itemize}
 
 The data set contains two seperate data files. One for white wine,
@@ -206,6 +207,10 @@ already done it previously.
     \hline
     Small Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=5$ & $s_y=5$ & $i=1.500$ \\
     \hline
+    Big Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=50$ & $s_y=50$ & $i=1.500$ \\
+    \hline
+    Middle sized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=18$ & $s_y=18$ & $i=1.500$ \\
+    \hline
 \end{tabular}
 \caption{Settings for all of our experiments}
 \label{tab:settings}
@@ -263,11 +268,12 @@ In the following we take a look at some quality measures available in SOMToolbox
 If not noted otherwise the default parameter values are used for all quality measures.
 First we compare the Quantization Error (QE) and the Mean Quantization Error (MQE) shown in
 Figure~\ref{fig:wine-small-quant-error} and~\ref{fig:wine-small-mean-quant-error} respectivley.
-We already noted that the lower left is a very dense area. In the MQE these units have a very low
-MQE rate thus they are colored blue. In the ME Figure the values are much more scattered. In
-the top right it has a very high value thus it seems that there is an area that is not that dense
+We already noted that the lower right is a very dense area. In the MQE these units have a very low
+MQE rate thus they are colored blue. In the QE Figure the values are much more scattered. In
+the top left it has a very high value thus it seems that there is an area that is not that dense
 and has many items with a long distance. This we also can confirm using the MQE, because the division
-by the nodes does not set a low value the value in MQE.
+by the nodes does not set a low value the value in MQE. It also reveals that there is potentially even a more sparse
+region as the node at position $1\times1$ in MQE shows.
 
 \begin{figure}
 \centering
@@ -285,7 +291,8 @@ by the nodes does not set a low value the value in MQE.
 
 The map is also very distorted which is shown in Figure~\ref{fig:wine-small-dist-sqrt-2}.
 When comparing this to a better train map (such as the sample of Iris dataset), it is
-really distorted.
+really distorted. Given the number of values mapped to the nodes, the distortion and
+high QE we conclude current SOM size is to small.
 
 \begin{figure}
 \centering
@@ -294,12 +301,16 @@ really distorted.
 \label{fig:wine-small-dist-sqrt-2}
 \end{figure}
 
-To conclude this far to small map we show the class distribution amongst the map.
+To finish the examination of this far to small map we show the class distribution amongst the map.
 At first it surprised us that the splitting is done quite evenly between red and
 white wine. Giving this a second thought it is clear that they must be more easily separatable.
 White and red wine have very different characteristics in sugar, acid, etc. 
 White wine is colored green (light green is poor quality, green is average quality and dark green is high quality) and
 red wine is colored red(light for poor quality, orange for average quality and dark for high quality).
+
+What we also have seen in the class distribution is that white wine has far more data samples
+than the red wine. Thus we apply subsampling of white wine input samples. We reduce the dataset to around 1500 red and 1500 white wine samples.
+We use a random seed of 0 in our export script to repeat this experiment.
 
 \begin{figure}
 \centering
@@ -310,7 +321,174 @@ red wine is colored red(light for poor quality, orange for average quality and d
 
 \section{A very big SOM}
 
-% TODO
+Now we would like to examine the data in a very big SOM. The settings are displayed
+in~\ref{tab:settings}. Our assumption is that it is too big if we have less than 3
+samples per SOM unit.
+
+To find out if the SOM is too big we take a look at the QE (Figure ~\ref{fig:wine-big-quant-error}) and MQE (Figure~\ref{fig:wine-big-mean-quant-error}) quality measurements.
+The first thing we noticed is the huge number of interpolating/empty units on the map. By comparing QE and MQE we noticed that there is not
+a significant differance in the color coding. This is caused by fact that map is too big and only a small number of samples
+are mapped to the units.
+At this point we immediatly stopped to evaluate this huge SOM and decreased the size to $30\times30$. The main reason was that we had problems
+with the SOM Toolbox to display various visualizations. Even the $30\times30$ SOM confirms our assumption that big sized SOMs have
+many interpolating units. The picture of the QE and MQE are quite the same but only with fewer nodes.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-quant-error}
+\caption{Quantisation error of a $50\times50$ SOM Map}
+\label{fig:wine-big-quant-error}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-mean-quant-error}
+\caption{Quantisation error of a $50\times50$ SOM Map}
+\label{fig:wine-big-mean-quant-error}
+\end{figure}
+
+We assume that the hit histogram of the $50\times50$ SOM should not have alot of red spots.
+Using the hit histogram of the smaller big SOM ($30\times30$) shown in Figure~\ref{fig:wine-big-hit-histogram} we notice that very light
+colors which indicates that few or none input samples are mapped to the SOM nodes.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-hit-histogram}
+\caption{Hit histogram of a $30\times30$ SOM Map}
+\label{fig:wine-big-hit-histogram}
+\end{figure}
+
+In Figure~\ref{wine-big-p-matrix} we se a huge red spot in the center of the map. This indicates that
+the data is very dense at this area. Comparing it to the small SOM P-Matrix there is this dense area
+in the center. The difference is that the dense area is to the center right not to the bottom right as assumed with
+the small one.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-p-matrix}
+\caption{P matrix visualization of a $30\times30$ SOM Map}
+\label{fig:wine-big-p-matrix}
+\end{figure}
+
+The last quality measure we apply for this map is the topographic product.
+We used a setting of $k=1$. The visualisation reveals a distortion in the
+SOM borders and a horizontal line of distortion in the center of the map.
+When increasing the number of neighbours ($k$) we still see the distortion
+we mentioned earlier.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-topo-product}
+\caption{Topographic product of the $30\times30$ SOM Map}
+\label{fig:wine-big-topo-product}
+\end{figure}
+
+In the Figure~\ref{fig:wine-big-u-matrix} we show the U-Matrix visualization.
+It reveals the possible cluster bounderies. We have many coherent regions/valleys located in
+the upper and lower parts of the map. They are separated by a horizontal mountain regions
+or high values in the center which depict the possible cluster boundaries.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-u-matrix}
+\caption{U Matrix of the $30\times30$ SOM Map}
+\label{fig:wine-big-u-matrix}
+\end{figure}
+
+The potential cluster boundaries displayed in the SDH visualization in Figure~\ref{fig:wine-big-smoothed-data-histogram}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-smoothed-data-histogram}
+\caption{Smoothed data histograms of the $30\times30$ SOM Map}
+\label{fig:wine-big-smoothed-data-histogram}
+\end{figure}
+
+In addition the activity historygram in Figure~\ref{fig:wine-big-activity-histogram} shows possible
+topology violations. There is not a gradient of the weight vectors measured in distance. In can
+be seen in the upper cluster where blue area is separated by green.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-big-activity-histogram}
+\caption{Activity histogram of the $30\times30$ SOM Map}
+\label{fig:wine-big-activity-histogram}
+\end{figure}
+
+The analysed visulations/quality measures depict that we SOM is oversized.
+In the following we will try to approximate a better size.
+
+\section{Normal SOM}
+
+In the following we show a middle sized map. Parameters are included in the Table~\ref{tab:settings}.
+On the first view of QE in Figure~\ref{fig:wine-mid-quant-error} and MQE~\ref{fig:wine-mid-quant-error} we see
+that there are three interpolating units. Comparing the two we notice that the distant data samples are
+mapped to the units located along the a horzontal line in the center or the potential cluster boundaries.
+The U-Matrix in Figure~\ref{fig:wine-mid-u-matrix} reveals the cluster bounderies shown with high mountain values
+along the line mentioned earlier.
+
+Again we used the SDH visualization. In the earlier settings we used a smoothing factor of 149. We decreased it to
+115 and managed to separate the two main clusters shown in Figure~\ref{fig:wine-mid-soothed-data-histogram}.
+
+There are potential topology violations located in the upper cluster. We see this in Figure~\ref{fig:wine-mid-activity-histogram}.
+Like in the big SOM there are three blue areas separated by green an yellow. By observing the neighbourhood graph
+shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-grah}. For the radius was set to 0.4. We notice three red lines connecting the blue areas.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-mid-quant-error}
+\caption{Quantisation error of a $18\times18$ SOM Map}
+\label{fig:wine-mid-quant-error}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-mid-mean-quant-error}
+\caption{Quantisation error of a $18\times18$ SOM Map}
+\label{fig:wine-mid-mean-quant-error}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-mid-p-matrix}
+\caption{P matrix visualization of a $18\times18$ SOM Map}
+\label{fig:wine-mid-p-matrix}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-mid-radius-neighbourhood-graph}
+\caption{Topographic product of the $18\times18$ SOM Map}
+\label{fig:wine-mid-radius-neighbourhood-graph}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-mid-u-matrix}
+\caption{U Matrix of the $18\times18$ SOM Map}
+\label{fig:wine-mid-u-matrix}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-mid-smoothed-data-histogram}
+\caption{Smoothed data histograms of the $18\times18$ SOM Map}
+\label{fig:wine-mid-smoothed-data-histogram}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{img/wine-mid-activity-histogram}
+\caption{Activity histogram of the $18\times18$ SOM Map}
+\label{fig:wine-mid-activity-histogram}
+\end{figure}
+
+
+
+
+
 
 \bibliography{ref}
 \bibliographystyle{plain}

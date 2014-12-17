@@ -65,13 +65,20 @@ if __name__ == "__main__":
         subsample = int(sys.argv[1])
 
     if subsample > 0:
+        rw = filter(lambda x: x[12] == '0', rows)
+        ww = filter(lambda x: x[12] == '1', rows)
         samples = []
         random.seed(0)
         rows_copy = rows[:]
         for _ in range(0,subsample):
-            i = random.randint(0,len(rows_copy)-1)
-            r = rows_copy[i]
-            del rows_copy[i]
+            i = random.randint(0,len(rw)-1)
+            r = rw[i]
+            del rw[i]
+            samples.append(r)
+        for _ in range(0,subsample):
+            i = random.randint(0,len(ww)-1)
+            r = ww[i]
+            del ww[i]
             samples.append(r)
 
         rows = samples

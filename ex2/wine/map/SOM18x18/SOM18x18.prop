@@ -1,0 +1,18 @@
+#SOM18x18 prop file
+# somtoolbox [GrowingSOM, --numberWinners, 300, --cpus, 4, 
+#   C:\DFiles\SOMOutput\WineQuality\Reduced\SOM18x18\SOM18x18.prop]
+#
+#Wed Dec 17 20:27:43 CET 2014
+namePrefix=SOM18x18
+vectorFileName=C\:\\DFiles\\Machine Learning Datasets\\Wine Quiality\\Richard\\REduced\\wq-n.vec
+learnrate=0.7
+outputDirectory=C\:\\DFiles\\SOMOutput\\WineQuality\\Reduced\\SOM18x18
+tau=1.0
+sparseData=no
+workingDirectory=C\:\\DFiles\\SOMOutput\\WineQuality\\Reduced\\SOM18x18
+isNormalized=yes
+numIterations=1500
+randomSeed=7
+ySize=18
+templateFileName=C\:\\DFiles\\Machine Learning Datasets\\Wine Quiality\\Richard\\REduced\\wq-n.tv
+xSize=18
