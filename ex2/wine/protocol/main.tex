@@ -90,7 +90,7 @@ For these two attributes we apply min max scaling.
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{img/dist-alcohol}
+\includegraphics[width=0.6\linewidth]{img/dist-alcohol}
 \caption{Data distribution of the alcohol attribute (not normalized)}
 \label{fig:dist-alcohol}
 \end{figure}
@@ -98,7 +98,7 @@ For these two attributes we apply min max scaling.
 \begin{comment}
     \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{img/dist-sulphates}
+    \includegraphics[width=0.6\linewidth]{img/dist-sulphates}
     \caption{Data distribution of the sulphate attribute (not normalized)}
     \label{fig:dist-sulphates}
     \end{figure}
@@ -115,14 +115,14 @@ normalized attribute range.
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{img/dist-citric-acid}
+\includegraphics[width=0.6\linewidth]{img/dist-citric-acid}
 \caption{Data distribution of the citric acid attribute (not normalized)}
 \label{fig:dist-citric-acid}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{img/ndist-citric-acid}
+\includegraphics[width=0.6\linewidth]{img/ndist-citric-acid}
 \caption{Data distribution of the citric acid attribute (normalized)}
 \label{fig:ndist-citric-acid}
 \end{figure}
@@ -204,7 +204,7 @@ The following list explains the settings in more detail that are shown in Table~
 For all of our experiments we prohibit the SOM Toolbox to normalize the data because we have
 already done it previously.
 
-\begin{table}
+\begin{table*}
 \centering
 \begin{tabular}{|l|c|c|c|c|c|c|}
     \hline
@@ -219,7 +219,7 @@ already done it previously.
 \end{tabular}
 \caption{Settings for all of our experiments}
 \label{tab:settings}
-\end{table}
+\end{table*}
 
 \subsection{Small SOM}
 
@@ -513,12 +513,12 @@ the Nearest Neighbourhood visualization using a radius of 0.1 in Figure~\ref{fig
     \centering
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-u-matrix}
-        \caption{U Matrix of the $20\times14$ SOM Map}
+        \caption{U Matrix}
         \label{fig:wine-weird-u-matrix}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-smoothed-data-histogram}
-        \caption{SDH of the $20\times14$ SOM Map}
+        \caption{SDH smooth factor 149}
         \label{fig:wine-weird-smoothed-data-histogram}
     \end{subfigure}
     \caption{SOM Visualisations of errornous normalized data}
@@ -537,7 +537,8 @@ also contained topology violations.
 
 The SDH shows very one big area located above in the center. Use a smoothing factor of 149.
 When decreasing the smoothing factor the big bulb above the center is still dominant,
-but moves into the top left of the map. This matches very well the flat vally found in
+but moves into the top left of the map (shown in Figure~\ref{fig:wine-weird-smoothed-data-histogram-series}).
+This matches very well the flat vally found in
 Figure~\ref{fig:wine-weird-u-matrix}.
 
 The nearest neighbour shows that the units of the SOM are very close to each other. The 
@@ -548,15 +549,15 @@ nearly every unit is connected to every other unit.
     \centering
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-activity-histogram}
-        \caption{Activity histogram of the $20\times14$ SOM Map}
+        \caption{Activity histogram}
         \label{fig:wine-weird-activity-histogram}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-nearest-neighbour-radius}
-        \caption{Nearest neighbour (radius 0.1) of the $20\times14$ SOM Map}
+        \caption{Nearest neighbour (radius 0.1)}
         \label{fig:wine-weird-nearest-neighbour-radius}
     \end{subfigure}
-    \caption{SOM Visualisations of errornous normalized data}
+    \caption{SOM ($20\times14$) visualisations of errornous normalized data}
 \end{figure}
 
 The scaling we applied earlier was quite effective to distort the input data
@@ -564,7 +565,26 @@ and map the input data to data that looks very similar. In our opinion
 many characteristics of the attributes where lost and we could verify this
 in the produced SOM Visualisations.
 
-\section{Adjusting the neighbourhood for trainging}
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-weird-smoothed-data-histogram-20}
+        \caption{$f=20$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-weird-smoothed-data-histogram-50}
+        \caption{$f=50$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-weird-smoothed-data-histogram-100}
+        \caption{$f=100$}
+    \end{subfigure}
+    \caption{SOM ($20\times14$) SDH with different smoothing factor $f$}
+    \label{fig:wine-weird-smoothed-data-histogram-series}
+\end{figure}
+
+\section{Adjusting the neighbourhood for training}
 
 
 \bibliography{ref}
