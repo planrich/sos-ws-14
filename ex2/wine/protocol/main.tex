@@ -809,8 +809,29 @@ We further analyse the cluster using the SDH visualization. In Figure~\ref{fig:w
 clusters seem scrambled. The reason for this is the low number of iterations.
 In Figure~\ref{fig:wine-newmid-smoothed-data-histogram-i-50} a new cluster arises to the right. We mentioned earlier that 
 with 50 iterations the map unfolded into the right direction. By further increasing the number of iterations
-(shown in Figure~\ref{fig:wine-newmid-smoothed-data-histogram-i-50}) the right cluster starts to divide whereas the left region
-a new cluster is formed.
+(shown in Figure~\ref{fig:wine-newmid-smoothed-data-histogram-i-500}) the right cluster starts to divide whereas the left region
+a new cluster is formed. At this point the cluster boundaries are clearly formed. In the fine tuning phase
+shown in Figure~\ref{fig:wine-newmid-smoothed-data-histogram-i-10000} subcluster emerged. We believe that these might point to different
+qualities.
+
+To find topology violations we use both the activity histogram and the topographic error (k=8).
+Figure~\ref{fig:wine-newmid-topgraphic-error-i-10} and~\ref{fig:wine-newmid-topgraphic-error-i-50} they show many errors.
+This is expected because the map did not have time to unfold. A very interesting observation can be
+visualized in Figure~\ref{fig:wine-newmid-topgraphic-error-i-500} and~\ref{fig:wine-newmid-topgraphic-error-i-10000}.
+Not many errors arise in the first, but significantly more in the latter. After 10.000 iterations is very well adjusted to
+the dataspace.
+
+Figure~\ref{fig:wine-newmid-activity-histogram-i-10} and~\ref{fig:wine-newmid-activity-histogram-i-50} show the activity
+histogram with 10 and 50 iterations respectivley. They show topology violations (scattered colors) in both of them.
+By comparing Figure~\ref{fig:wine-newmid-activity-histogram-i-500} and~\ref{fig:wine-newmid-activity-histogram-i-10000} 
+we see that there is only one big difference in the top left area.
+
+% todo IMAGES
+
+\section{Summary}
+
+\section{Conclusion}
+
 
 \bibliography{ref}
 \bibliographystyle{plain}
