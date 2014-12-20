@@ -3,16 +3,16 @@
 #   /home/rich/proj/sos/ex2/wine/map/wine-small.prop]
 #
 #Tue Dec 16 13:45:00 CET 2014
-namePrefix=wine-small1
-vectorFileName=/home/rich/proj/sos/ex2/wine/wq-n.vec
+namePrefix=wine-weird-norm
+vectorFileName=/home/rich/proj/sos/ex2/wine/wq-w-n.vec
 learnrate=0.7
-outputDirectory=/home/rich/proj/sos/ex2/wine/map/wine-small1/
+outputDirectory=/home/rich/proj/sos/ex2/wine/map/wine-weird-norm/
 tau=1.0
 sparseData=no
 workingDirectory=/home/rich/proj/sos/ex2/wine/map/
 isNormalized=yes
 numIterations=1500
 randomSeed=7
-ySize=5
-templateFileName=/home/rich/proj/sos/ex2/wine/wq-n.tv
-xSize=5
+ySize=20
+templateFileName=/home/rich/proj/sos/ex2/wine/wq-w-n.vt
+xSize=14

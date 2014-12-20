@@ -4,6 +4,7 @@ import csv
 import sys
 import numpy
 import random
+import math
 
 def column(rows, i):
     for row in rows:
@@ -20,12 +21,19 @@ def m_v_col(col):
     return mean,deviation
 
 def minmax(_min, _max,c):
-    #_min = min(col)
-    #_max = max(col)
     return (c-_min)/(_max-_min)
 
 def min_max_col(col):
-    return min(col),max(col)
+    mi = min(col)
+    ma = max(col)
+    return (mi,ma)
+
+def unitlength(length, x, c):
+    return c / length
+
+
+def unitlength_col(col):
+    return math.sqrt(sum([float(x)*float(x) for x in col])), 1
 
 def bin_quality_type(quality, wtype):
     quality = int(quality)
@@ -48,6 +56,70 @@ def bin_quality_type(quality, wtype):
     else:
         print("failed", quality, wtype)
         sys.exit(0)
+
+def export(name, frows, values, funcs, header):
+
+    col_start = 0
+    cols = col_end = len(header)-2
+
+    csv_fd = open(name+'.csv','wb')
+    clazz_fd = open(name+'.cls','wb')
+    vec_fd = open(name+'.vec','wb')
+    vt_fd = open(name+'.vt','wb')
+
+    csv_fd.write(",".join(header[col_start:col_end])+"\n")
+
+    clazz_fd.write("$TYPE class_information\n")
+    clazz_fd.write("$NUM_CLASSES 6\n")
+    clazz_fd.write("$CLASS_NAMES poor_rw poor_ww average_rw average_ww high_rw hight_ww\n")
+    clazz_fd.write("$XDIM 2\n")
+
+    vt_fd.write("$TYPE template\n")
+    vt_fd.write("$XDIM 2\n")
+    vt_fd.write("$YDIM "+str(len(frows))+"\n")
+    vt_fd.write("$VEC_DIM 11\n")
+    for i,h in enumerate(header[col_start:col_end]):
+        h = h.replace(" ","_")
+        vt_fd.write(str(i) + " " + str(h) + "\n")
+    vt_fd.close()
+
+    vec_fd.write("$TYPE vec\n")
+    vec_fd.write("$XDIM " + str(len(frows)) + "\n")
+    vec_fd.write("$YDIM 1\n")
+    vec_fd.write("$VEC_DIM "+str(col_end-col_start)+"\n")
+
+
+    j = 0
+    clazzes = []
+    for row in frows:
+        out = row[:]
+        for i in range(0,cols):
+            f,_ = funcs[i]
+            v = float(row[i])
+            vals = values[i]
+            if f is None:
+                out[i] = v
+            else:
+                out[i] = f(vals[0],vals[1],v)
+
+        newrow = out[col_start:col_end]
+        j+=1
+
+        csv_fd.write(','.join([str(i) for i in newrow]) + "\n")
+
+        cla = bin_quality_type(out[11],out[12])
+        clazzes.append([str(j),str(cla)])
+
+        newrow.append(j)
+        vec_fd.write(' '.join([str(i) for i in newrow]) + "\n")
+
+    clazz_fd.write("$YDIM "+str(len(clazzes))+"\n")
+    for l in clazzes:
+        clazz_fd.write('\t'.join(l) + "\n")
+
+    vec_fd.close()
+    csv_fd.close()
+    clazz_fd.close()
 
 if __name__ == "__main__":
     reader = csv.reader(sys.stdin)
@@ -112,67 +184,29 @@ if __name__ == "__main__":
         _, f = funcs[c]
         values.append(f(_cols))
 
-    name = 'wq-n'
-    csv_fd = open(name+'.csv','wb')
-    clazz_fd = open(name+'.cls','wb')
-    vec_fd = open(name+'.vec','wb')
-    vt_fd = open(name+'.vt','wb')
-
-    csv_fd.write(",".join(header[col_start:col_end])+"\n")
-
-    clazz_fd.write("$TYPE class_information\n")
-    clazz_fd.write("$NUM_CLASSES 6\n")
-    clazz_fd.write("$CLASS_NAMES poor_rw poor_ww average_rw average_ww high_rw hight_ww\n")
-    clazz_fd.write("$XDIM 2\n")
-
-    vt_fd.write("$TYPE template\n")
-    vt_fd.write("$XDIM 2\n")
-    vt_fd.write("$YDIM "+str(len(frows))+"\n")
-    vt_fd.write("$VEC_DIM 11\n")
-    for i,h in enumerate(header[col_start:col_end]):
-        h = h.replace(" ","_")
-        vt_fd.write(str(i) + " " + str(h) + "\n")
-    vt_fd.close()
-
-    vec_fd.write("$TYPE vec\n")
-    vec_fd.write("$XDIM " + str(len(frows)) + "\n")
-    vec_fd.write("$YDIM 1\n")
-    vec_fd.write("$VEC_DIM "+str(col_end-col_start)+"\n")
-
-    csv_orig_fd = open(name+'-o.csv','wb')
+    csv_orig_fd = open('wq-o.csv','wb')
     csv_orig_fd.write(",".join(header[col_start:col_end])+"\n")
     for row in rows:
         csv_orig_fd.write(','.join([i for i in row[col_start:col_end]]) + "\n")
     csv_orig_fd.close()
 
-    j = 0
-    clazzes = []
-    for row in frows:
-        out = row[:]
-        for i in range(0,cols):
-            f,_ = funcs[i]
-            v = float(row[i])
-            vals = values[i]
-            if f is None:
-                out[i] = v
-            else:
-                out[i] = f(vals[0],vals[1],v)
+    name = 'wq-n'
+    export(name,frows,values,funcs, header)
 
-        newrow = out[col_start:col_end]
-        j+=1
+    # export the not normalized/weird normalized dataset
 
-        csv_fd.write(','.join([str(i) for i in newrow]) + "\n")
+    values = []
+    funcs = []
+    funcs = [ (unitlength,unitlength_col) for _ in range(0,cols) ]
+    funcs[3] = (minmax,min_max_col)
+    funcs[4] = (minmax,min_max_col)
+    funcs[5] = (minmax,min_max_col)
+    funcs[6] = (minmax,min_max_col)
+    funcs[9] = (minmax,min_max_col)
+    for c in range(0,cols):
+        _cols = list(column(rows,c))
+        _, f = funcs[c]
+        values.append(f(_cols))
+    name = 'wq-w-n'
 
-        cla = bin_quality_type(out[11],out[12])
-        clazzes.append([str(j),str(cla)])
-
-        newrow.append(j)
-        vec_fd.write(' '.join([str(i) for i in newrow]) + "\n")
-
-    clazz_fd.write("$YDIM "+str(len(clazzes))+"\n")
-    for l in clazzes:
-        clazz_fd.write('\t'.join(l) + "\n")
-
-    vec_fd.close()
-    csv_fd.close()
-    clazz_fd.close()
+    export(name,rows,values,funcs, header)

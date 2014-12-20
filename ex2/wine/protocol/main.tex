@@ -9,6 +9,9 @@
 \usepackage{hyperref}% add hypertext capabilities
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
+\usepackage[section]{placeins}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \usepackage{listings}
 \usepackage{footnote}
@@ -210,6 +213,8 @@ already done it previously.
     Big Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=50$ & $s_y=50$ & $i=1.500$ \\
     \hline
     Middle sized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=18$ & $s_y=18$ & $i=1.500$ \\
+    \hline
+    Errornous normalized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=20$ & $s_y=14$ & $i=1.500$ \\
     \hline
 \end{tabular}
 \caption{Settings for all of our experiments}
@@ -485,9 +490,81 @@ shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-grah}. For the radius was
 \label{fig:wine-mid-activity-histogram}
 \end{figure}
 
+\section{SOM Normalization. Training not normalized data}
 
+To highlight the difference between a SOM that is trained with erroneous normalized data
+we use the settings provided in the Table~\ref{tab:settings}.
 
+As we have discussed earlier, there are attributes that contain outliers.
+For those\footnote{Residual Sugar, Chlorides, Free sulfur dioxide, Total sulfur dioxide, Sulphates} we apply min/max scaling.
+For all others we use unit length scaling. As we heard in the lecture this scaling technique
+divides by the vector length, thus it makes the attribute vector unit length. This is
+not desirable, because we do not want our measurements to look the same. It would
+make sense for an attribute like document size, because it is mostly not the document
+size that defines the type of content. This is not the case for measurements.
 
+In the following we present the Activity Histogram in Figure~\ref{fig:wine-weird-activity-histogram},
+the Smoothed Data Histogram in Figure~\ref{fig:wine-weird-smoothed-data-histogram},
+the U Matrix in Figure~\ref{fig:wine-weird-u-matrix} and
+the Nearest Neighbourhood visualization using a radius of 0.1 in Figure~\ref{fig:wine-weird-nearest-neighbour-radius}.
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-weird-u-matrix}
+        \caption{U Matrix of the $20\times14$ SOM Map}
+        \label{fig:wine-weird-u-matrix}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-weird-smoothed-data-histogram}
+        \caption{SDH of the $20\times14$ SOM Map}
+        \label{fig:wine-weird-smoothed-data-histogram}
+    \end{subfigure}
+    \caption{SOM Visualisations of errornous normalized data}
+\end{figure}
+
+Comparing the U Matrix to the previous U Matrices this one has many more mountain
+areas. The distinction between clusters and cluster boundaries are not visible.
+In the top left there is one coherent valley that is mostly colored blue.
+The rest of the map seems not to display any clusters. This is very different, because
+earlier we had a clear distinction between two clusters, but here the mountains
+take up to more than 80\% of the map.
+
+The Activity Histogram now displays one gradient from the bottom left to the top right.
+In the correctly normalized data we do not have such a gradient, and one part of our map
+also contained topology violations.
+
+The SDH shows very one big area located above in the center. Use a smoothing factor of 149.
+When decreasing the smoothing factor the big bulb above the center is still dominant,
+but moves into the top left of the map. This matches very well the flat vally found in
+Figure~\ref{fig:wine-weird-u-matrix}.
+
+The nearest neighbour shows that the units of the SOM are very close to each other. The 
+radius is set to 0.1. The picture shows that they are so close together, that
+nearly every unit is connected to every other unit.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-weird-activity-histogram}
+        \caption{Activity histogram of the $20\times14$ SOM Map}
+        \label{fig:wine-weird-activity-histogram}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-weird-nearest-neighbour-radius}
+        \caption{Nearest neighbour (radius 0.1) of the $20\times14$ SOM Map}
+        \label{fig:wine-weird-nearest-neighbour-radius}
+    \end{subfigure}
+    \caption{SOM Visualisations of errornous normalized data}
+\end{figure}
+
+The scaling we applied earlier was quite effective to distort the input data
+and map the input data to data that looks very similar. In our opinion
+many characteristics of the attributes where lost and we could verify this
+in the produced SOM Visualisations.
+
+\section{Adjusting the neighbourhood for trainging}
 
 
 \bibliography{ref}
