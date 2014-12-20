@@ -216,6 +216,14 @@ already done it previously.
     \hline
     Errornous normalized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=20$ & $s_y=14$ & $i=1.500$ \\
     \hline
+    Neighbourhood Small & $\alpha = 0.7$ & $\sigma = 1$ & $s_x=20$ & $s_y=16$ & $i=5.000$ \\
+    \hline
+    Neighbourhood Mid & $\alpha = 0.7$ & $\sigma = 5$ & $s_x=20$ & $s_y=16$ & $i=5.000$ \\
+    \hline
+    Neighbourhood Normal & $\alpha = 0.7$ & $\sigma = 10$ & $s_x=20$ & $s_y=16$ & $i=5.000$ \\
+    \hline
+    Neighbourhood Big & $\alpha = 0.7$ & $\sigma = 15$ & $s_x=20$ & $s_y=14$ & $i=5.000$ \\
+    \hline
 \end{tabular}
 \caption{Settings for all of our experiments}
 \label{tab:settings}
@@ -490,13 +498,36 @@ shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-grah}. For the radius was
 \label{fig:wine-mid-activity-histogram}
 \end{figure}
 
+\section{SOM random Initialization. Different Seed values}
+As discovered in the previous analysis, the rectangular SOM clearly contains critical Topology 
+violations in the right area. We tried to improve the mapping quality by training a SOM 
+with hexagonal structure and as shown on Activity histogram of the hexagonal SOM in FIGURE 
+we managed to merge the a group of similar weight vectors colored with blue in one area 
+instead of being separated as by green weight vectors as shown in FIGURE of the rectangular SOM.
+The hexagonal SOM was trained with the default initial parameters as shown in TABLE. Further
+to our analysis, we trained two additional SOM with identical initial parameters but with 
+different random initializations by specific different seed values. As noted before, we discovered
+two main clusters and by observing the Activity Histogram we can notice the movement of the clusters.
+For Seed=1 the right cluster is weak but as we change increase the seed values to Seed =7 we notice
+clearer definition of the blue area and then for seed=55 we observe complete cluster shift.
+The U-Matrix shows that for Seed=1 the cluster boundaries are vertical but not clearly defined,
+for Seed=7 they are adjusted and clear whereas for Seed=55 we observe a complete cluster boundaries
+shift into a horizontal position. New discoveries of the clusters shift are revealed by the
+Radius based Neighbourhood graphs by observing graphs with different radiuses r=0,5;0,8 and 1. 
+For Seed 55 the rotation of the cluster boundaries is confirmed. For values we notice 
+one more smaller inner cluster shift for r=0,8 on FIGURE and FIGURE. The dense area of the Right 
+cluster is moved to the lower right area of the SOM. Additional finding is that for Seed=1 and
+r=0.5 as shown in FIGURE we observe parable lines which are indicators of Topology Violations.
+
+
 \section{SOM Normalization. Training not normalized data}
 
 To highlight the difference between a SOM that is trained with erroneous normalized data
-we use the settings provided in the Table~\ref{tab:settings}.
+we use the settings provided in the Table~\ref{tab:settings}. We found out earlier that a rectangular
+SOM is more useful for our data distribution. Thus we now take a look at a $20\times14$ SOM.
 
 As we have discussed earlier, there are attributes that contain outliers.
-For those\footnote{Residual Sugar, Chlorides, Free sulfur dioxide, Total sulfur dioxide, Sulphates} we apply min/max scaling.
+For those\footnote{Residual Sugar, Chlorides, Free sulfur dioxide, Total sulfur dioxide, Sulphates} we apply min/max scaling. We assume that by using this scaling technique we distort these attributes, which leads to a blur of the two clusters.
 For all others we use unit length scaling. As we heard in the lecture this scaling technique
 divides by the vector length, thus it makes the attribute vector unit length. This is
 not desirable, because we do not want our measurements to look the same. It would
@@ -586,6 +617,87 @@ in the produced SOM Visualisations.
 
 \section{Adjusting the neighbourhood for training}
 
+In the following we show how the neighbourhood radius $\sigma$ affects the topology
+and the structures on the map. We use the settings shown in Table~\ref{tab:settings}.
+(Neighbourhood Small to Big).
+For the SDH we used a smoothing factor of 100 instead of the default one.
+
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-smoothed-data-histogram-sigma-1}
+        \caption{$\sigma=1$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-smoothed-data-histogram-sigma-5}
+        \caption{$\simga=5$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-smoothed-data-histogram-sigma-15}
+        \caption{$\sigma=15$}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) SDH with different neighbour hood radius$f$}
+    \label{fig:wine-newmid-smoothed-data-histogram-sigma}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-topographic-error-sigma-1}
+        \caption{$\sigma=1$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-topographic-error-sigma-5}
+        \caption{$\simga=5$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-topographic-error-sigma-15}
+        \caption{$\sigma=15$}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) Topographic error with different neighbour hood radius$f$}
+    \label{fig:wine-newmid-topographic-error-sigma}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-1}
+        \caption{$\sigma=1$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-5}
+        \caption{$\simga=5$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-15}
+        \caption{$\sigma=15$}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) Topographic error with different neighbour hood radius$f$}
+    \label{fig:wine-newmid-activity-histogram-sigma}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-1}
+        \caption{$\sigma=1$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-5}
+        \caption{$\simga=5$}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-14}
+        \caption{$\sigma=15$}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) Topographic error with different neighbour hood radius$f$}
+    \label{fig:wine-newmid-activity-histogram-sigma}
+\end{figure}
 
 \bibliography{ref}
 \bibliographystyle{plain}
