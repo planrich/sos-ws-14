@@ -205,7 +205,9 @@ already done it previously.
     \hline
     Middle sized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=18$ & $s_y=18$ & $i=1.500$ \\
     \hline
-    Errornous normalized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=20$ & $s_y=14$ & $i=1.500$ \\
+    Rectangular middle sized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
+    \hline
+    Errornous normalized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=14$ & $s_y=20$ & $i=1.500$ \\
     \hline
     Neighbourhood Small & $\alpha = 0.7$ & $\sigma = 1$ & $s_x=20$ & $s_y=16$ & $i=5.000$ \\
     \hline
@@ -667,7 +669,7 @@ nearly every unit is connected to every other unit.
         \caption{Nearest neighbour (radius 0.1)}
         \label{fig:wine-weird-nearest-neighbour-radius}
     \end{subfigure}
-    \caption{SOM ($20\times14$) visualisations of errornous normalized data}
+    \caption{SOM ($14\times20$) visualisations of errornous normalized data}
 \end{figure}
 
 The scaling we applied earlier was quite effective to distort the input data
@@ -829,6 +831,48 @@ we see that there is only one big difference in the top left area.
 % todo IMAGES
 
 \section{Summary}
+
+We have shown many different visulizations and quality measures for WQ dataset using different
+parameter settings. The main structures
+we found are the two clusters. Red and white wine. Their separation is quite clear. Half of 
+the map is dedicated to white wine and the other is dedicated to red wine.
+The two clusters where revealed by SDH and the U-Matrix (e.g. Figure~\ref{todo}, ...).
+
+Considering the density, it is similar in both clusters. Around the cluster boundaries there is
+very high density shown by the P-Matrix (e.g. Figure~\ref{todo}). 
+The details of the density can be revealed by the neighbour hood radius graph.
+It shows high density in the left upper area and high density in the lower right area in
+Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph-r--08-seed-7} and Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph-r--10-seed-7}.
+
+Topology violations exist in practically all our trained maps. We think that WQ dataset has
+a very complex structure. Especially the red wine cluster probabliy has a spheric form.
+The reson for this the different activity histograms (e.g. Figure~\ref{fig:wine-newmid-activity-histogram-seed-7}) see a blue area surrounded by green ring. The blue area is probably the top of the sphere and
+under it the green area of the red wine cluster. In the white wine area on the bottom left
+there is also a potential subcluster that outlies the other white wines.
+
+To conclude the structure we would like to show the termatic class map in Figure~\ref{fig:wine-newmid-thermatic-class-map}. The settings are the rectangular mid sized map shown in Table~\ref{tab:settings}.
+Here again we see that there are two clusters. Each of them seem to have their subclusters depending
+on the quality of the wine. As an example the quality white wine are located in the upper left area of
+the map which is a dense region. This shows that the quality white wine are very similar.
+This is not the case for red wine as the quality wines are located in the upper right area which is
+not that dense.
+
+\subsection{Identified false parameter settings}
+
+The following list shows false parameter settings which we confirmed in our experiments.
+
+\begin{itemize}
+    \item Neighbourhood radius. Small values lead to topology violations.
+        The SOM does not pull enough neighbouring units during the training phase.
+        Large values will map many datasamples to the diagonals of the map.
+    \item Iterations. Low values don't allow the map to unfold into the dataspace.
+        Very high values try to fit the dataspace perfectly.
+    \item Random seeds. Is not really a false parameter. Our findings show that
+        only difference is in the cluster shift and rotation.
+    \item SOM Size. A small map cannot unfold and cover the dataspace properly. Whereas very
+        big number of units will produce a lot of interpolating units. In the worst case each
+        SOM unit contains maximum of one data sample.
+\end{itemize}
 
 \section{Conclusion}
 
