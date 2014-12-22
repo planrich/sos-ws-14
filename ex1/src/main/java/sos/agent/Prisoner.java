@@ -15,7 +15,7 @@ public class Prisoner extends Agent {
 
     private void usage() {
         System.out.println();
-        System.out.println("usage: ./gradlew ex1:run [-Drounds=X] prisonerName:sos.agent.Prisoner(<modus>, <param>, <param>, ...)");
+        System.out.println("usage: ./gradlew prisoner [-Drounds=X] -Dagent=\"prisonerName:sos.agent.Prisoner(<modus>, <param>, <param>, ...)\"");
         System.out.println();
         System.out.println("       rounds: default 10");
         System.out.println("       modus 'static': param 1: one of silent|accuse");

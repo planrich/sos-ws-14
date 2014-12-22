@@ -12,9 +12,15 @@
 
 \usepackage{listings}
 \usepackage{footnote}
+
 \makesavenoteenv{table}
 \makesavenoteenv{table*}
 \makesavenoteenv{tabular}
+
+\lstset{
+language=C,                             % Code language
+basicstyle=\ttfamily,
+}
 
 \begin{document}
 
@@ -50,9 +56,9 @@ Richard Plangger\\
 \section{Problem Description}
 \label{sec:problem-desc}
 
-The Prisoners' Dilemma problem was chosen and implemented in JADE\footnote{\url{http://jade.tilab.com/} Last accessed 11.12.2014}. In this problem, two criminals are convicted for a crime but still not sentenced as there is not enough evidence. Both criminals are interrogated individually and are aware of the consequences. The greatest challenge they face is what action to take. Depending on their decision it is judged how many
+The Prisoners' Dilemma problem was chosen and implemented in JADE\footnote{\url{http://jade.tilab.com/} Last accessed 11.12.2014}. Two criminals are convicted for a crime but still not sentenced as there is not enough evidence. Both criminals are interrogated individually and are aware of the consequences. The greatest challenge they face is what action to take. Depending on their decision it is judged how many
 years each of them should spent in jail. 
-The possible outcome matrix of the problem is shown with Table 1 and it contains all the possible years for a prisoner of the game in respect to the chosen actions.
+%The possible outcome matrix of the problem is shown with Table 1 and it contains all the possible years for a prisoner of the game in respect to the chosen actions.
 
 \begin{table}
 \centering
@@ -67,15 +73,23 @@ The possible outcome matrix of the problem is shown with Table 1 and it contains
 \label{tab:prisoner-opt}
 \end{table}
 
-There are two actions available: Accuse or Stay Silent and these actions define the possible outcome matrix shown in Table~\ref{tab:prisoner-opt}. The possible outcomes reveal two main concepts: Rational and Irrational.
-Being rational means choosing the dominant strategy which is to play Accuse. It is dominant as only by playing rational a prisoner could get away with nothing. If they both play their dominant strategies the game ends up in equilibrium ($P_1$=2 and $P_2$=2). 
-Being irrational means they always loose but it could lead them to the optimum result for both, which is to stay silent ($P_1$=1 and $P_2$=1). This strategy is a high risk for both of them as they could end up with maximum sentence. There are three agents implemented: Judge and two prisoners. The Judge agent is a very basic one and is implemented with a static behavior. The judge announces the sentence 
+There are two actions available: ``Accuse'' or ``Stay Silent''. These actions define the possible outcome matrix shown in Table~\ref{tab:prisoner-opt}.
+The possible outcomes reveal two main concepts: Rational and Irrational.
+We define rational as selfish, trying to minimize the prisoners sentence.
+A prisoner could get away with no sentence by playing accuse and avoids to spend 3 years in jail if the other prisoner also plays accuse.
+If they both action rationally the game ends up in equilibrium ($P_1$=2 and $P_2$=2). 
+We define irrational as losing on an individual level, but potentially winning on a collective level. Only this way the minimum years
+for both can be achieved, by playing silent ($P_1$=1 and $P_2$=1).
+This strategy is a high risk for both of them as they could end up with maximum sentence.
+
+There are three agents implemented: Judge and two prisoners.
+The judge announces the sentence 
 to each prisoner individually after both have told them their action.
-The behavior of the prisoner agents is implemented with different strategies:
+The behavior of the prisoner agents is implemented with different strategies and can be parameterized on startup:
 
 \begin{enumerate}
    \item Random. The prisoner decides using a random generator.
-   \item Static. The prisoner decides his action depending on his starting value.
+   \item Static. The prisoner statically plays one decision.
    \item Titfortat. This behavior only considered the last decision of the judge. It replays
       the action of the other prisoner. Initially the prisoner plays silent to start the first
       round.
@@ -208,10 +222,11 @@ found in the class JudgeBehaviour. It is cyclic (never ending until manual inter
 $ java -cp libs/jade.jar:libs/dilemma.jar \
     jade.Boot -name dilemma -gui \
     -agents judge:sos.agent.Judge
+$ ./gradlew judge # alternative
 \end{lstlisting}
 
 The previous command starts the agent and registers the judge Agent to the dilemma platform.
-$J$ is the central role, thus it provides the gui to observe the platform.
+$J$ is the central role, thus it provides the GUI to observe the platform.
 
 The prisoners are started in a similar way:
 
@@ -220,6 +235,9 @@ $ java -cp libs/jade.jar:libs/dilemma.jar \
     jade.Boot -container -agents \
     p1:sos.agent.Prisoner(static,accuse) \
     -Drounds=20
+$ # or do the following
+$ ./gradlew prisoner -Drounds=20 \
+  -Dagent="p1:sos.agent.Prisoner(static,accuse)"
 \end{lstlisting}
 
 This starts a prisoner named p1 and plays a static behavior sending accuse for 20 rounds.
@@ -230,7 +248,7 @@ the stats of his iteration including the stats of the other prisoner.
 
 \subsection{Communication}
 
-While familiarizing with the JADE platform we learned that we basically have several options
+While familiarizing with the JADE platform we saw several options
 on how to let the agents communicate.
 
 \begin{itemize}
@@ -246,7 +264,7 @@ The motivation of this was mostly because in real life this works quite the same
 know which court you must go to to pledge innocent and receive your sentence. This allowed
 us to filter the messages in the behavior using the AID. The behavior of sending their
 decision and receiving the sentence for every prisoner is the same,
-thus we abstracted this behavior into the base class sos.agent.behaviour.BasePrisonerBehaviour.
+thus we abstracted this behavior into the base class \lstinline!sos.agent.behaviour.BasePrisonerBehaviour!.
 
 The programming style of receiving messages in JADE is not very intuitive at first glance.
 We would have expected blocking behavior for receiving messages, but one must either
@@ -279,7 +297,7 @@ Figure~\ref{fig:dilemma-classes} show a subset of the classes that we have imple
 Our base prisoner behavior implements the \lstinline!action()! method to communicate with
 the judge. The selected behavior (depending on the start parameter of the agent) then
 gets the list of previous rounds. This is the knowledge he operates on. In the
-different behaviors we have used this information to try to implement rational agents,
+different behaviors we have used this information to try to implement rational agents and
 irrational agents.
 
 \section{Testing our implementation}
@@ -288,22 +306,27 @@ After presenting your implementation we would like to examine the agents and the
 In the following we will evaluate some behavior combinations running the prisoners for 100 rounds.
 The most interesting property is the sum of years, and the sum of years for each specific prisoner.
 
-Here is a list of certain combination we believe that are interesting.
+The following list shows certain combinations we believe are interesting:
 
 \begin{enumerate}
-	\item $P_1$ random, $P_2$ Titfortat. Since Titfortat replays the last round, and the
+	\item $P_1$ random, $P_2$ titfortat. Since titfortat replays the last round, and the
     other prisoner plays random, $P_2$ should have nearly equal years than $P_1$.
     \label{item:p1random-p2titfortat}
-    
+    \item $P_1$ bayes, $P_2$ titfortat. We think that in this behavior it greatly depends
+    on the initial model how bayes behaves. $P_1$ uses 20 rounds to train and maintain his model.
+
 	\item $P_1$ optimistic, $P_2$ aggressive. The aggressive prisoner tries to gain the
       most out of the optimistic behavior. We suspect that the aggressive might have a slight advantage, because he can trick the optimistic prisoner for some rounds.
+      Parameters for $P_1$ are trust level = 10, $P_2$ plays static silent when years are above the threshold. In round 1, window = 10, threshold = 0.6, round 2: window = 20, threshold = 0.6,
+      round 3: window = 20, threshold = 0.5.
     \item $P_1$ bayes, $P_2$ random. $P_1$ after having seen 20 rounds, should keep a window of 20 rounds that he uses to predict the other action. Here we also expect that bayes should have a slight advantage, but should not be worse than $P_2$.
+    $P_1$ uses sliding window of 10 rounds to train and maintain his model.
     \item $P_1$ bayes, $P_2$ optimistic. Similar to the previous point, bayes should train
     a model, that predicts the optimistic behavior. We expect the two to minimize the years (after the initial random phase has worn out).
+    $P_2$ has a trust level = 10, $P_1$ uses sliding window of 20 rounds to train and maintain his model.
     \item $P_1$ bayes, $P_2$ aggressive. $P_1$ should learn the aggressive behavior and also
     play aggressive until the end.
-    \item $P_1$ bayes, $P_2$ titfortat. We think that in this behavior it greatly depends
-    on the initial model how bayes behaves.
+    Both consider only the last 20 rounds, $P_2$ uses a threshold of 0.6 and plays static silent if he exceeds the threshold, $P_1$ uses 20 rounds to train and maintain his model.
 \end{enumerate}
 
 \begin{table*}
@@ -316,33 +339,30 @@ Modus & $P_1$ years & $P_2$ years & Sum years \\
    $(147)_1$,$(143)_2$,$(142)_3$ &
    $(294)_1$,$(283)_2$,$(290)_3$ \\
 \hline
-2. $P_1$ bayes, $P_2$ titfortat\footnote{$P_1$ uses 20 rounds to train and maintain his model} & 
+2. $P_1$ bayes, $P_2$ titfortat &
    $(182)_1$,$(187)_2$,$(111)_3$ &
    $(188)_1$,$(184)_2$,$(111)_3$ &
    $(370)_1$,$(371)_2$,$(222)_3$ \\
    
 \hline
-3. $P_1$ optimistic, $P_2$ aggressive\footnote{
-Parameters for $P_1$ are trust level = 10, $P_2$ plays static silent when years are above the threshold. In round 1, window = 10, threshold = 0.6, round 2: window = 20, threshold = 0.6,
-round 3: window = 20, threshold = 0.5
-} & 
+3. $P_1$ optimistic, $P_2$ aggressive & 
    $(177)_1$,$(182)_2$,$(183)_3$ &
    $(141)_1$,$(140)_2$,$(120)_3$ &
    $(318)_1$,$(322)_2$,$(303)_3$ \\
 \hline
-4. $P_1$ bayes, $P_2$ random\footnote{$P_1$ uses sliding window of 10 rounds to train and maintain his model} & 
+4. $P_1$ bayes, $P_2$ random & 
    $(120)_1$,$(108)_2$,$(135)_3$ &
    $(204)_1$,$(222)_2$,$(162)_3$ &
    $(324)_1$,$(330)_2$,$(297)_3$ \\
    
 \hline
-5. $P_1$ bayes, $P_2$ optimistic\footnote{$P_2$ has a trust level = 10, $P_1$ uses sliding window of 20 rounds to train and maintain his model} & 
+5. $P_1$ bayes, $P_2$ optimistic & 
    $(155)_1$,$(150)_2$,$(154)_3$ &
    $(203)_1$,$(207)_2$,$(205)_3$ &
    $(358)_1$,$(357)_2$,$(359)_3$ \\
    
 \hline
-6. $P_1$ bayes, $P_2$ aggressive\footnote{Both consider only the last 20 rounds, $P_2$ uses a threshold of 0.6 and plays static silent if he exceeds the threshold, $P_1$ uses 20 rounds to train and maintain his model} & 
+6. $P_1$ bayes, $P_2$ aggressive & 
    $(194)_1$,$(211)_2$,$(198)_3$ &
    $(140)_1$,$(142)_2$,$(150)_3$ &
    $(334)_1$,$(353)_2$,$(348)_3$ \\
@@ -356,11 +376,12 @@ Table~\ref{tab:tests} show the results of our test cases. The numbers written in
 
 As we have expected for (1.) the years for both prisoners are as if both played random. They
 have nearly the same amount of years after 100 rounds. In (2.) we observe the same behavior. But (2.) also depends on the initial model. Since $P_1$ plays random for the first 20 rounds
-it determines the model. In round 3 random yielded silent very often which drove the model
+it determines the model. In round 3 random played silent very often which drove the model
 of bayes into a state where it predicted that silent is the best choice.
 
-In the third combination (3.) the optimistic agent clearly lost. In each test run he got at least 30 years more than the aggressive one. It mostly depends on the parameter settings for both how bad/good the optimistic agent behaves. But we believe that the optimistic strategy is
-quite good, because he only allows the other prisoner to betray him until his trust level falls below zero. After that trust has to be gained again.
+In the third combination (3.) the optimistic agent clearly lost. In each test run he got at least 30 years more than the aggressive one. It mostly depends on the parameter settings for both how bad/good the optimistic agent behaves.
+Our optimistic strategy is not naive. It prevents the other prisoner to take advantage of the optimistic trust. If the trust level falls
+below zero, the optimistic strategy plays accuse until the trust has been earned again.
 
 Test variation (4.) is very interesting. We expected $P_1$ to have a slight advantage. In fact
 he won every round with a mean value of 75 years less. For the
@@ -380,19 +401,17 @@ $P_2$ will drop into aggressive behavior again.
 
 \section{Conclusion}
 
-In this assignment we have implemented a simple agent system where two prisoners are able to
+In this assignment we have implemented a simple agent system.  Two prisoners are able to
 cooperate and/or compete against each other. The JADE interface to implement an agent
 is simple and stable. It would be interesting to evaluate the platform in more detail
-and see more complex communication patterns that are possibly split amongst sever computing nodes.
-In addition to that we have implemented several behaviors and let them compete against each other. Some results surprised us. It seems to be a very easily understandable problem, but
+and see more complex communication patterns.
+In addition to that we have implemented several behaviors and let them compete against each other.
+Some results surprised us. It seems to be a very easily understandable problem, but
 in out opinion it is not so easy to trick other agents.
-The self organizing aspect of each agent is also very interesting. Because the interface
-is very simple you need to communicate to acquire more information. An agent alone can do
-very little things, but his capabilities increase tremendously when he gets new information.
+The self organization of each agent is an interesting aspect. An agent alone can do
+very little things, but his capabilities increase tremendously whenever he acquires new information.
 
 \bibliography{ref}
 \bibliographystyle{plain}
 
 \end{document}
-%
-% ****** End of file apssamp.tex ******
