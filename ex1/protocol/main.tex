@@ -42,7 +42,7 @@ Richard Plangger\\
 \maketitle
 
 \begin{abstract}
- The purpose of this assignment is to show the strengths of Multi-Agent systems using the an agent platform. The Prisoners Dilemma problem is implemented with three independent agents that interact. Various agent behaviors are designed to mimic actions of a real human. A more complex is implemented using Bayes' Theorem. Some behavior combinations 
+ The purpose of this assignment is to show the strengths of multi-agent systems using the an agent platform. The ``Prisoners Dilemma'' is implemented with three independent agents that interact. Various agent behaviors are designed to mimic actions of a real human. A more complex is implemented using Bayes' Theorem. Some behavior combinations 
  are used to run an iterative game. The outcomes of these rounds reveal that although the problem seems very simple, it is very hard to trick the opponent agent in the game. Our
  implementation does not implement a very complex communication structure, but it
  was a good opportunity to learn the paradigm and see how communication patterns in
@@ -80,10 +80,10 @@ A prisoner could get away with no sentence by playing accuse and avoids to spend
 If they both action rationally the game ends up in equilibrium ($P_1$=2 and $P_2$=2). 
 We define irrational as losing on an individual level, but potentially winning on a collective level. Only this way the minimum years
 for both can be achieved, by playing silent ($P_1$=1 and $P_2$=1).
-This strategy is a high risk for both of them as they could end up with maximum sentence.
+This strategy is a high risk for both of them as one could end up with the maximum sentence.
 
-There are three agents implemented: Judge and two prisoners.
-The judge announces the sentence 
+There are three agents implemented: A judge $J$ and two prisoners ($P_1$, $P_2$).
+$J$ announces the sentence 
 to each prisoner individually after both have told them their action.
 The behavior of the prisoner agents is implemented with different strategies and can be parameterized on startup:
 
@@ -163,7 +163,7 @@ last rounds is counted and summed up in Table~\ref{tab:frequency-val}.
   \hline
   $P_2$ stays silent & 1 				& 2   				 \\
 \end{tabular}
-\caption{Frequency Values based on the Training set in Table~\ref{tab:training-set}}
+\caption{Frequency values based on the training set in Table~\ref{tab:training-set}}
 \label{tab:frequency-val}
 \end{table}
 
@@ -178,7 +178,7 @@ last rounds is counted and summed up in Table~\ref{tab:frequency-val}.
   \hline
   $P(C)$ 			 & P($P_1$:$Accuse$)=5/9 & P($P_1$:$Silent$)=4/9 &    \\
   \end{tabular}
-\caption{Likelihood Values based on the Training set in Table~\ref{tab:training-set}}
+\caption{Likelihood values based on the training set in Table~\ref{tab:training-set}}
 \label{tab:likelihood-val}
 \end{table*}
 
