@@ -154,7 +154,7 @@ We also include the Python script called ``wine.py'' that can be invoked\footnot
 
 In the original data set the attribute quality were used for classification. As we merged the white and red wine,
 we additionally binned the quality into 3 bins: Poor-, Average- and High- quality. We did this, to reduce the possible
-amount of clusters (6 instead of approx. 14).
+amount of classes (6 instead of approx. 14).
 The data samples included in WQ covered a range from 3 to 9. Table~\ref{tab:quality-binning} shows the binning settings.
 The bins are not equally distributed along the range, but we selected them by seeing the distribution in WEKA. Nearly
 all bins should have an equal amount of samples accociated to them.
@@ -178,11 +178,10 @@ all bins should have an equal amount of samples accociated to them.
 
 \section{Training the first SOM}
 
-After we have familiarized ourselfs with the SOMToolbox we will start to train a rather small
-map. We use the settings for the ``Small Map'' shown in Table~\ref{tab:settings}. If not further
-noted in the description we use the standard settings.
+After we familiarized ourselfs with the SOMToolbox we started by training a small
+map. The initial settings for the ``Small Map'' are shown in Table~\ref{tab:settings}. Further in this paper, if the settings of a SOM are not noted in the description, it is implied that we use the standard settings. 
 
-The following list explains the settings in more detail that are shown in Table~\ref{tab:settings}.
+The following list explains the settings shown in Table~\ref{tab:settings} in more detail.
 
 \begin{itemize}
     \item $\alpha$ ... the learning rate
@@ -207,7 +206,7 @@ already done it previously.
     \hline
     Rectangular middle sized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
     \hline
-    Errornous normalized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=14$ & $s_y=20$ & $i=1.500$ \\
+    Erroneous normalized Map & $\alpha = 0.7$ & $\sigma = 7$ & $s_x=14$ & $s_y=20$ & $i=1.500$ \\
     \hline
     Neighbourhood Small & $\alpha = 0.7$ & $\sigma = 1$ & $s_x=20$ & $s_y=16$ & $i=5.000$ \\
     \hline
@@ -232,13 +231,13 @@ already done it previously.
 
 \subsection{Small SOM}
 
-We consider a $5\times5$ grid for our first experiment very small. WQ has more than 6000 entries.
+We consider a grid of $5\times5$ units for our first 'very small SOM' experiment. WQ has more than 6000 entries.
 This will result in many input samples grouped together to very few nodes. Our first trained
 SOM is shown in Figure~\ref{fig:wine-small-hit-histogram} using the hit histogram visualization.
 It can reveal dense areas on the map and in our opinion shows that the map size is too small.
-We only have few units that are not fully colored in red. This is kind of a vertical line separating
+We only have few units that are not fully colored in red, positioned in a vertical line and separating
 the first 4 vertical units on the top left from the rest of the map. We conclude that there are
-too many input samples are mapped to every unit int the SOM.
+too many input samples are mapped to every unit in the SOM.
 
 \begin{figure}
 \centering
@@ -267,11 +266,10 @@ too many input samples are mapped to every unit int the SOM.
 
 Another visualization hint for dense areas is the P-Matrix. It is shown in Figure~\ref{fig:wine-small-p-matrix} using
 the default settings. We see that there are dense areas to the bottom right of the map and there are lesser
-dense areas to the top right of the map.
+dense areas to the top left of the map.
 By increasing the P-radius from 3 to 5 the map nearly turns into one big red pixel.
 Comparing it to Figure~\ref{fig:wine-small-hit-histogram} it shows that there are many input samples densly packed
-onto the lower right grid of the map. When we later increase the SOM size, this data might spread out. We
-will also evaluate later to make the map rectangular because the units seem to spread into on direction.
+onto the lower right grid of the map. We assume that by increasing the SOM size, this data will be distributed much better. Another assumption is that a rectangular map will fit the data better as the units seem to spread into a similar shape.
 
 We also present the Activity Histogram of our small SOM in Figure~\ref{fig:wine-small-activity-histogram}.
 Interesting is the blue part on the mid left that is separated by a slight green/yellow.
@@ -283,7 +281,7 @@ red and white wine are very distinct or two subranges of the quality are dominat
 \subsection{Quality measurements}
 
 In the following we take a look at some quality measures available in SOMToolbox.
-If not noted otherwise the default parameter values are used for all quality measures.
+If not noted otherwise the default SOM parameter values are used for all quality measures.
 First we compare the Quantization Error (QE) and the Mean Quantization Error (MQE) shown in
 Figure~\ref{fig:wine-small-quant-error} and~\ref{fig:wine-small-mean-quant-error} respectivley.
 We already noted that the lower right is a very dense area. In the MQE these units have a very low
@@ -307,7 +305,7 @@ region as the node at position $1\times1$ in MQE shows.
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-small-dist-sqrt-2}
-    \caption{Distoration ($\sqrt{2}$)}
+    \caption{Distortion ($\sqrt{2}$)}
     \label{fig:wine-small-dist-sqrt-2}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
@@ -321,7 +319,7 @@ region as the node at position $1\times1$ in MQE shows.
 The map is also very distorted which is shown in Figure~\ref{fig:wine-small-dist-sqrt-2}.
 When comparing this to a better train map (such as the sample of Iris dataset), it is
 really distorted. Given the number of values mapped to the nodes, the distortion and
-high QE we conclude current SOM size is to small.
+high QE we conclude current SOM size is to small and it is very hard to discover the shape of the data.
 
 To finish the examination of this far to small map we show the class distribution amongst the map.
 At first it surprised us that the splitting is done quite evenly between red and
@@ -398,13 +396,13 @@ many interpolating units. The picture of the QE and MQE are quite the same but o
 \caption{SOM $30\times30$}
 \end{figure}
 
-We assume that the hit histogram of the $50\times50$ SOM should not have alot of red spots.
+We assume that the hit histogram of the $50\times50$ SOM should not have a lot of red spots.
 Using the hit histogram of the smaller big SOM ($30\times30$) shown in Figure~\ref{fig:wine-big-hit-histogram} we notice that very light
 colors which indicates that few or none input samples are mapped to the SOM nodes.
 
-In Figure~\ref{wine-big-p-matrix} we se a huge red spot in the center of the map. This indicates that
+In Figure~\ref{fig:wine-big-p-matrix} we se a huge red spot in the center of the map. This indicates that
 the data is very dense at this area. Comparing it to the small SOM P-Matrix there is this dense area
-in the center. The difference is that the dense area is to the center right not to the bottom right as assumed with
+in the center. The difference is that the dense area is to the center right and not to the bottom right as assumed with
 the small one.
 
 The last quality measure we apply for this map is the topographic product.
@@ -418,13 +416,12 @@ It reveals the possible cluster bounderies. We have many coherent regions/valley
 the upper and lower parts of the map. They are separated by a horizontal mountain regions
 or high values in the center which depict the possible cluster boundaries.
 
-The potential cluster boundaries displayed in the SDH visualization in Figure~\ref{fig:wine-big-smoothed-data-histogram}.
+The potential cluster boundaries are displayed in the SDH visualization in Figure~\ref{fig:wine-big-smoothed-data-histogram}.
 
-In addition the activity historygram in Figure~\ref{fig:wine-big-activity-histogram} shows possible
-topology violations. There is not a gradient of the weight vectors measured in distance. In can
-be seen in the upper cluster where blue area is separated by green.
+In addition, the Activity Histogram in Figure~\ref{fig:wine-big-activity-histogram} shows possible
+topology violations especially in the upper cluster where the blue area is separated by green. Thus we observe that a gradient of the weight vectors measured in distance is not present. 
 
-The analysed visulations/quality measures depict that we SOM is oversized.
+The analysed visualizations/quality measures depict that we SOM is oversized.
 In the following we will try to approximate a better size.
 
 \section{Normal SOM}
@@ -432,16 +429,16 @@ In the following we will try to approximate a better size.
 In the following we show a middle sized map. Parameters are included in the Table~\ref{tab:settings}.
 On the first view of QE in Figure~\ref{fig:wine-mid-quant-error} and MQE~\ref{fig:wine-mid-quant-error} we see
 that there are three interpolating units. Comparing the two we notice that the distant data samples are
-mapped to the units located along the a horzontal line in the center or the potential cluster boundaries.
-The U-Matrix in Figure~\ref{fig:wine-mid-u-matrix} reveals the cluster bounderies shown with high mountain values
+mapped to the units located along the a horizontal line in the center or the potential cluster boundaries.
+The U-Matrix in Figure~\ref{fig:wine-mid-u-matrix} reveals the cluster boundaries shown with high mountain values
 along the line mentioned earlier.
 
 Again we used the SDH visualization. In the earlier settings we used a smoothing factor of 149. We decreased it to
 115 and managed to separate the two main clusters shown in Figure~\ref{fig:wine-mid-soothed-data-histogram}.
 
 There are potential topology violations located in the upper cluster. We see this in Figure~\ref{fig:wine-mid-activity-histogram}.
-Like in the big SOM there are three blue areas separated by green an yellow. By observing the neighbourhood graph
-shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-grah}. For the radius was set to 0.4. We notice three red lines connecting the blue areas.
+Similar to the the big SOM there are three blue areas separated by green an yellow. By observing the neighbourhood graph
+shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-graph}. For the radius was set to 0.4. We notice three red lines connecting the blue areas.
 
 
 \begin{figure}
@@ -486,25 +483,14 @@ shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-grah}. For the radius was
 
 \section{SOM random Initialization. Different Seed values}
 
-As discovered in the previous analysis, the rectangular SOM clearly contains critical Topology 
-violations in the right area. We tried to improve the mapping quality by training a SOM 
-with hexagonal structure and as shown on Activity histogram of the hexagonal SOM in FIGURE 
-we managed to merge the a group of similar weight vectors colored with blue in one area 
-instead of being separated as by green weight vectors as shown in FIGURE of the rectangular SOM.
-The hexagonal SOM was trained with the default initial parameters as shown in TABLE. Further
-to our analysis, we trained two additional SOM with identical initial parameters but with 
-different random initializations by specific different seed values. As noted before, we discovered
-two main clusters and by observing the Activity Histogram we can notice the movement of the clusters.
-For Seed=1 the right cluster is weak but as we change increase the seed values to Seed =7 we notice
-clearer definition of the blue area and then for seed=55 we observe complete cluster shift.
-The U-Matrix shows that for Seed=1 the cluster boundaries are vertical but not clearly defined,
-for Seed=7 they are adjusted and clear whereas for Seed=55 we observe a complete cluster boundaries
-shift into a horizontal position. New discoveries of the clusters shift are revealed by the
-Radius based Neighbourhood graphs by observing graphs with different radiuses r=0,5;0,8 and 1. 
-For Seed 55 the rotation of the cluster boundaries is confirmed. For values we notice 
-one more smaller inner cluster shift for r=0,8 on FIGURE and FIGURE. The dense area of the Right 
-cluster is moved to the lower right area of the SOM. Additional finding is that for Seed=1 and
-r=0.5 as shown in FIGURE we observe parable lines which are indicators of Topology Violations.
+As discovered in the previous analysis, the square SOM shown in Figure~\ref{fig:wine-mid-activity-histogram} contains critical Topology violations in the right area of the map. We tried to improve the mapping quality by training a middle sized SOM with rectangular structure and as shown on the Activity histograms in Figure~\ref{fig:wine-newmid-activity-histogram-seed} we managed to merge a group of similar weight vectors colored with blue in one area instead of being separated by green weight vectors as seen in the square SOM.
+
+The rectangular SOM was trained with the default initial parameters as shown in Table Table~\ref{tab:settings}. Further to our analysis, we trained two additional SOMs with identical initial parameters but with different random initializations. The distinction in the initialization was done by specifying different seed values. As noted before, we discovered two main clusters and by observing the Activity Histogram in Figure~\ref{fig:wine-newmid-activity-histogram-seed} we notice the movement of these clusters. For $s = 1$ the right cluster is weak but as we increase the seed values to $s = 7$ we notice clearer definition of the blue area. Further more for $s = 55$ we observe a complete cluster shift.
+
+The U-Matrices shown on Figure~\ref{fig:wine-newmid-u-matrix-seed} show that for $s = 1$ the cluster boundaries are vertical but not clearly defined. For $s = 7$ they are adjusted and clear whereas for $Seed = 55$ we observe a complete cluster boundaries shift into a horizontal position. 
+
+New discoveries of the clusters shift are revealed by the Radius based Neighbourhood graphs by observing graphs with different radius values $r = 0.5$ shown in Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-05-seed}; $r= 0.8$ shown in Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-08-seed} and $r = 1$ shown in Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-10-seed}. 
+For $s = 55$ the rotation of the cluster boundaries is confirmed. We notice one more smaller inner cluster shift for $s = 7$ and radius value of $r = 0.8$ shown on Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-08-seed} (b) and $r = 1$ shown on Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-10-seed} (b). The dense area of the Right cluster is moved to the lower right area of the SOM. Additional finding is that for $s = 1$ and $r = 0.5$ as shown in Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-05-seed}(a) we observe parallel lines which are indicators of Topology Violations.
 
 \begin{figure}
 \centering
@@ -784,8 +770,7 @@ For the SDH we used a smoothing factor of 100 instead of the default one.
 
 \section{SOM varying iterations}
 
-In this section we will vary the amount of iterations for the default learing rate.
-We tried to train below 5 iterations but the tool was not able to output the trained SOM.
+In this section we will vary the amount of iterations. We tried to train below 5 iterations but the tool was not able to output the trained SOM.
 Our different settings are displayed in the Table~\ref{tab:settings}.
 
 By looking at the quantisation error in Figure~\ref{fig:wine-newmid-quantization-error-i-10}, 
@@ -799,7 +784,7 @@ is caused by the fine tuning of the map.
 
 The U-Matrices reveal more information about the cluster boundaries the more iterations it runs.
 In Figure~\ref{fig:wine-newmid-u-matrix-i-10} and 
-Figure~\ref{fig:wine-newmid-u-matrix-i-50} the cluster boundaries either not formed or started to formed. The
+Figure~\ref{fig:wine-newmid-u-matrix-i-50} the cluster boundaries either not formed or started to form. The
 former has a huge valley in the top right. This might trick the viewer and let him assume that this is a cluster.
 In Figure~\ref{fig:wine-newmid-u-matrix-i-500} the cluster boundaries are formed but not yet complete.
 
