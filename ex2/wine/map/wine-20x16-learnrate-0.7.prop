@@ -1,0 +1,18 @@
+#wine-small prop file
+# somtoolbox [GrowingSOM, --numberWinners, 300, --cpus, 4, 
+#   /home/rich/proj/sos/ex2/wine/map/wine-small.prop]
+#
+#Tue Dec 16 13:45:00 CET 274
+namePrefix=wine-20x16-learnRate-0.7
+vectorFileName=/home/rich/proj/sos/ex2/wine/wq-n.vec
+learnRate=0.7
+outputDirectory=/home/rich/proj/sos/ex2/wine/map/wine-20x16-learnRate-0.7/
+tau=1.0
+sparseData=no
+workingDirectory=/home/rich/proj/sos/ex2/wine/map/
+isNormalized=yes
+numIterations=1500
+randomSeed=7
+templateFileName=/home/rich/proj/sos/ex2/wine/wq-n.vt
+xSize=20
+ySize=16

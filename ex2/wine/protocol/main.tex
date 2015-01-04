@@ -225,6 +225,14 @@ already done it previously.
     \hline
     Iterations 10.000 & $\alpha = 0.75$ & $\sigma = 10$ & $s_x=20$ & $s_y=16$ & $i=10.000$ \\
     \hline
+    Alpha 0.01 & $\alpha = 0.01$ & $\sigma = 10$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
+    \hline
+    Alpha 0.45 & $\alpha = 0.45$ & $\sigma = 10$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
+    \hline
+    Alpha 0.7 & $\alpha = 0.7$ & $\sigma = 10$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
+    \hline
+    Alpha 0.99 & $\alpha = 0.99$ & $\sigma = 10$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
+    \hline
 \end{tabular}
 \caption{Settings for all of our experiments}
 \label{tab:settings}
@@ -782,6 +790,201 @@ For the SDH we used a smoothing factor of 100 instead of the default one.
     \end{subfigure}
     \caption{SOM ($20\times16$) Topographic error with different neighbour hood radius$f$}
     \label{fig:wine-newmid-activity-histogram-sigma}
+\end{figure}
+
+\section{SOM varying $\alpha$}
+
+In this section we will vary $\alpha$.  Our different settings are displayed in the Table~\ref{tab:settings} (Alpha 0.01, ...).
+
+TODO -> describe
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-activity-histogram-alpha-0.01}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-activity-histogram-alpha-0.01}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-activity-histogram-alpha-0.45}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-activity-histogram-alpha-0.45}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-activity-histogram-alpha-0.7}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-activity-histogram-alpha-0.7}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-activity-histogram-alpha-0.99}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-activity-histogram-alpha-0.99}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) Activity histogram (varied $\alpha$)}
+    \label{fig:wine-20x16-activity-histogram-alpha}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0.01}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-u-matrix-alpha-0.01}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0.45}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-u-matrix-alpha-0.45}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0.7}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-u-matrix-alpha-0.7}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0.99}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-u-matrix-alpha-0.99}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) U Matrix (varied $\alpha$)}
+    \label{fig:wine-20x16-u-matrix-alpha}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.01-f-50}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.01-f-50}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.45-f-50}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.45-f-50}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.7-f-50}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.7-f-50}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.99-f-50}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.99-f-50}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) U-Matrix (varied $\alpha$), smooth factor 50}
+    \label{fig:wine-20x16-smoothed-data-histogram-alpha-f-50}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.01-f-100}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.01-f-100}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.45-f-100}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.45-f-100}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.7-f-100}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.7-f-100}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.99-f-100}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.99-f-100}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) U-Matrix (varied $\alpha$), smooth factor 100}
+    \label{fig:wine-20x16-smoothed-data-histogram-alpha-f-100}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.01-f-149}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.01-f-149}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.45-f-149}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.45-f-149}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.7-f-149}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.7-f-149}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0.99-f-149}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-smoothed-data-histogram-alpha-0.99-f-149}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) U-Matrix (varied $\alpha$), smooth factor 149}
+    \label{fig:wine-20x16-smoothed-data-histogram-alpha-f-149}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0.01}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0.01}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0.45}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0.45}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0.7}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0.7}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0.99}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0.99}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) Distortion $\sqrt{2}$ (varied $\alpha$)}
+    \label{fig:wine-20x16-distortion-sqrt-2-alpha}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0.01}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-topographic-error-alpha-0.01}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0.45}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-topographic-error-alpha-0.45}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0.7}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-topographic-error-alpha-0.7}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0.99}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-topographic-error-alpha-0.99}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) Topographic error 4 neighbours (varied $\alpha$)}
+    \label{fig:wine-20x16-topographic-error-alpha}
 \end{figure}
 
 \section{SOM varying iterations}
