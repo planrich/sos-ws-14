@@ -201,7 +201,7 @@ already done it previously.
     \hline
     Small Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=5$ & $s_y=5$ & $i=1.500$ \\
     \hline
-    Big Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=50$ & $s_y=50$ & $i=1.500$ \\
+    Big Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=50/30$ & $s_y=50/30$ & $i=1.500$ \\
     \hline
     Middle sized Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=18$ & $s_y=18$ & $i=1.500$ \\
     \hline
@@ -237,6 +237,11 @@ already done it previously.
 \caption{Settings for all of our experiments}
 \label{tab:settings}
 \end{table*}
+
+\subsection{Settings for Visualisation and Quality measures}
+
+If not noted otherwise the default parameter values are used for all quality measures and visualisations.
+As an example the referent unit of the activity histogram is the default unit (0,0).
 
 \subsection{Small SOM}
 
@@ -290,7 +295,7 @@ red and white wine are very distinct or two subranges of the quality are dominat
 \subsection{Quality measurements}
 
 In the following we take a look at some quality measures available in SOMToolbox.
-If not noted otherwise the default SOM parameter values are used for all quality measures.
+If not noted otherwise the default SOM parameter values are used for all quality measures and visualisations.
 First we compare the Quantization Error (QE) and the Mean Quantization Error (MQE) shown in
 Figure~\ref{fig:wine-small-quant-error} and~\ref{fig:wine-small-mean-quant-error} respectivley.
 We already noted that the lower right is a very dense area. In the MQE these units have a very low
@@ -714,8 +719,6 @@ and the structures on the map. We use the settings shown in Table~\ref{tab:setti
 For the SDH we used a smoothing factor of 100 instead of the default one.
 
 
-
-
 \begin{figure}
 \centering
     \centering
@@ -792,11 +795,33 @@ For the SDH we used a smoothing factor of 100 instead of the default one.
     \label{fig:wine-newmid-activity-histogram-sigma}
 \end{figure}
 
-\section{SOM varying $\alpha$}
+\section{SOM varying learning rate}
 
 In this section we will vary $\alpha$.  Our different settings are displayed in the Table~\ref{tab:settings} (Alpha 0.01, ...).
 
-TODO -> describe
+By looking at the equation
+\[
+    m_i(t+1) = m_i(t) + \alpha(t) * h_{ci}(t) * [x(t) - m_i(t)]
+\]
+our assumption is that for a small learning rate $\alpha$ the learning component has a very small influence on adjusting the code vector towards the input vector.
+The problem the might arise is that a small radius will leave the SOM unwrapped.
+
+A very big learning rate on the other hand will force the code vector to perform a big initial adjustments towards the chosen input vector.
+The initial learning step is very powerful, some of the units could be initially moved to
+a more distant location in the data space. At later point in time (with decreasing learning rate and neighbourhood radius) the algorithm
+will not be powerful enough to pull them to the ``optimal'' location. We think that a big radius should in some cases contain slightly more topology violations.
+
+The Activity histogram in Figure~\ref{fig:wine-20x16-activity-histogram-alpha} shows that a small $\alpha$ radius did not unwrap the map and contains
+a lot of topology violations. Figure~\ref{neighobourhood radius} and Figure~\ref{quant-error} also confirm that the map is not unfolded.
+A small learning rate was unable to separate clusters. This can be seen in Figure~\ref{umatrix} and~\ref{sdh} where the cluster boundaries are not visible.
+
+Be increasing the learning rate (0.45, 0.7, 0.99) the difference in almost all of the visualisations in so not so evident.
+As an example in Figure~\ref{fig:wine-20x16-activity-histogram-alpha} the revealed clusters differ not so much. For all of 
+them in Figure~\ref{sdh-1-3} the cluster boundaries are very similar. By looking at the U-Matrix the cluster boundaries are
+defined. Using a big learning rate (0.99) the visualisations shows more coherent regions.
+
+We mentioned earlier that a big learning rate might increase topology violations. By looking at Figure ... the Neighbourhood graph radius ($r=0.6$) confirms that
+the structure is very similar but a little bit more distant compared to neighbourhood graph with radius of 0.99.
 
 \begin{figure}
 \centering
@@ -937,27 +962,27 @@ TODO -> describe
 \centering
     \centering
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0,01}
+        \includegraphics[width=\linewidth]{img/wine-20x16-neighbourhood-graph-r-06-alpha-0,01}
         \caption{$\alpha=0.01$}
-        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0,01}
+        \label{fig:wine-20x16-neighbourhood-graph-r-06-alpha-0,01}
     \end{subfigure}
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0,45}
+        \includegraphics[width=\linewidth]{img/wine-20x16-neighbourhood-graph-r-06-alpha-0,45}
         \caption{$\alpha=0.45$}
-        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0,45}
+        \label{fig:wine-20x16-neighbourhood-graph-r-06-alpha-0,45}
     \end{subfigure}
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0,7}
+        \includegraphics[width=\linewidth]{img/wine-20x16-neighbourhood-graph-r-06-alpha-0,7}
         \caption{$\alpha=0.7$}
-        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0,7}
+        \label{fig:wine-20x16-neighbourhood-graph-r-06-alpha-0,7}
     \end{subfigure}
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-distortion-sqrt-2-alpha-0,99}
+        \includegraphics[width=\linewidth]{img/wine-20x16-neighbourhood-graph-r-06-alpha-0,99}
         \caption{$\alpha=0.99$}
-        \label{fig:wine-20x16-distortion-sqrt-2-alpha-0,99}
+        \label{fig:wine-20x16-neighbourhood-graph-r-06-alpha-0,99}
     \end{subfigure}
-    \caption{SOM ($20\times16$) Distortion $\sqrt{2}$ (varied $\alpha$)}
-    \label{fig:wine-20x16-distortion-sqrt-2-alpha}
+    \caption{SOM ($20\times16$) Neighbourhood radius $r=0.6$ (varied $\alpha$)}
+    \label{fig:wine-20x16-neighbourhood-graph-r-06-alpha}
 \end{figure}
 
 \begin{figure}
