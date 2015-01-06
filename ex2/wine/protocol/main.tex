@@ -681,7 +681,7 @@ nearly every unit is connected to every other unit.
     \end{subfigure}
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-nearest-neighbour-radius}
-        \caption{Nearest neighbour (radius 0.1)}
+        \caption{Neighbour graph ($r=0.1$)}
         \label{fig:wine-weird-nearest-neighbour-radius}
     \end{subfigure}
     \caption{SOM ($14\times20$) visualisations of errornous normalized data}
@@ -803,7 +803,8 @@ By looking at the equation
 \[
     m_i(t+1) = m_i(t) + \alpha(t) * h_{ci}(t) * [x(t) - m_i(t)]
 \]
-our assumption is that for a small learning rate $\alpha$ the learning component has a very small influence on adjusting the code vector towards the input vector.
+our assumption is that for a small learning rate $\alpha$ the learning component has a very small
+influence on adjusting the code vector towards the input vector.
 The problem the might arise is that a small radius will leave the SOM unwrapped.
 
 A very big learning rate on the other hand will force the code vector to perform a big initial adjustments towards the chosen input vector.
@@ -812,16 +813,27 @@ a more distant location in the data space. At later point in time (with decreasi
 will not be powerful enough to pull them to the ``optimal'' location. We think that a big radius should in some cases contain slightly more topology violations.
 
 The Activity histogram in Figure~\ref{fig:wine-20x16-activity-histogram-alpha} shows that a small $\alpha$ radius did not unwrap the map and contains
-a lot of topology violations. Figure~\ref{neighobourhood radius} and Figure~\ref{quant-error} also confirm that the map is not unfolded.
-A small learning rate was unable to separate clusters. This can be seen in Figure~\ref{umatrix} and~\ref{sdh} where the cluster boundaries are not visible.
+a lot of topology violations. Figure~\ref{fig:wine-20x16-neighbourhood-graph-r-06-alpha} and Figure~\ref{fig:wine-20x16-quantization-error-alpha} also confirm that the map is not unfolded.
+A small learning rate was unable to separate clusters. This can be seen in Figure~\ref{fig:wine-20x16-u-matrix-alpha}
+and
+\ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-50}
+\ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-100}
+\ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-149}
+where the cluster boundaries are not visible.
 
-Be increasing the learning rate (0.45, 0.7, 0.99) the difference in almost all of the visualisations in so not so evident.
+Be increasing the learning rate (greater than 0.45) the difference in almost all of the visualisations in so not so evident.
 As an example in Figure~\ref{fig:wine-20x16-activity-histogram-alpha} the revealed clusters differ not so much. For all of 
-them in Figure~\ref{sdh-1-3} the cluster boundaries are very similar. By looking at the U-Matrix the cluster boundaries are
-defined. Using a big learning rate (0.99) the visualisations shows more coherent regions.
+them in the Figures
+\ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-50}
+\ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-100}
+the cluster boundaries can be determined. By looking at the U-Matrix the cluster boundaries in Figure~\ref{fig:wine-20x16-u-matrix-alpha}
+using a big learning rate (0.99) the visualisations shows more coherent regions.
 
-We mentioned earlier that a big learning rate might increase topology violations. By looking at Figure ... the Neighbourhood graph radius ($r=0.6$) confirms that
-the structure is very similar but a little bit more distant compared to neighbourhood graph with radius of 0.99.
+We mentioned earlier that a big learning rate might increase topology violations.
+By looking at Figure~\ref{fig:wine-20x16-neighbourhood-graph-r-06-alpha} we believe that our assumption for
+a very big learning rate is visible. Compared to Figure~\ref{fig:wine-20x16-neighbourhood-graph-r-06-alpha-0,7},
+\ref{fig:wine-20x16-neighbourhood-graph-r-06-alpha-0,99} displays some long red lines that are not contained in the former.
+Still the effect of a high learning rate seems not to hinder the map to unwrap correctly, but a small rate obviously does.
 
 \begin{figure}
 \centering
@@ -854,33 +866,6 @@ the structure is very similar but a little bit more distant compared to neighbou
 \centering
     \centering
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,01}
-        \caption{$\alpha=0.01$}
-        \label{fig:wine-20x16-u-matrix-alpha-0,01}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,45}
-        \caption{$\alpha=0.45$}
-        \label{fig:wine-20x16-u-matrix-alpha-0,45}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,7}
-        \caption{$\alpha=0.7$}
-        \label{fig:wine-20x16-u-matrix-alpha-0,7}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,99}
-        \caption{$\alpha=0.99$}
-        \label{fig:wine-20x16-u-matrix-alpha-0,99}
-    \end{subfigure}
-    \caption{SOM ($20\times16$) U Matrix (varied $\alpha$)}
-    \label{fig:wine-20x16-u-matrix-alpha}
-\end{figure}
-
-\begin{figure}
-\centering
-    \centering
-    \begin{subfigure}[b]{0.24\linewidth}
         \includegraphics[width=\linewidth]{img/wine-20x16-smoothed-data-histogram-alpha-0,01-f-50}
         \caption{$\alpha=0.01$}
         \label{fig:wine-20x16-smoothed-data-histogram-alpha-0,01-f-50}
@@ -900,7 +885,7 @@ the structure is very similar but a little bit more distant compared to neighbou
         \caption{$\alpha=0.99$}
         \label{fig:wine-20x16-smoothed-data-histogram-alpha-0,99-f-50}
     \end{subfigure}
-    \caption{SOM ($20\times16$) U-Matrix (varied $\alpha$), smooth factor 50}
+    \caption{SOM ($20\times16$) SDH (varied $\alpha$), smooth factor 50}
     \label{fig:wine-20x16-smoothed-data-histogram-alpha-f-50}
 \end{figure}
 
@@ -927,7 +912,7 @@ the structure is very similar but a little bit more distant compared to neighbou
         \caption{$\alpha=0.99$}
         \label{fig:wine-20x16-smoothed-data-histogram-alpha-0,99-f-100}
     \end{subfigure}
-    \caption{SOM ($20\times16$) U-Matrix (varied $\alpha$), smooth factor 100}
+    \caption{SOM ($20\times16$) SDH (varied $\alpha$), smooth factor 100}
     \label{fig:wine-20x16-smoothed-data-histogram-alpha-f-100}
 \end{figure}
 
@@ -954,7 +939,7 @@ the structure is very similar but a little bit more distant compared to neighbou
         \caption{$\alpha=0.99$}
         \label{fig:wine-20x16-smoothed-data-histogram-alpha-0,99-f-149}
     \end{subfigure}
-    \caption{SOM ($20\times16$) U-Matrix (varied $\alpha$), smooth factor 149}
+    \caption{SOM ($20\times16$) SDH (varied $\alpha$), smooth factor 149}
     \label{fig:wine-20x16-smoothed-data-histogram-alpha-f-149}
 \end{figure}
 
@@ -989,27 +974,54 @@ the structure is very similar but a little bit more distant compared to neighbou
 \centering
     \centering
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0,01}
+        \includegraphics[width=\linewidth]{img/wine-20x16-quantization-error-alpha-0,01}
         \caption{$\alpha=0.01$}
-        \label{fig:wine-20x16-topographic-error-alpha-0,01}
+        \label{fig:wine-20x16-quantization-error-alpha-0,01}
     \end{subfigure}
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0,45}
+        \includegraphics[width=\linewidth]{img/wine-20x16-quantization-error-alpha-0,45}
         \caption{$\alpha=0.45$}
-        \label{fig:wine-20x16-topographic-error-alpha-0,45}
+        \label{fig:wine-20x16-quantization-error-alpha-0,45}
     \end{subfigure}
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0,7}
+        \includegraphics[width=\linewidth]{img/wine-20x16-quantization-error-alpha-0,7}
         \caption{$\alpha=0.7$}
-        \label{fig:wine-20x16-topographic-error-alpha-0,7}
+        \label{fig:wine-20x16-quantization-error-alpha-0,7}
     \end{subfigure}
     \begin{subfigure}[b]{0.24\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-20x16-topographic-error-alpha-0,99}
+        \includegraphics[width=\linewidth]{img/wine-20x16-quantization-error-alpha-0,99}
         \caption{$\alpha=0.99$}
-        \label{fig:wine-20x16-topographic-error-alpha-0,99}
+        \label{fig:wine-20x16-quantization-error-alpha-0,99}
     \end{subfigure}
-    \caption{SOM ($20\times16$) Topographic error 4 neighbours (varied $\alpha$)}
-    \label{fig:wine-20x16-topographic-error-alpha}
+    \caption{SOM ($20\times16$) Quantization error (varied $\alpha$)}
+    \label{fig:wine-20x16-quantization-error-alpha}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,01}
+        \caption{$\alpha=0.01$}
+        \label{fig:wine-20x16-u-matrix-alpha-0,01}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,45}
+        \caption{$\alpha=0.45$}
+        \label{fig:wine-20x16-u-matrix-alpha-0,45}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,7}
+        \caption{$\alpha=0.7$}
+        \label{fig:wine-20x16-u-matrix-alpha-0,7}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.24\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-20x16-u-matrix-alpha-0,99}
+        \caption{$\alpha=0.99$}
+        \label{fig:wine-20x16-u-matrix-alpha-0,99}
+    \end{subfigure}
+    \caption{SOM ($20\times16$) U Matrix (varied $\alpha$)}
+    \label{fig:wine-20x16-u-matrix-alpha}
 \end{figure}
 
 \section{SOM varying iterations}
