@@ -13,7 +13,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 
-%\usepackage{listings}
+\usepackage{listings}
 %\usepackage{footnote}
 %\makesavenoteenv{table}
 %\makesavenoteenv{table*}
@@ -87,7 +87,7 @@ WEKA to plot each attribute along its value range to visualise
 density and the distribution.
 Figure~\ref{fig:dist-alcohol} shows the distribution of the alcohol attribute. pH has
 also a very similar distribution and both do not seem to have outliers.
-For these two attributes we apply min max scaling.
+For these two attributes we apply min/max scaling.
 
 \begin{figure}
 \centering
@@ -149,7 +149,8 @@ in ``wq-n-o.csv'' and the normalized data in ``wq-n.csv''.
 In our automated script we used Python 2.7. To repeat the experiment we set the random seed to 0.
 It cannot occur that one data sample of the original samples is included twice in the subsampled dataset.
 \end{comment}
-We also include the Python script called ``wine.py'' that can be invoked\footnote{Example: python wine.py < wq.csv} on the original dataset ``wq.csv'' to generate all files needed by the SOMToolbox.
+We also include the Python script called ``wine.py'' that can be invoked\footnote{Example: \$ python wine.py < wq.csv or 
+\$ python wine.py 1500 < wq.csv} on the original dataset ``wq.csv'' to generate all files needed by the SOMToolbox.
 
 \subsection{Classification}
 
@@ -177,11 +178,15 @@ all bins should have an equal amount of samples accociated to them.
 \label{tab:quality-binning}
 \end{table}
 
+\subsection{Default settings}
+
+If not noted otherwise the default parameter values are used for all quality measures and visualisations.
+As an example the referent unit of the activity histogram is the default unit (0,0).
+
 \section{Training the first SOM}
 
 After we familiarized ourselfs with the SOMToolbox we started by training a small
-map. The initial settings for the ``Small Map'' are shown in Table~\ref{tab:settings}. Further in this paper, if the settings of a SOM are not noted in the description, it is implied that we use the standard settings. 
-
+map. The initial settings for the ``Small Map'' are shown in Table~\ref{tab:settings}. 
 The following list explains the settings shown in Table~\ref{tab:settings} in more detail.
 
 \begin{itemize}
@@ -237,11 +242,6 @@ already done it previously.
 \caption{Settings for all of our experiments}
 \label{tab:settings}
 \end{table*}
-
-\subsection{Settings for Visualisation and Quality measures}
-
-If not noted otherwise the default parameter values are used for all quality measures and visualisations.
-As an example the referent unit of the activity histogram is the default unit (0,0).
 
 \subsection{Small SOM}
 
@@ -303,7 +303,7 @@ MQE rate thus they are colored blue. In the QE Figure the values are much more s
 the top left it has a very high value thus it seems that there is an area that is not that dense
 and has many items with a long distance. This we also can confirm using the MQE, because the division
 by the nodes does not set a low value the value in MQE. It also reveals that there is potentially even a more sparse
-region as the node at position $1\times1$ in MQE shows.
+region as the node at position (1,1) in MQE shows.
 
 \begin{figure}
 \centering
@@ -324,7 +324,7 @@ region as the node at position $1\times1$ in MQE shows.
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
 \includegraphics[width=\linewidth]{img/wine-small-pie-cls}
-\caption{Classes as piechart}
+\caption{Classes}
 \label{fig:wine-small-pie-cls}
 \end{subfigure}
 \caption{SOM $5\times5$}
@@ -384,7 +384,7 @@ many interpolating units. The picture of the QE and MQE are quite the same but o
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-big-p-matrix}
-    \caption{P matrix visualization}
+    \caption{P-Matrix visualization}
     \label{fig:wine-big-p-matrix}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
@@ -394,7 +394,7 @@ many interpolating units. The picture of the QE and MQE are quite the same but o
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-big-u-matrix}
-    \caption{U Matrix}
+    \caption{U-Matrix}
     \label{fig:wine-big-u-matrix}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
@@ -433,7 +433,8 @@ or high values in the center which depict the possible cluster boundaries.
 The potential cluster boundaries are displayed in the SDH\footnote{Smoothed data histogram} visualization in Figure~\ref{fig:wine-big-smoothed-data-histogram}.
 
 In addition, the Activity Histogram in Figure~\ref{fig:wine-big-activity-histogram} shows possible
-topology violations especially in the upper cluster where the blue area is separated by green. Thus we observe that a gradient of the weight vectors measured in distance is not present. 
+topology violations especially in the upper cluster where the blue area is separated by green.
+Thus we observe that a gradient of the weight vectors measured in distance is not present. 
 
 The analysed visualizations/quality measures depict that we SOM is oversized.
 In the following we will try to approximate a better size.
@@ -441,7 +442,7 @@ In the following we will try to approximate a better size.
 \section{Normal SOM}
 
 In the following we show a middle sized map. Parameters are included in the Table~\ref{tab:settings}.
-On the first view of QE in Figure~\ref{fig:wine-mid-quant-error} and MQE~\ref{fig:wine-mid-quant-error} we see
+On the first view of QE in Figure~\ref{fig:wine-mid-quant-error} and MQE~\ref{fig:wine-mid-mean-quant-error} we see
 that there are three interpolating units. Comparing the two we notice that the distant data samples are
 mapped to the units located along the a horizontal line in the center or the potential cluster boundaries.
 The U-Matrix in Figure~\ref{fig:wine-mid-u-matrix} reveals the cluster boundaries shown with high mountain values
@@ -451,45 +452,45 @@ Again we used the SDH visualization. In the earlier settings we used a smoothing
 115 and managed to separate the two main clusters shown in Figure~\ref{fig:wine-mid-smoothed-data-histogram}.
 
 There are potential topology violations located in the upper cluster. We see this in Figure~\ref{fig:wine-mid-activity-histogram}.
-Similar to the the big SOM there are three blue areas separated by green an yellow. By observing the neighbourhood graph
-shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-graph}. For the radius was set to 0.4. We notice three red lines connecting the blue areas.
+Similar to the the big SOM there are three blue areas separated by green an yellow.
+By observing the neighbourhood graph shown in Figure~\ref{fig:wine-mid-radius-neighbourhood-graph} with a radius of 0.4, we notice three red lines connecting the blue areas.
 
 
 \begin{figure}
 \centering
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-mid-quant-error}
-    \caption{Quantisation error of a $18\times18$ SOM Map}
+    \caption{Quantisation error}
     \label{fig:wine-mid-quant-error}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-mid-mean-quant-error}
-    \caption{Quantisation error of a $18\times18$ SOM Map}
+    \caption{Mean quantisation error}
     \label{fig:wine-mid-mean-quant-error}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-mid-p-matrix}
-    \caption{P matrix visualization of a $18\times18$ SOM Map}
+    \caption{P-Matrix visualization}
     \label{fig:wine-mid-p-matrix}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-mid-radius-neighbourhood-graph}
-    \caption{Topographic product of the $18\times18$ SOM Map}
+    \caption{Neighbourhood graph}
     \label{fig:wine-mid-radius-neighbourhood-graph}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-mid-u-matrix}
-    \caption{U Matrix of the $18\times18$ SOM Map}
+    \caption{U-Matrix}
     \label{fig:wine-mid-u-matrix}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-mid-smoothed-data-histogram}
-    \caption{SDH of the $18\times18$ SOM Map}
+    \caption{SDH}
     \label{fig:wine-mid-smoothed-data-histogram}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\linewidth}
     \includegraphics[width=\linewidth]{img/wine-mid-activity-histogram}
-    \caption{Activity histogram of the $18\times18$ SOM Map}
+    \caption{Activity histogram}
     \label{fig:wine-mid-activity-histogram}
 \end{subfigure}
 \caption{SOM $18\times18$}
@@ -533,17 +534,17 @@ For $s = 55$ the rotation of the cluster boundaries is confirmed. We notice one 
     \centering
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-05-seed-1}
-        \caption{$s=1$,$r=5$}
+        \caption{$s=1$,$r=0.5$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-05-seed-1}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-05-seed-7}
-        \caption{$s=7$,$r=5$}
+        \caption{$s=7$,$r=0.5$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-05-seed-7}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-05-seed-55}
-        \caption{$s=55$,$r=5$}
+        \caption{$s=55$,$r=0.5$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-05-seed-55}
     \end{subfigure}
     \caption{SOM ($20\times16$) Neighbourhood radius with different seed values $s$ and radius $r$}
@@ -555,17 +556,17 @@ For $s = 55$ the rotation of the cluster boundaries is confirmed. We notice one 
     \centering
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-08-seed-1}
-        \caption{$s=1$,$r=8$}
+        \caption{$s=1$,$r=0.8$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-08-seed-1}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-08-seed-7}
-        \caption{$s=7$,$r=8$}
+        \caption{$s=7$,$r=0.8$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-08-seed-7}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-08-seed-55}
-        \caption{$s=55$,$r=8$}
+        \caption{$s=55$,$r=0.8$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-08-seed-55}
     \end{subfigure}
     \caption{SOM ($20\times16$) Neighbourhood radius with different seed values $s$ and radius $r$}
@@ -577,17 +578,17 @@ For $s = 55$ the rotation of the cluster boundaries is confirmed. We notice one 
     \centering
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-10-seed-1}
-        \caption{$s=1$,$r=10$}
+        \caption{$s=1$,$r=1.0$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-10-seed-1}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-10-seed-7}
-        \caption{$s=7$,$r=10$}
+        \caption{$s=7$,$r=1.0$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-10-seed-7}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-radius-neighbourhood-graph--r-10-seed-55}
-        \caption{$s=55$,$r=10$}
+        \caption{$s=55$,$r=1.0$}
         \label{fig:wine-newmid-radius-neighbourhood-graph--r-10-seed-55}
     \end{subfigure}
     \caption{SOM ($20\times16$) Neighbourhood radius with different seed values $s$ and radius $r$}
@@ -632,7 +633,7 @@ size that defines the type of content. This is not the case for measurements.
 
 In the following we present the Activity Histogram in Figure~\ref{fig:wine-weird-activity-histogram},
 the Smoothed Data Histogram in Figure~\ref{fig:wine-weird-smoothed-data-histogram},
-the U Matrix in Figure~\ref{fig:wine-weird-u-matrix} and
+the U-Matrix in Figure~\ref{fig:wine-weird-u-matrix} and
 the Nearest Neighbourhood visualization using a radius of 0.1 in Figure~\ref{fig:wine-weird-nearest-neighbour-radius}.
 
 \begin{figure}
@@ -640,7 +641,7 @@ the Nearest Neighbourhood visualization using a radius of 0.1 in Figure~\ref{fig
     \centering
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-u-matrix}
-        \caption{U Matrix}
+        \caption{U-Matrix}
         \label{fig:wine-weird-u-matrix}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\linewidth}
@@ -651,7 +652,7 @@ the Nearest Neighbourhood visualization using a radius of 0.1 in Figure~\ref{fig
     \caption{SOM Visualisations of errornous normalized data}
 \end{figure}
 
-Comparing the U Matrix to the previous U Matrices this one has many more mountain
+Comparing the U-Matrix to the previous U Matrices this one has many more mountain
 areas. The distinction between clusters and cluster boundaries are not visible.
 In the top left there is one coherent valley that is mostly colored blue.
 The rest of the map seems not to display any clusters. This is very different, because
@@ -662,7 +663,7 @@ The Activity Histogram now displays one gradient from the bottom left to the top
 In the correctly normalized data we do not have such a gradient, and one part of our map
 also contained topology violations.
 
-The SDH shows very one big area located above in the center. Use a smoothing factor of 149.
+The SDH shows one big area located above in the center. Use a smoothing factor of 149.
 When decreasing the smoothing factor the big bulb above the center is still dominant,
 but moves into the top left of the map (shown in Figure~\ref{fig:wine-weird-smoothed-data-histogram-series}).
 This matches very well the flat vally found in
@@ -676,12 +677,12 @@ nearly every unit is connected to every other unit.
     \centering
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-activity-histogram}
-        \caption{Activity histogram}
+        \caption{Activity histogram\\}
         \label{fig:wine-weird-activity-histogram}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\linewidth}
         \includegraphics[width=\linewidth]{img/wine-weird-nearest-neighbour-radius}
-        \caption{Neighbour graph ($r=0.1$)}
+        \caption{Neighbourhood graph ($r=0.1$)}
         \label{fig:wine-weird-nearest-neighbour-radius}
     \end{subfigure}
     \caption{SOM ($14\times20$) visualisations of errornous normalized data}
@@ -1020,7 +1021,7 @@ Still the effect of a high learning rate seems not to hinder the map to unwrap c
         \caption{$\alpha=0.99$}
         \label{fig:wine-20x16-u-matrix-alpha-0,99}
     \end{subfigure}
-    \caption{SOM ($20\times16$) U Matrix (varied $\alpha$)}
+    \caption{SOM ($20\times16$) U-Matrix (varied $\alpha$)}
     \label{fig:wine-20x16-u-matrix-alpha}
 \end{figure}
 
@@ -1176,7 +1177,7 @@ we see that there is only one big difference in the top left area.
         \caption{$i=10000$}
         \label{fig:wine-newmid-topographic-error-i-10000}
     \end{subfigure}
-    \caption{SOM ($20\times16$) SDH (varying iterations $i$)}
+    \caption{SOM ($20\times16$) Topographic error 8 (varying iterations $i$)}
     \label{fig:wine-newmid-topographic-error-i}
 \end{figure}
 
@@ -1203,7 +1204,7 @@ we see that there is only one big difference in the top left area.
         \caption{$i=10000$}
         \label{fig:wine-newmid-activity-histogram-i-10000}
     \end{subfigure}
-    \caption{SOM ($20\times16$) SDH (varying iterations $i$)}
+    \caption{SOM ($20\times16$) Activity histogram (varying iterations $i$)}
     \label{fig:wine-newmid-activity-histogram-i}
 \end{figure}
 
@@ -1249,6 +1250,7 @@ The following list shows false parameter settings which we confirmed in our expe
     \item SOM Size. A small map cannot unfold and cover the dataspace properly. Whereas very
         big number of units will produce a lot of interpolating units. In the worst case each
         SOM unit contains maximum of one data sample.
+    \item Learning rate. A small value is unable to unwrap the map leaving behind many topology violations.
 \end{itemize}
 
 \begin{figure}
