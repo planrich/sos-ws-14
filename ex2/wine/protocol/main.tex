@@ -48,8 +48,8 @@ Richard Plangger\\
 \section{Wine dataset}
 
 For our dataset we chose the ``wine-quality'' dataset from the UCI Machine Learning Repository~\cite{ucirepo}. 
-Herefater the dataset is called WQ.
-It is data from wine variants of a Portoguese wine called ``Vino Verde''.
+Hereafter the dataset is called WQ.
+It is data from wine variants of a Portuguese wine called ``Vino Verde''.
 The data points the quality measure are physicochemical values measured
 by sensors or tests. There is no information about the grape types,
 wine brand, selling prices of the wine.
@@ -71,7 +71,7 @@ WQ has 12 different attributes and more than 6500 instances of red and white win
     \item Wine type (Red or white wine)
 \end{itemize}
 
-The data set contains two seperate data files. One for white wine,
+The data set contains two separate data files. One for white wine,
 another for red wine. We merged the two together into a monolitic file,
 and appending the wine type as a new attribute. $0$ denotes red wine, $1$ white wine.
 
@@ -159,7 +159,7 @@ we additionally binned the quality into 3 bins: Poor-, Average- and High- qualit
 amount of classes (6 instead of approx. 14).
 The data samples included in WQ covered a range from 3 to 9. Table~\ref{tab:quality-binning} shows the binning settings.
 The bins are not equally distributed along the range, but we selected them by seeing the distribution in WEKA. Nearly
-all bins should have an equal amount of samples accociated to them.
+all bins should have an equal amount of samples associated to them.
 
 \begin{table}
 \centering
@@ -185,7 +185,7 @@ As an example the referent unit of the activity histogram is the default unit (0
 
 \section{Training the first SOM}
 
-After we familiarized ourselfs with the SOMToolbox we started by training a small
+After we familiarized ourselves with the SOMToolbox we started by training a small
 map. The initial settings for the ``Small Map'' are shown in Table~\ref{tab:settings}. 
 The following list explains the settings shown in Table~\ref{tab:settings} in more detail.
 
@@ -210,7 +210,7 @@ already done it previously.
     \hline
     Middle sized Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=18$ & $s_y=18$ & $i=1.500$ \\
     \hline
-    Rectangular middle sized Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
+    Rectangular mid sized Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=20$ & $s_y=16$ & $i=1.500$ \\
     \hline
     Erroneous normalized Map & $\alpha = 0.75$ & $\sigma = 7$ & $s_x=14$ & $s_y=20$ & $i=1.500$ \\
     \hline
@@ -441,7 +441,7 @@ In the following we will try to approximate a better size.
 
 \section{Normal SOM}
 
-In the following we show a middle sized map. Parameters are included in the Table~\ref{tab:settings}.
+In the following we show a mid sized map. Parameters are included in the Table~\ref{tab:settings}.
 On the first view of QE in Figure~\ref{fig:wine-mid-quant-error} and MQE~\ref{fig:wine-mid-mean-quant-error} we see
 that there are three interpolating units. Comparing the two we notice that the distant data samples are
 mapped to the units located along the a horizontal line in the center or the potential cluster boundaries.
@@ -498,7 +498,7 @@ By observing the neighbourhood graph shown in Figure~\ref{fig:wine-mid-radius-ne
 
 \section{SOM random Initialization. Different Seed values}
 
-As discovered in the previous analysis, the square SOM shown in Figure~\ref{fig:wine-mid-activity-histogram} contains critical Topology violations in the right area of the map. We tried to improve the mapping quality by training a middle sized SOM with rectangular structure and as shown on the Activity histograms in Figure~\ref{fig:wine-newmid-activity-histogram-seed} we managed to merge a group of similar weight vectors colored with blue in one area instead of being separated by green weight vectors as seen in the square SOM.
+As discovered in the previous analysis, the square SOM shown in Figure~\ref{fig:wine-mid-activity-histogram} contains critical Topology violations in the right area of the map. We tried to improve the mapping quality by training a mid sized SOM with rectangular structure and as shown on the Activity histograms in Figure~\ref{fig:wine-newmid-activity-histogram-seed} we managed to merge a group of similar weight vectors colored with blue in one area instead of being separated by green weight vectors as seen in the square SOM.
 
 The rectangular SOM was trained with the default initial parameters as shown in Table Table~\ref{tab:settings}. Further to our analysis, we trained two additional SOMs with identical initial parameters but with different random initializations. The distinction in the initialization was done by specifying different seed values. As noted before, we discovered two main clusters and by observing the Activity Histogram in Figure~\ref{fig:wine-newmid-activity-histogram-seed} we notice the movement of these clusters. For $s = 1$ the right cluster is weak but as we increase the seed values to $s = 7$ we notice clearer definition of the blue area. Further more for $s = 55$ we observe a complete cluster shift.
 
@@ -712,12 +712,19 @@ in the produced SOM Visualisations.
     \label{fig:wine-weird-smoothed-data-histogram-series}
 \end{figure}
 
-\section{Adjusting the neighbourhood for training}
+\section{Adjusting the neighbourhood radius for training}
 
-In the following we show how the neighbourhood radius $\sigma$ affects the topology
+In the following section we show how the neighbourhood radius $\sigma$ affects the map topology
 and the structures on the map. We use the settings shown in Table~\ref{tab:settings}.
 (Neighbourhood Small to Big).
-For the SDH we used a smoothing factor of 100 instead of the default one.
+
+Our assumption is that for very small neighbourhood radius, only the Best Matching Units and their very close neighbouring units will be adjusted according to the input vectors. This behaviour will leave the map scrambled where very similar units that are not affected by the neighbourhood radius will remain far away causing many topology violations. The other extreme, a very big neighbourhood radius for every Best Matching Unit will cover all of the units of the SOM and thus producing a very powerful units on the diagonals which will lead to mapping many data-samples to them.
+
+For the SDH we used a smoothing factor of 100 instead of the default one. Figure~\ref{fig:wine-newmid-smoothed-data-histogram-sigma-1} shows the revealed clusters for very small $sigma$ which are not correctly formed and isolated. The cluster boundaries are not correctly formed and this is visible on the U-Matrix on Figure~\ref{fig:wine-newmid-u-matrix-sigma-1}. Our assumption for many topology violations is confirmed by observing the Activity Histogram on Figure~\ref{fig:wine-newmid-activity-histogram-sigma}(a) which show many mixed units and on the Topographic Error shown on Figure~\ref{fig:wine-newmid-topographic-error-sigma} showing big number of topology violations.
+
+The better adaptation of the SOM is visible for bigger neighbourhood values. For $sigma = 5$ Figure~\ref{fig:wine-newmid-smoothed-data-histogram-sigma-5} forms clusters and Figure~\ref{fig:wine-newmid-u-matrix-sigma-5} shows clearly defined cluster boundaries with coherent regions. A significant decrease of Topology Violations is noticeable on Figure~\ref{fig:wine-newmid-activity-histogram-sigma}(b) and Figure~\ref{fig:wine-newmid-topographic-error-sigma}(b).
+
+Our assumption for big neighbourhood radius values is confirmed by looking at the number of mapped units to the lower-left and upper-right diagonals. Figure~\ref{fig:wine-newmid-topographic-error-sigma} depicts that the diagonals contain 66/99 mapped units compared to the 44/17 with the diagonals from the SOM with $sigma=5$. Figure~\ref{fig:wine-newmid-smoothed-data-histogram-sigma-15} shows a definition of the main clusters and the cluster boundaries are identified by the U-Matrix. This visualization shows the right cluster boundaries but the regions are not very coherent which is consequence caused by the big neighbourhood radius.
 
 
 \begin{figure}
@@ -726,14 +733,17 @@ For the SDH we used a smoothing factor of 100 instead of the default one.
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-smoothed-data-histogram-sigma-1}
         \caption{$\sigma=1$}
+        \label{fig:wine-newmid-smoothed-data-histogram-sigma-1}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-smoothed-data-histogram-sigma-5}
         \caption{$\sigma=5$}
+        \label{fig:wine-newmid-smoothed-data-histogram-sigma-5}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-smoothed-data-histogram-sigma-15}
         \caption{$\sigma=15$}
+        \label{fig:wine-newmid-smoothed-data-histogram-sigma-15}
     \end{subfigure}
     \caption{SOM ($20\times16$) SDH with different neighbour hood radius$f$}
     \label{fig:wine-newmid-smoothed-data-histogram-sigma}
@@ -745,14 +755,17 @@ For the SDH we used a smoothing factor of 100 instead of the default one.
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-topographic-error-sigma-1}
         \caption{$\sigma=1$}
+        \label{fig:wine-newmid-topographic-error-sigma-1}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-topographic-error-sigma-5}
         \caption{$\sigma=5$}
+        \label{fig:wine-newmid-topographic-error-sigma-5}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-topographic-error-sigma-15}
         \caption{$\sigma=15$}
+        \label{fig:wine-newmid-topographic-error-sigma-15}
     \end{subfigure}
     \caption{SOM ($20\times16$) Topographic error with different neighbour hood radius$f$}
     \label{fig:wine-newmid-topographic-error-sigma}
@@ -764,16 +777,19 @@ For the SDH we used a smoothing factor of 100 instead of the default one.
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-1}
         \caption{$\sigma=1$}
+        \label{fig:wine-newmid-activity-histogram-sigma-1}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-5}
         \caption{$\sigma=5$}
+        \label{fig:wine-newmid-activity-histogram-sigma-5}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
         \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-15}
         \caption{$\sigma=15$}
+        \label{fig:wine-newmid-activity-histogram-sigma-15}
     \end{subfigure}
-    \caption{SOM ($20\times16$) Topographic error with different neighbour hood radius$f$}
+    \caption{SOM ($20\times16$) Activity Histograms with different neighbour hood radius$f$}
     \label{fig:wine-newmid-activity-histogram-sigma}
 \end{figure}
 
@@ -781,40 +797,43 @@ For the SDH we used a smoothing factor of 100 instead of the default one.
 \centering
     \centering
     \begin{subfigure}[b]{0.30\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-1}
+        \includegraphics[width=\linewidth]{img/wine-newmid-u-matrix-sigma-1}
         \caption{$\sigma=1$}
+        \label{fig:wine-newmid-u-matrix-sigma-1}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-5}
+        \includegraphics[width=\linewidth]{img/wine-newmid-u-matrix-sigma-5}
         \caption{$\sigma=5$}
+        \label{fig:wine-newmid-u-matrix-sigma-5}
     \end{subfigure}
     \begin{subfigure}[b]{0.30\linewidth}
-        \includegraphics[width=\linewidth]{img/wine-newmid-activity-histogram-sigma-15}
+        \includegraphics[width=\linewidth]{img/wine-newmid-u-matrix-sigma-15}
         \caption{$\sigma=15$}
+        \label{fig:wine-newmid-u-matrix-sigma-15}
     \end{subfigure}
-    \caption{SOM ($20\times16$) Topographic error with different neighbour hood radius$f$}
-    \label{fig:wine-newmid-activity-histogram-sigma}
+    \caption{SOM ($20\times16$) U-Matrix with different neighbour hood radius$f$}
+    \label{fig:wine-newmid-u-matrix-sigma}
 \end{figure}
 
 \section{SOM varying learning rate}
 
 In this section we will vary $\alpha$.  Our different settings are displayed in the Table~\ref{tab:settings} (Alpha 0.01, ...).
 
-By looking at the equation
+By looking at the weight vector adjustment equation
 \[
     m_i(t+1) = m_i(t) + \alpha(t) * h_{ci}(t) * [x(t) - m_i(t)]
 \]
 our assumption is that for a small learning rate $\alpha$ the learning component has a very small
-influence on adjusting the code vector towards the input vector.
+influence on adjusting the weight vector towards the input vector.
 The problem the might arise is that a small radius will leave the SOM unwrapped.
 
-A very big learning rate on the other hand will force the code vector to perform a big initial adjustments towards the chosen input vector.
+A very big learning rate on the other hand will force the weight vector to perform a big initial adjustments towards the chosen input vector.
 The initial learning step is very powerful, some of the units could be initially moved to
 a more distant location in the data space. At later point in time (with decreasing learning rate and neighbourhood radius) the algorithm
 will not be powerful enough to pull them to the ``optimal'' location. We think that a big radius should in some cases contain slightly more topology violations.
 
 The Activity histogram in Figure~\ref{fig:wine-20x16-activity-histogram-alpha} shows that a small $\alpha$ radius did not unwrap the map and contains
-a lot of topology violations. Figure~\ref{fig:wine-20x16-neighbourhood-graph-r-06-alpha} and Figure~\ref{fig:wine-20x16-quantization-error-alpha} also confirm that the map is not unfolded.
+a lot of topology violations. Figure~\ref{fig:wine-20x16-neighbourhood-graph-r-06-alpha} and Figure~\ref{fig:wine-20x16-quantization-error-alpha} also confirm that the map was unable to unfold.
 A small learning rate was unable to separate clusters. This can be seen in Figure~\ref{fig:wine-20x16-u-matrix-alpha}
 and
 \ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-50}
@@ -823,7 +842,7 @@ and
 where the cluster boundaries are not visible.
 
 Be increasing the learning rate (greater than 0.45) the difference in almost all of the visualisations in so not so evident.
-As an example in Figure~\ref{fig:wine-20x16-activity-histogram-alpha} the revealed clusters differ not so much. For all of 
+As an example in Figure~\ref{fig:wine-20x16-activity-histogram-alpha} the revealed clusters do not differ so much. For all of 
 them in the Figures
 \ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-50}
 \ref{fig:wine-20x16-smoothed-data-histogram-alpha-f-100}
@@ -1210,7 +1229,7 @@ we see that there is only one big difference in the top left area.
 
 \section{Summary}
 
-We have shown many different visulizations and quality measures for WQ dataset using different
+We have shown many different visualizations and quality measures for WQ dataset using different
 parameter settings. The main structures
 we found are the two clusters. Red and white wine. Their separation is quite clear. Half of 
 the map is dedicated to white wine and the other is dedicated to red wine.
@@ -1223,17 +1242,46 @@ It shows high density in the left upper area and high density in the lower right
 Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-08-seed-7} and Figure~\ref{fig:wine-newmid-radius-neighbourhood-graph--r-10-seed-7}-
 
 Topology violations exist in practically all our trained maps. We think that WQ dataset has
-a very complex structure. Especially the red wine cluster probabliy has a spheric form.
+a very complex structure. Especially the red wine cluster probably has a spheric form.
 The reson for this the different activity histograms (e.g. Figure~\ref{fig:wine-newmid-activity-histogram-seed-7}) see a blue area surrounded by green ring. The blue area is probably the top of the sphere and
 under it the green area of the red wine cluster. In the white wine area on the bottom left
 there is also a potential subcluster that outlies the other white wines.
 
-To conclude the structure we would like to show the termatic class map in Figure~\ref{fig:wine-newmid-thermatic-class-map}. The settings are the rectangular mid sized map shown in Table~\ref{tab:settings}.
+To conclude the structure we would like to show the thematic class map in Figure~\ref{fig:wine-newmid-thermatic-class-map}. The settings are the rectangular mid sized map shown in Table~\ref{tab:settings}.
 Here again we see that there are two clusters. Each of them seem to have their subclusters depending
 on the quality of the wine. As an example the quality white wine are located in the upper left area of
 the map which is a dense region. This shows that the quality white wine are very similar.
 This is not the case for red wine as the quality wines are located in the upper right area which is
 not that dense.
+
+\subsection{Attributes correlation}
+The correlation of the attributes was investigated with Metro Maps. The component planes of the attributes combined in Metro Map with $bin=3$
+are displayed in Figure~\ref{fig:wine-newmid-metro-map-bin-3} and with $Bin=6$ are displayed in Figure~\ref{fig:wine-newmid-metro-map-bin-6}.
+We immediately notice three main groups of correlated attributes. The first group contains: Alcohol and Density, whereas the second group contains: Fixed Acidity and Residual Sugar. The third group contains all the rest attributes.
+
+A very interesting finding is that the quality white wines contain high alcohol values compared to the rest of the wines. Quality Red Wines contain lower alcohol values compared to the white wines, but they contain higher Fixed Acidity and Citric Acid values. Average White Wines are high in Sugar where average Red Wines have very low citric acid.
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-thematic-metro-map-bins-3}
+        \caption{$Bin=3$}
+        \label{fig:wine-newmid-metro-map-bin-3}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-thematic-metro-map-bins-6}
+        \caption{$Bin=6$}
+        \label{fig:wine-newmid-metro-map-bin-6}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.30\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-thematic-metro-map-legend}
+        \caption{Color legend}
+    \end{subfigure}
+    \caption{SOM ($20\times16$ Rectangular mid sized map in Table~\ref{tab:settings}) Metro Maps and the attribute Legend.}
+    \label{fig:wine-newmid-metro-maps}
+\end{figure}
+
 
 \subsection{Identified false parameter settings}
 
@@ -1256,13 +1304,10 @@ The following list shows false parameter settings which we confirmed in our expe
 \begin{figure}
 \centering
     \centering
-    \includegraphics[width=\linewidth]{img/wine-newmid-thermatic-class-map}
+    \includegraphics[width=0.7\linewidth]{img/wine-newmid-thermatic-class-map}
     \caption{SOM ($20\times16$) Thermatic map displaying the classes of red/white wine}
     \label{fig:wine-newmid-thermatic-class-map}
 \end{figure}
-
-\section{Conclusion}
-
 
 \bibliography{ref}
 \bibliographystyle{plain}
