@@ -5,10 +5,7 @@ import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
 import org.apache.commons.math.geometry.Vector3D;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Richard Plangger
@@ -107,7 +104,7 @@ public class HexagonHelper implements GridHelper {
         neighbours.add(units[x][y][z]);
     }
 
-    public List<Unit> getNeighbouringUnits(int x, int y, int z, double radius) {
+    public ArrayList<Unit> getNeighbouringUnits(int x, int y, int z, double radius) {
         Set<Unit> neighbours = new HashSet<Unit>();
 
         Unit unit = units[x][y][z];
@@ -136,7 +133,7 @@ public class HexagonHelper implements GridHelper {
             }
         }
 
-        return new LinkedList<Unit>(neighbours);
+        return new ArrayList<Unit>(neighbours);
     }
 
     /**

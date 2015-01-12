@@ -34,7 +34,7 @@ public class RectangularHelper implements GridHelper {
     }
 
     @Override
-    public List<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException{
+    public ArrayList<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException{
         ArrayList<Unit> neighbourUnits = new ArrayList<Unit>();
 
         int rad = (int) Math.ceil(radius);

@@ -22,8 +22,6 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import at.tuwien.ifs.somtoolbox.layers.*;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonHelper;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonLayer;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.martiansoftware.jsap.JSAPResult;

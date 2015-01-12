@@ -2626,12 +2626,12 @@ public class GrowingLayer implements Layer {
     }
 
     /** Convenience method for {@link #getNeighbouringUnits(int, int, int, double)} */
-    protected List<Unit> getNeighbouringUnits(Unit u, double radius) throws LayerAccessException {
+    protected ArrayList<Unit> getNeighbouringUnits(Unit u, double radius) throws LayerAccessException {
         return getNeighbouringUnits(u.getXPos(), u.getYPos(), u.getZPos(), radius);
     }
 
     /** Convenience method for {@link #getNeighbouringUnits(int, int, int, double)} */
-    public List<Unit> getNeighbouringUnits(int x, int y, double radius) throws LayerAccessException {
+    public ArrayList<Unit> getNeighbouringUnits(int x, int y, double radius) throws LayerAccessException {
         return getNeighbouringUnits(x, y, 0, radius);
     }
 
@@ -2639,7 +2639,7 @@ public class GrowingLayer implements Layer {
      * Gets neighbours within a certain radius; uses {@link #getMapDistance(int, int, int, int, int, int)} for map
      * distance computation
      */
-    public List<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException {
+    public ArrayList<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException {
         return gridHelper.getNeighbouringUnits(x, y, z, radius);
     }
 
