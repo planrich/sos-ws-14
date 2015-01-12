@@ -21,8 +21,8 @@
 
 \begin{document}
 
-\title{Self organizing systems WS14 - Exercise 2\\
-       Self Organizing Maps}% Force line breaks with \\
+\title{Self-Organizing systems WS14 - Exercise 2\\
+       Self-Organizing Maps}% Force line breaks with \\
 
 \numberofauthors{2}
 \author{
@@ -1259,7 +1259,9 @@ The correlation of the attributes was investigated with Metro Maps. The componen
 are displayed in Figure~\ref{fig:wine-newmid-metro-map-bin-3} and with $Bin=6$ are displayed in Figure~\ref{fig:wine-newmid-metro-map-bin-6}.
 We immediately notice three main groups of correlated attributes. The first group contains: Alcohol and Density, whereas the second group contains: Fixed Acidity and Residual Sugar. The third group contains all the rest attributes.
 
-A very interesting finding is that the quality white wines contain high alcohol values compared to the rest of the wines. Quality Red Wines contain lower alcohol values compared to the white wines, but they contain higher Fixed Acidity and Citric Acid values. Average White Wines are high in Sugar where average Red Wines have very low citric acid.
+A very interesting finding is that the quality white wines contain high alcohol values (Figure~\ref{fig:wine-newmid-thematic-component-plane-alcohol}) compared to the rest of the wines.
+Quality Red Wines contain lower alcohol values compared to the white wines, but they contain higher Fixed Acidity (Figure~\ref{fig:wine-newmid-thematic-component-plane-fixed-acidity})
+and Citric Acid values (Figure~\ref{fig:wine-newmid-thematic-component-plane-citric-acid}). Average White Wines are high in Sugar shown in Figure~\ref{fig:wine-newmid-thematic-component-plane-sugar} where average Red Wines have very low citric acid.
 
 \begin{figure}
 \centering
@@ -1280,6 +1282,32 @@ A very interesting finding is that the quality white wines contain high alcohol 
     \end{subfigure}
     \caption{SOM ($20\times16$ Rectangular mid sized map in Table~\ref{tab:settings}) Metro Maps and the attribute Legend.}
     \label{fig:wine-newmid-metro-maps}
+\end{figure}
+
+\begin{figure}
+\centering
+    \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-thematic-component-plane-alcohol}
+        \caption{Alcohol}
+        \label{fig:wine-newmid-thematic-component-plane-alcohol}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-thematic-component-plane-citric-acid}
+        \caption{Plane citric acid}
+        \label{fig:wine-newmid-thematic-component-plane-citric-acid}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-thematic-component-plane-fixed-acidity}
+        \caption{Fixed Acidity}
+        \label{fig:wine-newmid-thematic-component-plane-fixed-acidity}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{img/wine-newmid-thematic-component-plane-sugar}
+        \caption{Sugar}
+        \label{fig:wine-newmid-thematic-component-plane-sugar}
+    \end{subfigure}
+    \caption{Attribute Component Planes}
 \end{figure}
 
 

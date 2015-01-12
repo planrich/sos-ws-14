@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="doc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/doc/lucene-2.1.0-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/jcommon-1.0.5-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/piccolo-1.2-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/commons-logging-1.1-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/jfreechart-1.0.2-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/commons-math-1.1-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/jdom-1.0-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/colt-1.2.0-doc.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/doc/jmathplot-doc.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

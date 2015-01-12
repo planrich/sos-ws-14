@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="src">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/src/JSAP-2.1-2-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/weka-3-5-7-src.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/piccolo-1.2.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/jl1.0.1-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/jfreechart-1.0.2-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/commons-logging-1.1-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/lucene-3.5.0-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/prefuse-beta-20071021.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/commons-collections-3.2.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/jcommon-1.0.5-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/commons-math-1.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/commons-collections-3.2-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/lingpipe-3.3.0-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/jlayer-0.3-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/jlibeps-0.1-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/jdom-1.0-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/junit-4.3.1-src.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/poi-src-3.6-20091214.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/jid3_src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/swingx-1.6_src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/commons-lang-2.3-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/colt-1.2.0-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/commons-io-2.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/src/htmlparser1_6_20060610-src.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
