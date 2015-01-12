@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import at.tuwien.ifs.somtoolbox.layers.*;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonHelper;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonLayer;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.martiansoftware.jsap.JSAPResult;
@@ -36,11 +39,6 @@ import at.tuwien.ifs.somtoolbox.data.SharedSOMVisualisationData;
 import at.tuwien.ifs.somtoolbox.input.SOMInputReader;
 import at.tuwien.ifs.somtoolbox.input.SOMLibDataWinnerMapping;
 import at.tuwien.ifs.somtoolbox.input.SOMLibFormatInputReader;
-import at.tuwien.ifs.somtoolbox.layers.GrowingLayer;
-import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
-import at.tuwien.ifs.somtoolbox.layers.ToroidLayer;
-import at.tuwien.ifs.somtoolbox.layers.TrainingInterruptionListener;
-import at.tuwien.ifs.somtoolbox.layers.Unit;
 import at.tuwien.ifs.somtoolbox.layers.Layer.GridTopology;
 import at.tuwien.ifs.somtoolbox.layers.quality.QualityMeasure;
 import at.tuwien.ifs.somtoolbox.output.HTMLOutputter;
@@ -65,10 +63,11 @@ import at.tuwien.ifs.somtoolbox.util.StdErrProgressWriter;
 public class GrowingSOM extends AbstractNetworkModel implements SOMToolboxApp {
 
     public static final Parameter[] OPTIONS = new Parameter[] { OptionFactory.getSwitchHtmlOutput(false),
-            OptionFactory.getOptLabeling(false), OptionFactory.getOptNumberLabels(false),
-            OptionFactory.getOptWeightVectorFileInit(false), OptionFactory.getOptMapDescriptionFile(false),
-            OptionFactory.getSwitchSkipDataWinnerMapping(), OptionFactory.getOptNumberWinners(false),
-            OptionFactory.getOptProperties(true), OptionFactory.getOptUseMultiCPU(false) };
+        OptionFactory.getOptLabeling(false), OptionFactory.getOptNumberLabels(false),
+        OptionFactory.getOptWeightVectorFileInit(false), OptionFactory.getOptMapDescriptionFile(false),
+        OptionFactory.getSwitchSkipDataWinnerMapping(), OptionFactory.getOptNumberWinners(false),
+        OptionFactory.getOptProperties(true), OptionFactory.getOptUseMultiCPU(false)
+    };
 
     public static final Type APPLICATION_TYPE = Type.Training;
 
@@ -254,6 +253,7 @@ public class GrowingSOM extends AbstractNetworkModel implements SOMToolboxApp {
         if (props.getGridTopology() == GridTopology.planar) {
             layer = new GrowingLayer(props.xSize(), props.ySize(), props.zSize(), props.metricName(), data.dim(), norm,
                     props.pca(), props.randomSeed(), data);
+            layer.setGridLayout(props.getGridLayout());
         } else if (props.getGridTopology() == GridTopology.toroid) {
             layer = new ToroidLayer(props.xSize(), props.ySize(), props.zSize(), props.metricName(), data.dim(), norm,
                     props.pca(), props.randomSeed(), data);

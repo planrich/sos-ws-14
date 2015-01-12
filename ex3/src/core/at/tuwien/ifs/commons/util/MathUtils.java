@@ -15,6 +15,8 @@
  */
 package at.tuwien.ifs.commons.util;
 
+import org.apache.commons.math.geometry.Vector3D;
+
 /**
  * A collection of math-related utility methods.
  * 
@@ -118,5 +120,32 @@ public class MathUtils {
 
     public static int numberOfDigits(long i) {
         return 1 + (int) Math.log10(Math.abs(i));
+    }
+
+    /**
+     * Euclidean distance in 3D space.
+     * NOTE: apache commons math3 has this method already. But for simplicity I implemented it here.
+     *       remote it in the future
+     * @param v from
+     * @param u to
+     * @return the distance
+     */
+    public static double euclidean(Vector3D v, Vector3D u) {
+        return Math.sqrt(euclidean2(v,u));
+    }
+
+    /**
+     * Squared euclidean distance in 3D space
+     * NOTE: apache commons math3 has this method already. But for simplicity I implemented it here.
+     *       remote it in the future
+     * @param v from
+     * @param u to
+     * @return the distance^2
+     */
+    public static double euclidean2(Vector3D v, Vector3D u) {
+        double x = (v.getX() - u.getX());
+        double y = (v.getY() - u.getY());
+        double z = (v.getZ() - u.getZ());
+        return (x*x + y*y + z*z);
     }
 }

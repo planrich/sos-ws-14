@@ -19,17 +19,15 @@ package at.tuwien.ifs.somtoolbox.layers;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonHelper;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.RectangularHelper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -157,6 +155,8 @@ public class GrowingLayer implements Layer {
     private Cuboid[] ranges = null;
 
     private final int threadsUsed;
+
+    private GridHelper gridHelper = null;
 
     public enum Rotation {
         ROTATE_90 {
@@ -304,6 +304,7 @@ public class GrowingLayer implements Layer {
         initCPURanges();
 
         units = new Unit[xSize][ySize][zSize];
+        gridHelper = new RectangularHelper(xSize, ySize, zSize, units);
         //
         // perform optional PCA?
         //
@@ -1155,7 +1156,7 @@ public class GrowingLayer implements Layer {
 
     @Override
     public double getMapDistance(int x1, int y1, int z1, int x2, int y2, int z2) {
-        return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
+        return gridHelper.getMapDistance(x1,y1,z1,x2,y2,z2);
     }
 
     @Override
@@ -2625,12 +2626,12 @@ public class GrowingLayer implements Layer {
     }
 
     /** Convenience method for {@link #getNeighbouringUnits(int, int, int, double)} */
-    protected ArrayList<Unit> getNeighbouringUnits(Unit u, double radius) throws LayerAccessException {
+    protected List<Unit> getNeighbouringUnits(Unit u, double radius) throws LayerAccessException {
         return getNeighbouringUnits(u.getXPos(), u.getYPos(), u.getZPos(), radius);
     }
 
     /** Convenience method for {@link #getNeighbouringUnits(int, int, int, double)} */
-    public ArrayList<Unit> getNeighbouringUnits(int x, int y, double radius) throws LayerAccessException {
+    public List<Unit> getNeighbouringUnits(int x, int y, double radius) throws LayerAccessException {
         return getNeighbouringUnits(x, y, 0, radius);
     }
 
@@ -2638,29 +2639,8 @@ public class GrowingLayer implements Layer {
      * Gets neighbours within a certain radius; uses {@link #getMapDistance(int, int, int, int, int, int)} for map
      * distance computation
      */
-    public ArrayList<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException {
-        ArrayList<Unit> neighbourUnits = new ArrayList<Unit>();
-
-        int rad = (int) Math.ceil(radius);
-        int upperLimitX = Math.min(x + rad, getXSize() - 1);
-        int lowerLimitX = Math.max(x - rad, 0);
-        int upperLimitY = Math.min(y + rad, getYSize() - 1);
-        int lowerLimitY = Math.max(y - rad, 0);
-        int upperLimitZ = Math.min(z + rad, getZSize() - 1);
-        int lowerLimitZ = Math.max(z - rad, lowerLimitZ = 0);
-
-        for (int x2 = lowerLimitX; x2 <= upperLimitX; x2++) {
-            for (int y2 = lowerLimitY; y2 <= upperLimitY; y2++) {
-                for (int z2 = lowerLimitZ; z2 <= upperLimitZ; z2++) {
-                    if (x2 != x || y2 != y || z2 != z) {
-                        if (getMapDistance(x, y, z, x2, y2, z2) <= radius) {
-                            neighbourUnits.add(getUnit(x2, y2, z2));
-                        }
-                    }
-                }
-            }
-        }
-        return neighbourUnits;
+    public List<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException {
+        return gridHelper.getNeighbouringUnits(x, y, z, radius);
     }
 
     /** Computes a distance matrix between all {@link Unit}s in the {@link Layer} */
@@ -3085,6 +3065,12 @@ public class GrowingLayer implements Layer {
 
     public void setGridLayout(GridLayout gridLayout) {
         this.gridLayout = gridLayout;
+
+        if (gridLayout == GridLayout.rectangular) {
+            gridHelper = new RectangularHelper(xSize, ySize, zSize, units);
+        } else if (gridLayout == Layer.GridLayout.hexagonal) {
+            gridHelper = new HexagonHelper(xSize, ySize, units);
+        }
     }
 
     public void setGridTopology(GridTopology gridTopology) {
