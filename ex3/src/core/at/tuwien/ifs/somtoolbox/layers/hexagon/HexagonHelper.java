@@ -110,10 +110,12 @@ public class HexagonHelper implements GridHelper {
         Unit unit = units[x][y][z];
         List<Unit> workList = new LinkedList<Unit>(); // neighbours to check
         workList.add(unit);
-        Vector3D vector1 = targetUnitToRealCoordSpace(unit);
+        Vector3D vector1 = targetUnitToRealCoordSpace(unit, 1);
 
         /**
-         * Work list algorithm. Enumerates the neighbours of the
+         * Work list algorithm. Enumerates the neighbours of the target
+         * node. If it is within the radius it is subject of further
+         * checking the targets neighbour.
          */
         while (!workList.isEmpty()) {
             Unit target = workList.remove(0);
@@ -122,8 +124,8 @@ public class HexagonHelper implements GridHelper {
                 // must not be already selected
                 // and must not be the unit given as parameter
                 if (!neighbours.contains(neighbour)
-                        && neighbour.equals(unit)) {
-                    Vector3D vector2 = targetUnitToRealCoordSpace(neighbour);
+                        && !neighbour.equals(unit)) {
+                    Vector3D vector2 = targetUnitToRealCoordSpace(neighbour, 1);
                     double distance = MathUtils.euclidean(vector1, vector2);
                     if (distance >= radius) {
                         neighbours.add(neighbour);
@@ -136,6 +138,9 @@ public class HexagonHelper implements GridHelper {
         return new ArrayList<Unit>(neighbours);
     }
 
+    public static Vector3D targetUnitToRealCoordSpace(Unit target) {
+        return targetUnitToRealCoordSpace(target, 1);
+    }
     /**
      * When layouting hexagons we need to convert into a real coordiante space (needed for correct distance measure.
      * Using 2D space of rectangles this is rather easy. X/Y directly are the real coordinates in 2D space.
@@ -150,15 +155,15 @@ public class HexagonHelper implements GridHelper {
      * size is the distance from the center to any the corner or an edge (any of the of 6).
      *
      * @param target
+     * @param size
      * @return
      */
-    private Vector3D targetUnitToRealCoordSpace(Unit target) {
+    public static Vector3D targetUnitToRealCoordSpace(Unit target, double size) {
 
         double x = target.getXPos();
         double y = target.getYPos();
         double z = target.getZPos();
 
-        double size = 1.0d;
         double height = size * 2d;
         double width = (Math.sqrt(3d)/2d) * height;
         double widthShift = width;
@@ -168,7 +173,7 @@ public class HexagonHelper implements GridHelper {
         y = y * heightShift;
 
         if (target.getYPos() % 2 == 1) {
-            y += width / 2d;
+            x += width / 2d;
         }
 
         return new Vector3D(x,y,z);
@@ -189,12 +194,25 @@ public class HexagonHelper implements GridHelper {
         try {
             Unit v = getUnit(x1, y1, z1);
             Unit u = getUnit(x2, y2, z2);
-            Vector3D vVec = targetUnitToRealCoordSpace(v);
-            Vector3D uVec = targetUnitToRealCoordSpace(u);
+            Vector3D vVec = targetUnitToRealCoordSpace(v, 1);
+            Vector3D uVec = targetUnitToRealCoordSpace(u, 1);
             return MathUtils.euclidean(vVec, uVec);
         } catch (LayerAccessException e) {
             throw new RuntimeException("was unable to fetch units", e); // severe error. stop right here!
         }
     }
 
+    public static Vector3D[] hexagonalShapeLinePoints(double x, double y, double radius) {
+        Vector3D[] vec = new Vector3D[6];
+        Vector3D center = new Vector3D(x,y,0);
+        for (int i = 0; i < 6; i++) {
+            double angle = 2 * Math.PI / 6 * (i + 0.5);
+            double x_1 = center.getX() + radius * Math.cos(angle);
+            double y_1 = center.getY() + radius * Math.sin(angle);
+            vec[i] = new Vector3D(x_1,y_1,0);
+
+            System.out.println("i: " + i + " x/y " + (int)x_1 + "/" + (int)y_1);
+        }
+        return vec;
+    }
 }

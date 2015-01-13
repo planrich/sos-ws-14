@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="somtoolbox">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/somtoolbox.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

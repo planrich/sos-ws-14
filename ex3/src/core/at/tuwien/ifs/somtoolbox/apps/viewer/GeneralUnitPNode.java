@@ -28,6 +28,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import at.tuwien.ifs.somtoolbox.layers.Layer;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonHelper;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PNode;
@@ -44,6 +46,9 @@ import at.tuwien.ifs.somtoolbox.layers.Unit;
 import at.tuwien.ifs.somtoolbox.layers.quality.QualityMeasure;
 import at.tuwien.ifs.somtoolbox.layers.quality.QualityMeasureNotFoundException;
 import at.tuwien.ifs.somtoolbox.util.StringUtils;
+import org.apache.commons.math.geometry.Vector3D;
+import org.apache.commons.math.linear.MatrixUtils;
+import org.apache.commons.math.linear.RealMatrix;
 
 /**
  * The graphical representation of one SOM Unit, including labels, data items and class pie charts. This class makes use
@@ -187,6 +192,14 @@ public class GeneralUnitPNode extends PNode {
         this.u = u;
         X = u.getXPos() * width;
         Y = u.getYPos() * height;
+
+        if (state.somInputReader.getGridLayout() == Layer.GridLayout.hexagonal) {
+            double radius = Math.max(width,height)/2.d;
+            Vector3D v = HexagonHelper.targetUnitToRealCoordSpace(u, radius);
+            X = v.getX();
+            Y = v.getY();
+        }
+
         initPNodeProperties(width, height);
 
         this.classInfo = classInfo;
@@ -633,11 +646,28 @@ public class GeneralUnitPNode extends PNode {
         }
 
         if (drawBorder) {
-            border.setRect(X, Y, width, height);
-            g2d.setStroke(borderStroke);
-            g2d.setPaint(Color.CYAN);
-            g2d.setColor(borderColor);
-            g2d.draw(border);
+            if (state.somInputReader.getGridLayout() == Layer.GridLayout.hexagonal) {
+                double radius = Math.max(width,height)/2.d;
+                Vector3D[] v = HexagonHelper.hexagonalShapeLinePoints(X + width/2, Y + height/2, radius);
+
+                g2d.setStroke(borderStroke);
+                g2d.setPaint(Color.CYAN);
+                g2d.setColor(borderColor);
+                g2d.drawLine((int)v[0].getX(), (int)v[0].getY(), (int)v[1].getX(), (int)v[1].getY());
+
+                for (int i = 1; i < v.length; i++) {
+                    int i_1 = (i+1) % v.length;
+                    g2d.drawLine((int)v[i].getX(), (int)v[i].getY(), (int)v[i_1].getX(), (int)v[i_1].getY());
+                }
+
+            } else {
+                // rectangular boxes
+                border.setRect(X, Y, width, height);
+                g2d.setStroke(borderStroke);
+                g2d.setPaint(Color.CYAN);
+                g2d.setColor(borderColor);
+                g2d.draw(border);
+            }
         }
 
         PCamera pCam = paintContext.getCamera();
