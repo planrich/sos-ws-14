@@ -3,3 +3,6 @@
 .idea/
 build/
 doc/datasets/maps/
+bin/
+out/
+build.xml
