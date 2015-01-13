@@ -3073,6 +3073,10 @@ public class GrowingLayer implements Layer {
         }
     }
 
+    public GridHelper getGridHelper() {
+        return gridHelper;
+    }
+
     public void setGridTopology(GridTopology gridTopology) {
         this.gridTopology = gridTopology;
     }

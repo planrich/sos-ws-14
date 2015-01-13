@@ -5,7 +5,10 @@ import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
 import org.apache.commons.math.geometry.Vector3D;
 
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author Richard Plangger
@@ -202,7 +205,16 @@ public class HexagonHelper implements GridHelper {
         }
     }
 
-    public static Vector3D[] hexagonalShapeLinePoints(double x, double y, double radius) {
+    @Override
+    public Vector3D[] shapeLinePoints(double x, double y, double width, double height) {
+
+        height = height / 2;
+        width = Math.sqrt(3)/2 * height;
+
+        x += width / 2;
+        y += height / 2;
+
+        double radius = getRadius(width,height);
         Vector3D[] vec = new Vector3D[6];
         Vector3D center = new Vector3D(x,y,0);
         for (int i = 0; i < 6; i++) {
@@ -210,9 +222,57 @@ public class HexagonHelper implements GridHelper {
             double x_1 = center.getX() + radius * Math.cos(angle);
             double y_1 = center.getY() + radius * Math.sin(angle);
             vec[i] = new Vector3D(x_1,y_1,0);
-
-            System.out.println("i: " + i + " x/y " + (int)x_1 + "/" + (int)y_1);
         }
         return vec;
+    }
+
+    @Override
+    public Shape shape(int ix, int iy, int x, int y, int width, int height) {
+        Polygon polygon = new Polygon();
+
+        // center x and y. they are at the top right
+        // of the bounds rectangle
+        x += width/2;
+        y += height/2;
+
+        if (iy % 2 == 1) {
+            x += width/2;
+        }
+
+        Vector3D[] hexPoints = shapeLinePoints(x, y, width, height);
+
+        for (Vector3D vector : hexPoints) {
+            polygon.addPoint((int)vector.getX(), (int)vector.getY());
+        }
+
+        return polygon;
+    }
+
+    @Override
+    public double getRadius(double width, double height) {
+        double a = Math.max(width,height) / 2.d;
+        return Math.sqrt(a*a + a*a);
+    }
+
+    @Override
+    public Rectangle2D getBorder(double x, double y, double width, double height) {
+        width = Math.sqrt(3)/2 * width;
+        return new Rectangle2D.Double(x,y, width, height);
+    }
+
+    @Override
+    public double getWidthPx(int unitWidth, int xCount) {
+        double height = unitWidth;
+        double width = (Math.sqrt(3d)/2d) * height;
+
+        // width is the real width of a hexagon. pointy top orientation
+        // because every second row is shifted 0.5 * width add this to the width
+        return width * xCount + width / 2;
+    }
+
+    @Override
+    public double getHeightPx(int unitHeight, int yCount) {
+        return unitHeight + // the first row has unitHeight.
+               (unitHeight * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
     }
 }

@@ -23,6 +23,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
+import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import flanagan.interpolation.BiCubicSplineFast;
@@ -190,6 +191,8 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 yOff = (int) Math.round(unitHeight / (factorY * 2));
             }
 
+            GridHelper helper = gsom.getLayer().getGridHelper();
+
             for (int y = 0; y < matrix.rows(); y++) {
                 for (int x = 0; x < matrix.columns(); x++) {
                     ci = (int) Math.round(matrix.get(y, x) * palette.maxColourIndex());
@@ -198,9 +201,12 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                     log.log(Level.FINER, "{0}/{1} => matrix value: {2}, colorIndex: {3}, colour {4}", new Object[] { y,
                             x, matrix.get(y, x), ci, color });
 
-                    g.fill(new Rectangle(xOff + x * (int) Math.round(unitWidth / factorX), yOff + y
-                            * (int) Math.round(unitHeight / factorY), (int) Math.round(unitWidth / factorX),
-                            (int) Math.round(unitHeight / factorY)));
+                    int rx = xOff + x * (int) Math.round(unitWidth / factorX);
+                    int ry = yOff + y * (int) Math.round(unitHeight / factorY);
+                    int rw = (int) Math.round(unitWidth / factorX);
+                    int rh = (int) Math.round(unitHeight / factorY);
+                    g.fill(helper.shape(x, y, rx, ry, rw, rh));
+
                     if (ci < minimumMatrixValue) {
                         minimumMatrixValue = ci;
                     }

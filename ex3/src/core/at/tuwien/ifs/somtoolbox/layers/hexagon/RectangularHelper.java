@@ -5,8 +5,9 @@ import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
 import org.apache.commons.math.geometry.Vector3D;
 
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by rich on 1/12/15.
@@ -68,4 +69,41 @@ public class RectangularHelper implements GridHelper {
         }
     }
 
+    @Override
+    public Vector3D[] shapeLinePoints(double x, double y, double width, double height) {
+        Vector3D[] vectors = new Vector3D[4];
+        vectors[0] = new Vector3D(x      , y       , 0);
+        vectors[1] = new Vector3D(x+width, y       , 0);
+        vectors[2] = new Vector3D(x+width, y+height, 0);
+        vectors[3] = new Vector3D(x      , y+height, 0);
+
+        return vectors;
+    }
+
+    @Override
+    public Shape shape(int ix, int iy, int x, int y, int width, int height) {
+        return new Rectangle(x,y,width,height);
+    }
+
+    @Override
+    public double getWidthPx(int unitWidth, int xCount) {
+        return unitWidth * xCount;
+    }
+
+    @Override
+    public double getHeightPx(int unitHeight, int yCount) {
+        return unitHeight * yCount;
+    }
+
+    @Override
+    public double getRadius(double width, double height) {
+        double w = width/2;
+        double h = height/2;
+        return Math.sqrt(w*w + h*h);
+    }
+
+    @Override
+    public Rectangle2D getBorder(double x, double y, double width, double height) {
+        return new Rectangle2D.Double(x,y,width,height);
+    }
 }
