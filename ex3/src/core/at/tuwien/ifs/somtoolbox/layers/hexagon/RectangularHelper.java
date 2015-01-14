@@ -106,4 +106,12 @@ public class RectangularHelper implements GridHelper {
     public Rectangle2D getBorder(double x, double y, double width, double height) {
         return new Rectangle2D.Double(x,y,width,height);
     }
+
+    @Override
+    public Point getPosition(int xPos, int yPos, double width, double height) {
+        Point p = new Point();
+        p.x = (int) (xPos * width);
+        p.y = (int) (yPos * height);
+        return p;
+    }
 }

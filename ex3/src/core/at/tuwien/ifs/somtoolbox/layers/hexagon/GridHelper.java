@@ -19,6 +19,13 @@ public interface  GridHelper {
 
     Unit getUnit(int x, int y, int z) throws LayerAccessException;
 
+    /**
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @return a list of 3d vectors that specify the points to draw this shape
+     */
     Vector3D[] shapeLinePoints(double x, double y, double width, double height);
 
     /**
@@ -32,11 +39,35 @@ public interface  GridHelper {
      */
     Shape shape(int ix, int iy, int x, int y, int width, int height);
 
-    double getWidthPx(int unit_width, int xCount);
+    double getWidthPx(int unitWidth, int xCount);
 
-    double getHeightPx(int unit_width, int yCount);
+    double getHeightPx(int unitHeight, int yCount);
 
+    /**
+     * Get the smallest circle that fully contains this shape
+     * @param width
+     * @param height
+     */
     double getRadius(double width, double height);
 
+    /**
+     * Get a rectangle that fully contains this shape
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
     Rectangle2D getBorder(double x, double y, double width, double height);
+
+    /**
+     * Get the position for this shape. This mainly depends
+     * on the implementation.
+     * For a rectangle it is the top/left corner,
+     * for a hexagon it is the center of the hexagon itself.
+     * @param xPos
+     * @param yPos
+     * @param width
+     * @param height
+     */
+    Point getPosition(int xPos, int yPos, double width, double height);
 }

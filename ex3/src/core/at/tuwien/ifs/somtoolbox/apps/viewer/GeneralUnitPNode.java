@@ -185,15 +185,10 @@ public class GeneralUnitPNode extends PNode {
     public GeneralUnitPNode(Unit u, CommonSOMViewerStateData state, SOMLibClassInformation classInfo,
             SOMLibDataInformation dataInfo, Point[][] locations, double width, double height) {
         this.u = u;
-        X = u.getXPos() * width;
-        Y = u.getYPos() * height;
-
-        if (state.somInputReader.getGridLayout() == Layer.GridLayout.hexagonal) {
-            double radius = Math.max(width,height)/2.d;
-            Vector3D v = HexagonHelper.targetUnitToRealCoordSpace(u, radius);
-            X = v.getX();
-            Y = v.getY();
-        }
+        GridHelper helper = state.growingSOM.getLayer().getGridHelper();
+        Point p = helper.getPosition(u.getXPos(), u.getYPos(), width, height);
+        X = p.x;
+        Y = p.y;
 
         initPNodeProperties(width, height);
 

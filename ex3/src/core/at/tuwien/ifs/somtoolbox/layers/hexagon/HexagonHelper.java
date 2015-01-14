@@ -113,7 +113,7 @@ public class HexagonHelper implements GridHelper {
         Unit unit = units[x][y][z];
         List<Unit> workList = new LinkedList<Unit>(); // neighbours to check
         workList.add(unit);
-        Vector3D vector1 = targetUnitToRealCoordSpace(unit, 1);
+        Vector3D vector1 = targetUnitToRealCoordSpace(unit);
 
         /**
          * Work list algorithm. Enumerates the neighbours of the target
@@ -128,7 +128,7 @@ public class HexagonHelper implements GridHelper {
                 // and must not be the unit given as parameter
                 if (!neighbours.contains(neighbour)
                         && !neighbour.equals(unit)) {
-                    Vector3D vector2 = targetUnitToRealCoordSpace(neighbour, 1);
+                    Vector3D vector2 = targetUnitToRealCoordSpace(neighbour);
                     double distance = MathUtils.euclidean(vector1, vector2);
                     if (distance >= radius) {
                         neighbours.add(neighbour);
@@ -141,8 +141,8 @@ public class HexagonHelper implements GridHelper {
         return new ArrayList<Unit>(neighbours);
     }
 
-    public static Vector3D targetUnitToRealCoordSpace(Unit target) {
-        return targetUnitToRealCoordSpace(target, 1);
+    public Vector3D targetUnitToRealCoordSpace(Unit target) {
+        return targetUnitToRealCoordSpace(target.getXPos(), target.getYPos(), target.getZPos(), 1);
     }
     /**
      * When layouting hexagons we need to convert into a real coordiante space (needed for correct distance measure.
@@ -157,15 +157,15 @@ public class HexagonHelper implements GridHelper {
      *
      * size is the distance from the center to any the corner or an edge (any of the of 6).
      *
-     * @param target
-     * @param size
+     * @param x grid coord
+     * @param y grid coord
+     * @param z grid coord
+     * @param size edge length
      * @return
      */
-    public static Vector3D targetUnitToRealCoordSpace(Unit target, double size) {
+    public Vector3D targetUnitToRealCoordSpace(double x, double y, double z, double size) {
 
-        double x = target.getXPos();
-        double y = target.getYPos();
-        double z = target.getZPos();
+        int yPos = (int) y;
 
         double height = size * 2d;
         double width = (Math.sqrt(3d)/2d) * height;
@@ -175,7 +175,7 @@ public class HexagonHelper implements GridHelper {
         x = x * widthShift;
         y = y * heightShift;
 
-        if (target.getYPos() % 2 == 1) {
+        if (yPos % 2 == 1) {
             x += width / 2d;
         }
 
@@ -197,8 +197,8 @@ public class HexagonHelper implements GridHelper {
         try {
             Unit v = getUnit(x1, y1, z1);
             Unit u = getUnit(x2, y2, z2);
-            Vector3D vVec = targetUnitToRealCoordSpace(v, 1);
-            Vector3D uVec = targetUnitToRealCoordSpace(u, 1);
+            Vector3D vVec = targetUnitToRealCoordSpace(v);
+            Vector3D uVec = targetUnitToRealCoordSpace(u);
             return MathUtils.euclidean(vVec, uVec);
         } catch (LayerAccessException e) {
             throw new RuntimeException("was unable to fetch units", e); // severe error. stop right here!
@@ -208,11 +208,13 @@ public class HexagonHelper implements GridHelper {
     @Override
     public Vector3D[] shapeLinePoints(double x, double y, double width, double height) {
 
-        height = height / 2;
+        //height = height;
         width = Math.sqrt(3)/2 * height;
 
-        x += width / 2;
-        y += height / 2;
+        // center x and y. they are at the top left
+        // of the bounds rectangle
+        x += width/2;
+        y += height/2;
 
         double radius = getRadius(width,height);
         Vector3D[] vec = new Vector3D[6];
@@ -230,7 +232,7 @@ public class HexagonHelper implements GridHelper {
     public Shape shape(int ix, int iy, int x, int y, int width, int height) {
         Polygon polygon = new Polygon();
 
-        // center x and y. they are at the top right
+        // center x and y. they are at the top left
         // of the bounds rectangle
         x += width/2;
         y += height/2;
@@ -261,18 +263,29 @@ public class HexagonHelper implements GridHelper {
     }
 
     @Override
+    public Point getPosition(int xPos, int yPos, double width, double height) {
+        Point point = new Point();
+        double radius = getRadius(width, height);
+        Vector3D v = targetUnitToRealCoordSpace(xPos, yPos, 0, radius);
+        point.x = (int) v.getX();
+        point.y = (int) v.getY();
+        return point;
+    }
+
+    @Override
     public double getWidthPx(int unitWidth, int xCount) {
         double height = unitWidth;
-        double width = (Math.sqrt(3d)/2d) * height;
+        double width = Math.sqrt(3d)/2d * height;
 
         // width is the real width of a hexagon. pointy top orientation
-        // because every second row is shifted 0.5 * width add this to the width
-        return width * xCount + width / 2;
+        // because every second row is shifted the width is adjusted
+        return (unitWidth * xCount + unitWidth * 2);
     }
 
     @Override
     public double getHeightPx(int unitHeight, int yCount) {
         return unitHeight + // the first row has unitHeight.
-               (unitHeight * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
+               //(unitHeight * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
+               (unitHeight * (yCount)); // rows 1 to n-1 have height unitHeight * 3/4
     }
 }
