@@ -23,6 +23,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
+import at.tuwien.ifs.somtoolbox.apps.viewer.GeneralUnitPNode;
+import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
@@ -136,6 +138,8 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
         if (contourMode == ContourMode.Full) {
             drawContour(g, matrix, width, height, true);
             return res;
@@ -143,11 +147,14 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
 
         drawBackground(width, height, g);
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        // it is a false assumption for a hexagonal som that width/elementcount is the size of the element.
+        // we use doubles here  because due to scaling precision is lost. in a hexagonal som this leads to
+        // wrong cell positioning especially in the lower right part of the image
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         if (interpolate) {
-            BiCubicSplineFast bcs = computeSpline(gsom, matrix, width, height, unitWidth, unitHeight);
+            BiCubicSplineFast bcs = computeSpline(gsom, matrix, width, height, (int)unitWidth, (int)unitHeight);
 
             int elevation = 0;
             int stepSize = Math.max(5000, height * width / 500);
@@ -157,7 +164,7 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 for (int x = 0; x < width; x++) {
                     // adapted to mnemonic (sparse) SOMs
                     try {
-                        if (gsom.getLayer().getUnit((x / unitWidth), (y / unitHeight)) != null) {
+                        if (gsom.getLayer().getUnit((int)(x / unitWidth), (int)(y / unitHeight)) != null) {
                             elevation = (int) Math.round(bcs.interpolate(y, x) * palette.maxColourIndex());
                             g.setPaint(palette.getColorConstrained(elevation));
                             g.fill(new Rectangle(x, y, 1, 1));
@@ -191,8 +198,6 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 yOff = (int) Math.round(unitHeight / (factorY * 2));
             }
 
-            GridHelper helper = gsom.getLayer().getGridHelper();
-
             for (int y = 0; y < matrix.rows(); y++) {
                 for (int x = 0; x < matrix.columns(); x++) {
                     ci = (int) Math.round(matrix.get(y, x) * palette.maxColourIndex());
@@ -201,10 +206,13 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                     log.log(Level.FINER, "{0}/{1} => matrix value: {2}, colorIndex: {3}, colour {4}", new Object[] { y,
                             x, matrix.get(y, x), ci, color });
 
-                    int rx = xOff + x * (int) Math.round(unitWidth / factorX);
-                    int ry = yOff + y * (int) Math.round(unitHeight / factorY);
-                    int rw = (int) Math.round(unitWidth / factorX);
-                    int rh = (int) Math.round(unitHeight / factorY);
+                    // pixel calc (rounding/casting to int) is defered to helper.shape
+                    // otherwise the rounding error destroys precision
+                    double rx = xOff + x * (unitWidth / factorX);
+                    double ry = yOff + y * (unitHeight / factorY);
+                    double rw = unitWidth / factorX;
+                    double rh = unitHeight / factorY;
+
                     g.fill(helper.shape(x, y, rx, ry, rw, rh));
 
                     if (ci < minimumMatrixValue) {

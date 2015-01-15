@@ -81,8 +81,8 @@ public class RectangularHelper implements GridHelper {
     }
 
     @Override
-    public Shape shape(int ix, int iy, int x, int y, int width, int height) {
-        return new Rectangle(x,y,width,height);
+    public Shape shape(int ix, int iy, double x, double y, double width, double height) {
+        return new Rectangle((int)x,(int)y,(int)width,(int)height);
     }
 
     @Override
@@ -113,5 +113,15 @@ public class RectangularHelper implements GridHelper {
         p.x = (int) (xPos * width);
         p.y = (int) (yPos * height);
         return p;
+    }
+
+    @Override
+    public double adjustUnitWidth(double width, double height) {
+        return width;
+    }
+
+    @Override
+    public double adjustUnitHeight(double width, double height) {
+        return height;
     }
 }

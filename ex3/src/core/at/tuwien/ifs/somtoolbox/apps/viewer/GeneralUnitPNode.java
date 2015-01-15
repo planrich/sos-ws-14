@@ -184,7 +184,9 @@ public class GeneralUnitPNode extends PNode {
 
     public GeneralUnitPNode(Unit u, CommonSOMViewerStateData state, SOMLibClassInformation classInfo,
             SOMLibDataInformation dataInfo, Point[][] locations, double width, double height) {
+        this.state = state;
         this.u = u;
+
         GridHelper helper = state.growingSOM.getLayer().getGridHelper();
         Point p = helper.getPosition(u.getXPos(), u.getYPos(), width, height);
         X = p.x;
@@ -195,8 +197,6 @@ public class GeneralUnitPNode extends PNode {
         this.classInfo = classInfo;
         this.dataInfo = dataInfo;
         this.locations = locations;
-
-        this.state = state;
 
         if (classInfo != null) { // class information present, generate pie chart
             initClassPieCharts(u, classInfo, width, height);
@@ -274,8 +274,9 @@ public class GeneralUnitPNode extends PNode {
      */
     private void initPNodeProperties(double width, double height) {
         border = new Rectangle2D.Double();
-        this.width = width;
-        this.height = height;
+        GridHelper helper = state.growingLayer.getGridHelper();
+        this.width = helper.adjustUnitWidth(width, height);
+        this.height = helper.adjustUnitHeight(width, height);
         border.setRect(X, Y, width, height);
         this.setBounds(X, Y, width, height);
         selectionMarker = PPath.createRectangle((float) X, (float) Y, (float) width, (float) height);

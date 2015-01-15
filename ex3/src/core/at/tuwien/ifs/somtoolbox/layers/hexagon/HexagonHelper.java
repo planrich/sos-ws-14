@@ -208,9 +208,6 @@ public class HexagonHelper implements GridHelper {
     @Override
     public Vector3D[] shapeLinePoints(double x, double y, double width, double height) {
 
-        //height = height;
-        width = Math.sqrt(3)/2 * height;
-
         // center x and y. they are at the top left
         // of the bounds rectangle
         x += width/2;
@@ -223,19 +220,74 @@ public class HexagonHelper implements GridHelper {
             double angle = 2 * Math.PI / 6 * (i + 0.5);
             double x_1 = center.getX() + radius * Math.cos(angle);
             double y_1 = center.getY() + radius * Math.sin(angle);
-            vec[i] = new Vector3D(x_1,y_1,0);
+            vec[i] = new Vector3D(Math.round(x_1),Math.round(y_1),0);
         }
         return vec;
     }
+    @Override
+    public double getRadius(double width, double height) {
+        return height/2d;
+    }
 
     @Override
-    public Shape shape(int ix, int iy, int x, int y, int width, int height) {
+    public Rectangle2D getBorder(double x, double y, double width, double height) {
+        height = 2*width / Math.sqrt(3);
+        return new Rectangle2D.Double(x,y, width, height);
+    }
+
+    @Override
+    public Point getPosition(int xPos, int yPos, double width, double height) {
+        Point point = new Point();
+        height = 2*width / Math.sqrt(3);
+
+        double x = xPos * width;
+        double y = yPos * (height * (3d/4d));
+
+        if (yPos % 2 == 1) {
+            x += (width / 2d);
+        }
+
+        point.x = (int) x;
+        point.y = (int) y;
+        return point;
+    }
+
+    /**
+     * The width stays as it is
+     */
+    @Override
+    public double adjustUnitWidth(double width, double height) {
+        return width;
+    }
+
+    @Override
+    public double adjustUnitHeight(double width, double height) {
+        return 2*width / Math.sqrt(3);
+    }
+
+    @Override
+    public double getWidthPx(int unitWidth, int xCount) {
+        // width is the real width of a hexagon. pointy top orientation
+        // because every second row is shifted the width is adjusted
+        return (unitWidth * xCount + unitWidth / 2);
+    }
+
+    @Override
+    public double getHeightPx(int unitHeight, int yCount) {
+        double height = 2 * unitHeight / Math.sqrt(3);
+        return height + // the first row has unitHeight.
+               (height * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
+    }
+
+    @Override
+    public Shape shape(int ix, int iy, double x, double y, double width, double height) {
         Polygon polygon = new Polygon();
 
         // center x and y. they are at the top left
         // of the bounds rectangle
-        x += width/2;
-        y += height/2;
+        //x += width/2;
+        //y += height/2;
+        y = (int) (iy * height * (3d/4d));
 
         if (iy % 2 == 1) {
             x += width/2;
@@ -250,42 +302,4 @@ public class HexagonHelper implements GridHelper {
         return polygon;
     }
 
-    @Override
-    public double getRadius(double width, double height) {
-        double a = Math.max(width,height) / 2.d;
-        return Math.sqrt(a*a + a*a);
-    }
-
-    @Override
-    public Rectangle2D getBorder(double x, double y, double width, double height) {
-        width = Math.sqrt(3)/2 * width;
-        return new Rectangle2D.Double(x,y, width, height);
-    }
-
-    @Override
-    public Point getPosition(int xPos, int yPos, double width, double height) {
-        Point point = new Point();
-        double radius = getRadius(width, height);
-        Vector3D v = targetUnitToRealCoordSpace(xPos, yPos, 0, radius);
-        point.x = (int) v.getX();
-        point.y = (int) v.getY();
-        return point;
-    }
-
-    @Override
-    public double getWidthPx(int unitWidth, int xCount) {
-        double height = unitWidth;
-        double width = Math.sqrt(3d)/2d * height;
-
-        // width is the real width of a hexagon. pointy top orientation
-        // because every second row is shifted the width is adjusted
-        return (unitWidth * xCount + unitWidth * 2);
-    }
-
-    @Override
-    public double getHeightPx(int unitHeight, int yCount) {
-        return unitHeight + // the first row has unitHeight.
-               //(unitHeight * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
-               (unitHeight * (yCount)); // rows 1 to n-1 have height unitHeight * 3/4
-    }
 }

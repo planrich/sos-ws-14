@@ -17,11 +17,7 @@
  */
 package at.tuwien.ifs.somtoolbox.apps.viewer;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -76,6 +72,7 @@ import at.tuwien.ifs.somtoolbox.visualization.clustering.ClusteringAbortedExcept
 import at.tuwien.ifs.somtoolbox.visualization.clustering.ClusteringTree;
 import at.tuwien.ifs.somtoolbox.visualization.clustering.NonHierarchicalTreeBuilder;
 import at.tuwien.ifs.somtoolbox.visualization.clustering.TreeBuilder;
+import edu.umd.cs.piccolo.util.PPaintContext;
 
 /**
  * The graphical representation of a map in the {@link SOMViewer} application. This class makes use of the <a
@@ -1256,6 +1253,16 @@ public class MapPNode extends PNode {
          * GeneralUnitPNode(gsom.getLayer().getUnit(i,j), classInfo, dataInfo, UNIT_WIDTH, UNIT_HEIGHT); units[i][j].repaint(); } } catch
          * (LayerAccessException e) { // TODO Auto-generated catch block e.printStackTrace(); } } } repaint();
          */
+    }
+
+    @Override
+    protected void paint(PPaintContext paintContext) {
+        super.paint(paintContext);
+
+        Graphics2D g2d = paintContext.getGraphics();
+        g2d.setStroke(new BasicStroke(1.0f));
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(0,0,(int)getWidth(),(int)getHeight());
     }
 
     public BufferedImage getBackgroundImage() {
