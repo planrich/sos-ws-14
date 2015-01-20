@@ -84,6 +84,11 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
     }
 
     @Override
+    public int getPreferredScaleFactor() {
+        return 1;
+    }
+
+    @Override
     protected String getVisualisationSpecificCacheKey(int currentVariant) {
         return buildCacheKey("palette:" + palette.getShortName(),//
                 palette.isReversed() ? "reversed:" + palette.isReversed() : "",// 
