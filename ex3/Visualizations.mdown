@@ -1,0 +1,15 @@
+# Working;
+- Activty Historgram
+- P-Matrix
+- U*-Matrix
+- Hit Histogram
+
+# Rene:
+- U-Matrix
+- Metro Map
+- Quantization error
+
+# Richard:
+- Distorion
+- Topographic error
+- Neighbourhood radius
