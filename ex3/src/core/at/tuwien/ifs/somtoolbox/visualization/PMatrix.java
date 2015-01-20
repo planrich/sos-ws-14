@@ -111,6 +111,11 @@ public class PMatrix extends UMatrix {
     }
 
     @Override
+    public int getPreferredScaleFactor() {
+        return 1;
+    }
+
+    @Override
     public String[] needsAdditionalFiles() {
         String[] neededDataFiles = super.needsAdditionalFiles();
         // we only need the input vector file, the distance matrix is a bonus
