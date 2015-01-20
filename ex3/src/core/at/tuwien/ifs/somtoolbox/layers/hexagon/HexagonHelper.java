@@ -309,20 +309,35 @@ public class HexagonHelper implements GridHelper {
     }
 
     @Override
-    public Shape shape(int ix, int iy, double x, double y, double width, double height) {
+    public Shape shape(int indexX, int indexY, double unitWidth, double unitHeight) {
+        Polygon polygon = new Polygon();
+
+        Point hexBorder = getBorderPosition(indexX, indexY, unitWidth, unitHeight);
+        double hexUnitWidth = unitWidth;
+        double hexUnitHeight = 2*unitWidth / Math.sqrt(3);
+
+        Vector3D[] hexPoints = shapeLinePoints(hexBorder.x, hexBorder.y, hexUnitWidth, hexUnitHeight);
+
+        for (Vector3D vector : hexPoints) {
+            polygon.addPoint((int)vector.getX(), (int)vector.getY());
+        }
+
+        return polygon;
+    }
+
+    @Override
+    public Shape shape(int ix, int iy, double x, double y, double unitWidth, double unitHeight) {
         Polygon polygon = new Polygon();
 
         // center x and y. they are at the top left
         // of the bounds rectangle
-        //x += width/2;
-        //y += height/2;
-        y = (int) (iy * height * (3d/4d));
+        y = (int) (iy * unitHeight * (3d/4d));
 
         if (iy % 2 == 1) {
-            x += width/2;
+            x += unitWidth/2;
         }
 
-        Vector3D[] hexPoints = shapeLinePoints(x, y, width, height);
+        Vector3D[] hexPoints = shapeLinePoints(x, y, unitWidth, unitHeight);
 
         for (Vector3D vector : hexPoints) {
             polygon.addPoint((int)vector.getX(), (int)vector.getY());

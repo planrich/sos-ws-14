@@ -33,11 +33,17 @@ public interface  GridHelper {
      * @param iy index in the grid (y)
      * @param x
      * @param y
-     * @param width
-     * @param height
+     * @param unitWidth
+     * @param unitHeight
      * @return
      */
-    Shape shape(int ix, int iy, double x, double y, double width, double height);
+    Shape shape(int ix, int iy, double x, double y, double unitWidth, double unitHeight);
+
+    /**
+     * Get the shape using the unit dimensions.
+     * @return a renderable shape
+     */
+    Shape shape(int indexX, int indexY, double unitWidth, double unitHeight);
 
     double getWidthPx(int unitWidth, int xCount);
 
