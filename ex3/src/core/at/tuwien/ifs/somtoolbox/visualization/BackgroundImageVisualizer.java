@@ -41,7 +41,7 @@ import at.tuwien.ifs.somtoolbox.visualization.AbstractBackgroundImageVisualizer.
  */
 public interface BackgroundImageVisualizer extends Comparable<BackgroundImageVisualizer> {
 
-    public static final int DEFAULT_BACKGROUND_VISUALIZATION_SCALE = 13;
+    public static final int DEFAULT_BACKGROUND_VISUALIZATION_SCALE = 1;
 
     public static final String CACHE_KEY_SECTION_SEPARATOR = " >> ";
 
