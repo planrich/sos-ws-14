@@ -147,6 +147,11 @@ public class RectangularHelper implements GridHelper {
     }
 
     @Override
+    public double getMapDistance(Unit a, Unit b) {
+        return getMapDistance(a.getXPos(), a.getYPos(), a.getZPos(), b.getXPos(), b.getYPos(), b.getZPos());
+    }
+
+    @Override
     public Line2D.Double centeredLine2dUnitAtoUnitB(Unit a, Unit b, double unitWidth, double unitHeight) {
         double halfWidth = unitWidth / 2;
         double halfHeight = unitHeight / 2;

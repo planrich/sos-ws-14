@@ -194,6 +194,11 @@ public class HexagonHelper implements GridHelper {
     }
 
     @Override
+    public double getMapDistance(Unit a, Unit b) {
+        return getMapDistance(a.getXPos(), a.getYPos(), a.getZPos(), b.getXPos(), b.getYPos(), b.getZPos());
+    }
+
+    @Override
     public double getMapDistance(int x1, int y1, int z1, int x2, int y2, int z2) {
         try {
             Unit v = getUnit(x1, y1, z1);
