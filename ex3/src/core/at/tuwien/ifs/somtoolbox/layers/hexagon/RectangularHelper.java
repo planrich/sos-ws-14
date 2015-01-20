@@ -6,6 +6,7 @@ import at.tuwien.ifs.somtoolbox.layers.Unit;
 import org.apache.commons.math.geometry.Vector3D;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -108,11 +109,19 @@ public class RectangularHelper implements GridHelper {
     }
 
     @Override
-    public Point getPosition(int xPos, int yPos, double width, double height) {
+    public Point getBorderPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
         Point p = new Point();
-        p.x = (int) (xPos * width);
-        p.y = (int) (yPos * height);
+        p.x = (int) (xPos * unitWidth);
+        p.y = (int) (yPos * unitHeight);
         return p;
+    }
+
+    @Override
+    public Point getPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
+        Point borderPos = getBorderPosition(xPos, yPos, unitWidth, unitHeight);
+        borderPos.x += unitHeight/2;
+        borderPos.y += unitWidth/2;
+        return borderPos;
     }
 
     @Override
@@ -123,5 +132,24 @@ public class RectangularHelper implements GridHelper {
     @Override
     public double adjustUnitHeight(double width, double height) {
         return height;
+    }
+
+    @Override
+    public double getMapDistanceSq(int x1, int y1, int z1, int x2, int y2, int z2) {
+        Vector3D v1 = new Vector3D(x1,y1,z1);
+        Vector3D v2 = new Vector3D(x2,y2,z2);
+        return MathUtils.euclidean2(v1, v2);
+    }
+
+    @Override
+    public Line2D.Double centeredLine2dUnitAtoUnitB(Unit a, Unit b, double unitWidth, double unitHeight) {
+        double halfWidth = unitWidth / 2;
+        double halfHeight = unitHeight / 2;
+        int x1 = a.getXPos();
+        int y1 = a.getYPos();
+        int x2 = b.getXPos();
+        int y2 = b.getYPos();
+        return new Line2D.Double(x1 * unitWidth + halfWidth, y1 * unitHeight + halfHeight,
+                                 x2 * unitWidth + halfWidth, y2 * unitHeight + halfHeight);
     }
 }

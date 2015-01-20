@@ -6,6 +6,7 @@ import at.tuwien.ifs.somtoolbox.layers.Unit;
 import org.apache.commons.math.geometry.Vector3D;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.List;
@@ -236,20 +237,35 @@ public class HexagonHelper implements GridHelper {
     }
 
     @Override
-    public Point getPosition(int xPos, int yPos, double width, double height) {
+    public Point getBorderPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
         Point point = new Point();
-        height = 2*width / Math.sqrt(3);
+        double hexUnitWidth = unitWidth;
+        double hexUnitHeight = 2*unitWidth / Math.sqrt(3);
 
-        double x = xPos * width;
-        double y = yPos * (height * (3d/4d));
+        double x = xPos * hexUnitWidth;
+        double y = yPos * (hexUnitHeight * (3d/4d));
 
         if (yPos % 2 == 1) {
-            x += (width / 2d);
+            x += (hexUnitWidth / 2d);
         }
 
         point.x = (int) x;
         point.y = (int) y;
         return point;
+    }
+
+    @Override
+    public Point getPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
+        Point p = getBorderPosition(xPos, yPos, unitWidth, unitHeight);
+
+        // move it to the center
+        double hexUnitHeight = 2*unitWidth / Math.sqrt(3);
+        double hexUnitWidth = unitWidth;
+
+        p.x += hexUnitWidth/2.d;
+        p.y += hexUnitHeight/2.d;
+
+        return p;
     }
 
     /**
@@ -266,6 +282,19 @@ public class HexagonHelper implements GridHelper {
     }
 
     @Override
+    public double getMapDistanceSq(int x1, int y1, int z1, int x2, int y2, int z2) {
+        try {
+            Unit v = getUnit(x1, y1, z1);
+            Unit u = getUnit(x2, y2, z2);
+            Vector3D vVec = targetUnitToRealCoordSpace(v);
+            Vector3D uVec = targetUnitToRealCoordSpace(u);
+            return MathUtils.euclidean2(vVec, uVec);
+        } catch (LayerAccessException e) {
+            throw new RuntimeException("was unable to fetch units", e); // severe error. stop right here!
+        }
+    }
+
+    @Override
     public double getWidthPx(int unitWidth, int xCount) {
         // width is the real width of a hexagon. pointy top orientation
         // because every second row is shifted the width is adjusted
@@ -274,9 +303,9 @@ public class HexagonHelper implements GridHelper {
 
     @Override
     public double getHeightPx(int unitHeight, int yCount) {
-        double height = 2 * unitHeight / Math.sqrt(3);
-        return height + // the first row has unitHeight.
-               (height * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
+        double hexUnitHeight = 2 * unitHeight / Math.sqrt(3);
+        return hexUnitHeight + // the first row has unitHeight.
+               (hexUnitHeight * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
     }
 
     @Override
@@ -300,6 +329,13 @@ public class HexagonHelper implements GridHelper {
         }
 
         return polygon;
+    }
+
+    @Override
+    public Line2D.Double centeredLine2dUnitAtoUnitB(Unit a, Unit b, double unitWidth, double unitHeight) {
+        Point p1 = getPosition(a.getXPos(), a.getXPos(), unitWidth, unitHeight);
+        Point p2 = getPosition(b.getXPos(), b.getXPos(), unitWidth, unitHeight);
+        return new Line2D.Double(p1.x, p1.y, p2.x, p2.y);
     }
 
 }

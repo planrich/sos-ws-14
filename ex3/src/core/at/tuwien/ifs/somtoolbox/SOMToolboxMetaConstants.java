@@ -29,7 +29,7 @@ public class SOMToolboxMetaConstants {
 
     public static final File USER_SOMVIEWER_PREFS = new File(USER_CONFIG_DIR, "somviewerrc");
 
-    public static final String VERSION = "0.7.5-4.svn4332";
+    public static final String VERSION = "${app.version}";
 
     public static String getVersion() {
         if (StringUtils.isNotBlank(VERSION)) {

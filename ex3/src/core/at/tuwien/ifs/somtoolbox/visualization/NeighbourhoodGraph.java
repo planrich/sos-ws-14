@@ -17,9 +17,7 @@
  */
 package at.tuwien.ifs.somtoolbox.visualization;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +32,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
 import org.apache.commons.math.util.MathUtils;
 
 import at.tuwien.ifs.somtoolbox.SOMToolboxException;
@@ -177,15 +177,21 @@ public class NeighbourhoodGraph extends AbstractBackgroundImageVisualizer {
         g.setPaint(Color.WHITE);
         g.fillRect(0, 0, width, height);
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         g.setColor(Color.RED);
         g.setStroke(new BasicStroke(0.3f));
 
         // connect the units of a pair with a line
         for (UnitPair pair : lines) {
-            VisualisationUtils.drawThickLine(g, pair.getFirst(), pair.getSecond(), unitWidth, unitHeight);
+            Unit first = pair.getFirst();
+            Unit second = pair.getSecond();
+            Point a = helper.getPosition(first.getXPos(), first.getYPos(), unitWidth, unitHeight);
+            Point b = helper.getPosition(second.getXPos(), second.getYPos(), unitWidth, unitHeight);
+            VisualisationUtils.drawThickLine(g, (int)a.getX(), (int)a.getY(), (int) b.getX(), (int) b.getY(), (int)unitWidth/10, (int)unitHeight/10);
         }
 
         return res;

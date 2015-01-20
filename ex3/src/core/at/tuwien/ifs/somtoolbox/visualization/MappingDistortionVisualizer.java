@@ -24,9 +24,11 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 
 import at.tuwien.ifs.somtoolbox.SOMToolboxException;
+import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.data.InputData;
 import at.tuwien.ifs.somtoolbox.data.SOMVisualisationData;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
 import at.tuwien.ifs.somtoolbox.models.GrowingSOM;
 
 /**
@@ -71,9 +73,6 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         // InputData data = new SOMLibSparseInputData(fileNames[0], true, true,1,7); // TODO: exception handling in
         // future?
         // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
@@ -81,17 +80,18 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         g.setPaint(Color.WHITE);
         g.fillRect(0, 0, width, height);
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         g.setColor(Color.RED);
         g.setStroke(new BasicStroke(0.3f));
         for (int d = 0; d < data.numVectors(); d++) {
             Unit[] winners = gsom.getLayer().getWinners(data.getInputDatum(d), 2);
             if (mapDistance(winners[0], winners[1]) > Math.sqrt(2)) {
-                g.draw(new Line2D.Double(winners[0].getXPos() * unitWidth + unitWidth / 2, winners[0].getYPos()
-                        * unitHeight + unitHeight / 2, winners[1].getXPos() * unitWidth + unitWidth / 2,
-                        winners[1].getYPos() * unitHeight + unitHeight / 2));
+                Line2D.Double line = gsom.getLayer().getGridHelper().centeredLine2dUnitAtoUnitB(winners[0], winners[1], unitWidth, unitHeight);
+                g.draw(line);
             }
         }
 
@@ -104,9 +104,6 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
             throw new SOMToolboxException("You need to specify the " + neededInputObjects[0]);
         }
         // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
@@ -114,17 +111,18 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         g.setPaint(Color.WHITE);
         g.fillRect(0, 0, width, height);
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         g.setColor(Color.RED);
         g.setStroke(new BasicStroke(0.3f));
         for (int d = 0; d < data.numVectors(); d++) {
             Unit[] winners = gsom.getLayer().getWinners(data.getInputDatum(d), 3);
             if (mapDistance(winners[0], winners[1]) > mapDistance(winners[0], winners[2])) {
-                g.draw(new Line2D.Double(winners[0].getXPos() * unitWidth + unitWidth / 2, winners[0].getYPos()
-                        * unitHeight + unitHeight / 2, winners[1].getXPos() * unitWidth + unitWidth / 2,
-                        winners[1].getYPos() * unitHeight + unitHeight / 2));
+                Line2D.Double line = helper.centeredLine2dUnitAtoUnitB(winners[0], winners[1], unitWidth, unitHeight);
+                g.draw(line);
             }
         }
 

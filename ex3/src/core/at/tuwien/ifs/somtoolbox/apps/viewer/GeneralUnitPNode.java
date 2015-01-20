@@ -24,9 +24,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import at.tuwien.ifs.somtoolbox.layers.Layer;
 import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonHelper;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PNode;
@@ -188,7 +186,7 @@ public class GeneralUnitPNode extends PNode {
         this.u = u;
 
         GridHelper helper = state.growingSOM.getLayer().getGridHelper();
-        Point p = helper.getPosition(u.getXPos(), u.getYPos(), width, height);
+        Point p = helper.getBorderPosition(u.getXPos(), u.getYPos(), width, height);
         X = p.x;
         Y = p.y;
 
