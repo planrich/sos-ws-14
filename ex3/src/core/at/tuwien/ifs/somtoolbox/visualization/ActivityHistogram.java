@@ -74,6 +74,11 @@ class ActivityHistogram extends AbstractItemVisualizer {
                 + dataPoint;
     }
 
+    @Override
+    public int getPreferredScaleFactor() {
+        return 1;
+    }
+
     /**
      * Draws the activity histogram. Given one input point it calculates the Euclidian distance to each weight vector.
      * 

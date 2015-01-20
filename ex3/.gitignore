@@ -6,3 +6,6 @@ doc/datasets/maps/
 bin/
 out/
 build.xml
+ex3.iml
+som.sh
+multichannel.log
