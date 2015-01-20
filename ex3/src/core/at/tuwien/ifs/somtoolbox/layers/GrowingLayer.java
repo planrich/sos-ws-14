@@ -1165,7 +1165,7 @@ public class GrowingLayer implements Layer {
     }
 
     public double getMapDistanceSq(int x1, int y1, int z1, int x2, int y2, int z2) {
-        return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2);
+        return gridHelper.getMapDistanceSq(x1, y1, z1, x2, y2, z2);
     }
 
     public double getMapDistanceSq(Unit u1, Unit u2) {

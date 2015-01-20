@@ -5,6 +5,7 @@ import at.tuwien.ifs.somtoolbox.layers.Unit;
 import org.apache.commons.math.geometry.Vector3D;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +63,18 @@ public interface  GridHelper {
      * Get the position for this shape. This mainly depends
      * on the implementation.
      * For a rectangle it is the top/left corner,
-     * for a hexagon it is the center of the hexagon itself.
+     * for a hexagon it is the top/left corner of the border
      * @param xPos
      * @param yPos
-     * @param width
-     * @param height
+     * @param unitWidth
+     * @param unitHeight
      */
-    Point getPosition(int xPos, int yPos, double width, double height);
+    Point getBorderPosition(int xPos, int yPos, double unitWidth, double unitHeight);
+
+    /**
+     * Get the center of the unit in scaled coord system.
+     */
+    Point getPosition(int xPos, int yPos, double unitWidth, double unitHeight);
 
     /**
      * For a rectangle and hexagon returns the width.
@@ -86,4 +92,14 @@ public interface  GridHelper {
      * @return
      */
     double adjustUnitHeight(double width, double height);
+
+    /**
+     * Calculate the distance squared
+     */
+    double getMapDistanceSq(int x1, int y1, int z1, int x2, int y2, int z2);
+
+    /**
+     * Draw a line from the first unit to the second in the center.
+     */
+    Line2D.Double centeredLine2dUnitAtoUnitB(Unit winner, Unit winner1, double unitWidth, double unitHeight);
 }
