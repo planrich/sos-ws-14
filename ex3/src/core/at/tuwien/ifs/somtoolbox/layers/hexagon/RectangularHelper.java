@@ -102,6 +102,22 @@ public class RectangularHelper implements GridHelper {
     }
 
     @Override
+    public boolean shouldFillBorder() {
+        return true;
+    }
+
+
+    @Override
+    public int getXOffset(double unitWidth, double factorX) {
+        return (int) Math.round(unitWidth / (factorX * 2 ));
+    }
+
+    @Override
+    public int getYOffset(double unitHeight, double factorY) {
+        return (int) Math.round(unitHeight / (factorY * 2));
+    }
+
+    @Override
     public double getRadius(double width, double height) {
         double w = width/2;
         double h = height/2;

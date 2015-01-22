@@ -106,6 +106,11 @@ public interface  GridHelper {
      */
     double getMapDistanceSq(int x1, int y1, int z1, int x2, int y2, int z2);
 
+    boolean shouldFillBorder();
+
+    int getXOffset(double unitWidth, double factorX);
+    int getYOffset(double unitHeight, double factorY);
+
     /**
      * Draw a line from the first unit to the second in the center.
      */

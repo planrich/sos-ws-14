@@ -314,6 +314,21 @@ public class HexagonHelper implements GridHelper {
     }
 
     @Override
+    public boolean shouldFillBorder() {
+        return false;
+    }
+
+    @Override
+    public int getXOffset(double unitWidth, double factorX) {
+        return (int) (Math.round(unitWidth / (factorX * 2 )) / 2);
+    }
+
+    @Override
+    public int getYOffset(double unitHeight, double factorY) {
+        return (int) (Math.round(unitHeight / (factorY * 2)) / 2);
+    }
+
+    @Override
     public Shape shape(int indexX, int indexY, double unitWidth, double unitHeight) {
         Polygon polygon = new Polygon();
 

@@ -199,8 +199,9 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
             int xOff = 0;
             int yOff = 0;
             if (factorX != 1 && factorY != 1) {
-                xOff = (int) Math.round(unitWidth / (factorX * 2));
-                yOff = (int) Math.round(unitHeight / (factorY * 2));
+                xOff = helper.getXOffset(unitWidth, factorX);
+                yOff = helper.getYOffset(unitHeight, factorY);
+
             }
 
             for (int y = 0; y < matrix.rows(); y++) {
@@ -229,7 +230,7 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 }
             }
 
-            if (factorX != 1 && factorY != 1) { // border
+            if (factorX != 1 && factorY != 1 && helper.shouldFillBorder()) { // border
                 ci = (int) Math.round(matrix.get(0, 0) * palette.maxColourIndex()); // top-left
                 g.fill(new Rectangle(0, 0, (int) Math.round(unitWidth / factorX * 2), (int) Math.round(unitHeight
                         / (factorY * 2))));
