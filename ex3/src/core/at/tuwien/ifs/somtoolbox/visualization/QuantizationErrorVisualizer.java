@@ -23,8 +23,10 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
+import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
 import at.tuwien.ifs.somtoolbox.layers.quality.QualityMeasureNotFoundException;
 import at.tuwien.ifs.somtoolbox.layers.quality.QuantizationError;
 import at.tuwien.ifs.somtoolbox.models.GrowingSOM;
@@ -106,8 +108,10 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         // Random rand = new Random(33330);
         int ci = 0;
@@ -129,7 +133,7 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
                         g.setPaint(Color.WHITE);
                     }
                     g.setColor(null);
-                    g.fill(new Rectangle(x * unitWidth, y * unitHeight, unitWidth, unitHeight));
+                    g.fill(helper.shape(x,y, unitWidth, unitHeight));
                 }
             }
         } catch (QualityMeasureNotFoundException e) {
@@ -170,8 +174,10 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         // Random rand = new Random(33330);
         int ci = 0;
@@ -193,7 +199,7 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
                         g.setPaint(Color.WHITE);
                     }
                     g.setColor(null);
-                    g.fill(new Rectangle(x * unitWidth, y * unitHeight, unitWidth, unitHeight));
+                    g.fill(helper.shape(x,y, unitWidth, unitHeight));
                 }
             }
         } catch (QualityMeasureNotFoundException e) {
