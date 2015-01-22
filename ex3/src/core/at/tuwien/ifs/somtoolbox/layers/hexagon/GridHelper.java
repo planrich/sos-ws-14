@@ -6,6 +6,7 @@ import org.apache.commons.math.geometry.Vector3D;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,9 @@ public interface  GridHelper {
 
     int getXOffset(double unitWidth, double factorX);
     int getYOffset(double unitHeight, double factorY);
+
+    Point getMarkerPos(double unitWidth, double unitHeight, int markerWidth, int markerHeight, Point2D.Double loc);
+    Point getLinePos(double unitWidth, double unitHeight, Point2D.Double aDouble);
 
     /**
      * Draw a line from the first unit to the second in the center.

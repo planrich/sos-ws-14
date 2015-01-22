@@ -7,6 +7,7 @@ import org.apache.commons.math.geometry.Vector3D;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -115,6 +116,18 @@ public class RectangularHelper implements GridHelper {
     @Override
     public int getYOffset(double unitHeight, double factorY) {
         return (int) Math.round(unitHeight / (factorY * 2));
+    }
+
+    @Override
+    public Point getMarkerPos(double unitWidth, double unitHeight, int markerWidth, int markerHeight, Point2D.Double loc) {
+        return new Point((int) Math.round(loc.x * unitWidth + (unitWidth - markerWidth) / 2), (int) Math.round(loc.y
+                * unitHeight + (unitHeight - markerHeight) / 2));
+    }
+
+    @Override
+    public Point getLinePos(double unitWidth, double unitHeight, Point2D.Double loc) {
+        return new Point((int) Math.round(loc.x * unitWidth + unitWidth / 2), (int) Math.round(loc.y * unitHeight
+                + unitHeight / 2));
     }
 
     @Override

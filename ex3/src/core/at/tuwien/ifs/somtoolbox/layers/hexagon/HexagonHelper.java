@@ -7,6 +7,7 @@ import org.apache.commons.math.geometry.Vector3D;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.List;
@@ -272,6 +273,22 @@ public class HexagonHelper implements GridHelper {
 
         return p;
     }
+
+
+    @Override
+    public Point getMarkerPos(double unitWidth, double unitHeight, int markerWidth, int markerHeight, Point2D.Double loc) {
+        Point pos = getPosition((int) loc.x, (int) loc.y, unitWidth, unitHeight);
+        pos.translate(markerWidth / (-2), markerHeight / (-2));
+        return pos;
+    }
+
+    @Override
+    public Point getLinePos(double unitWidth, double unitHeight, Point2D.Double loc) {
+        Point pos = getPosition((int) loc.x, (int) loc.y, unitWidth, unitHeight);
+        //pos.translate(markerWidth / (-2), markerHeight / (-2));
+        return pos;
+    }
+
 
     /**
      * The width stays as it is

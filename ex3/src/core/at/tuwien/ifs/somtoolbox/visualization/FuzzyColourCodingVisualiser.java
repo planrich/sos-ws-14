@@ -37,6 +37,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
 import cern.colt.function.DoubleFunction;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -88,8 +90,10 @@ public class FuzzyColourCodingVisualiser extends AbstractBackgroundImageVisualiz
         BufferedImage res = ImageUtils.createEmptyImage(width, height);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        double unitWidth = width / (double) layer.getXSize();
-        double unitHeight = height / (double) layer.getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         // set up array of unit coordinates
         Point2D.Double[][] locations = new Point2D.Double[layer.getXSize()][layer.getYSize()];
@@ -171,7 +175,7 @@ public class FuzzyColourCodingVisualiser extends AbstractBackgroundImageVisualiz
                             (int) Math.round(colourZoomY * loc.y));
 
                     g.setColor(colours[i][j]);
-                    g.fillRect((int) (i * unitWidth), (int) (j * unitHeight), (int) unitWidth, (int) unitHeight);
+                    g.fill(helper.shape(i,j, unitWidth, unitHeight));
                 }
             }
         }
@@ -184,7 +188,8 @@ public class FuzzyColourCodingVisualiser extends AbstractBackgroundImageVisualiz
                     Double loc = locations[i][j];
                     // draw the nodes
                     g.setColor(Color.black);
-                    Point markerPos = getMarkerPos(unitWidth, unitHeight, markerWidth, markerHeight, loc);
+
+                    Point markerPos = helper.getMarkerPos(unitWidth, unitHeight, markerWidth, markerHeight, loc);
                     VisualisationUtils.drawMarker(g, markerWidth, markerHeight, markerPos);
                 }
             }
@@ -199,14 +204,14 @@ public class FuzzyColourCodingVisualiser extends AbstractBackgroundImageVisualiz
                 for (int j = 0; j < layer.getYSize(); j++) {
 
                     // draw the nodes connections to the right
-                    Point start = getLinePos(unitWidth, unitHeight, locations[i][j]);
+                    Point start = helper.getLinePos(unitWidth, unitHeight, locations[i][j]);
                     if (i + 1 < layer.getXSize()) {
-                        Point end = getLinePos(unitWidth, unitHeight, locations[i + 1][j]);
+                        Point end = helper.getLinePos(unitWidth, unitHeight, locations[i + 1][j]);
                         VisualisationUtils.drawThickLine(g, start.x, start.y, end.x, end.y, lineWidth, lineHeight);
                     }
                     // draw the nodes connections to the right
                     if (j + 1 < layer.getYSize()) {
-                        Point end = getLinePos(unitWidth, unitHeight, locations[i][j + 1]);
+                        Point end = helper.getLinePos(unitWidth, unitHeight, locations[i][j + 1]);
                         VisualisationUtils.drawThickLine(g, start.x, start.y, end.x, end.y, lineWidth, lineHeight);
                     }
                 }
@@ -219,7 +224,7 @@ public class FuzzyColourCodingVisualiser extends AbstractBackgroundImageVisualiz
     private Point getMarkerPos(double unitWidth, double unitHeight, int markerWidth, int markerHeight, Double loc) {
         return new Point((int) Math.round(loc.x * unitWidth + (unitWidth - markerWidth) / 2), (int) Math.round(loc.y
                 * unitHeight + (unitHeight - markerHeight) / 2));
-    }
+     }
 
     private Point getLinePos(double unitWidth, double unitHeight, Double loc) {
         return new Point((int) Math.round(loc.x * unitWidth + unitWidth / 2), (int) Math.round(loc.y * unitHeight
