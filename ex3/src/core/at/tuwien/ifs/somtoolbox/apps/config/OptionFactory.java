@@ -711,7 +711,7 @@ public class OptionFactory extends AbstractOptionFactory {
     }
 
     public static Parameter getOptExportMapPaneTargetPath() {
-        return new FlaggedOption("exportMapPaneAndQuit", JSAP.STRING_PARSER, null, true, 'e', "export",
+        return new FlaggedOption("exportMapPaneAndQuit", JSAP.STRING_PARSER, null, false, 'e', "export",
                 "File path where to export map pane to. Quit the SOMView after this operation. " +
                 "Use in combination with --vis and --visParams");
     }
