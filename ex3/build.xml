@@ -393,11 +393,11 @@
 			</zipfileset>
 		</jar>
 
-		<jar destfile="${dist}/${jar.basename}${filname.infix.opt}${filname.suffix.fat}.jar" filesetmanifest="merge">
+		<!--jar destfile="${dist}/${jar.basename}${filname.infix.opt}${filname.suffix.fat}.jar" filesetmanifest="merge">
 			<zipgroupfileset file="${dist}/${jar.basename}${filname.suffix.fat}.jar" />
 			<zipgroupfileset file="${dist}/${jar.basename}${filname.infix.opt}.jar" />
 			<zipgroupfileset refid="libs.opt" />
-		</jar>
+		</jar-->
 
 	</target>
 

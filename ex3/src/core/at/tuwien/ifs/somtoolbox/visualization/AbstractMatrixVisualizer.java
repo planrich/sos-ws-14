@@ -169,7 +169,7 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 for (int x = 0; x < width; x++) {
                     // adapted to mnemonic (sparse) SOMs
                     try {
-                        if (gsom.getLayer().getUnit((int)(x / unitWidth), (int)(y / unitHeight)) != null) {
+                        if (gsom.getLayer().getUnit((int)(x / width), (int)(y / height)) != null) {
                             elevation = (int) Math.round(bcs.interpolate(y, x) * palette.maxColourIndex());
                             g.setPaint(palette.getColorConstrained(elevation));
                             g.fill(new Rectangle(x, y, 1, 1));

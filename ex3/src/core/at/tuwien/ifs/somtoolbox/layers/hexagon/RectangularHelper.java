@@ -82,8 +82,13 @@ public class RectangularHelper implements GridHelper {
     }
 
     @Override
-    public Shape shape(int ix, int iy, double x, double y, double width, double height) {
-        return new Rectangle((int)x,(int)y,(int)width,(int)height);
+    public Shape shape(int ix, int iy, double x, double y, double unitWidth, double unitHeight) {
+        return new Rectangle((int)x,(int)y,(int) unitWidth,(int) unitHeight);
+    }
+
+    @Override
+    public Shape shape(int indexX, int indexY, double unitWidth, double unitHeight) {
+        return new Rectangle((int)(indexX * unitWidth), (int)(indexY * unitHeight), (int)unitWidth, (int)unitHeight);
     }
 
     @Override
@@ -139,6 +144,11 @@ public class RectangularHelper implements GridHelper {
         Vector3D v1 = new Vector3D(x1,y1,z1);
         Vector3D v2 = new Vector3D(x2,y2,z2);
         return MathUtils.euclidean2(v1, v2);
+    }
+
+    @Override
+    public double getMapDistance(Unit a, Unit b) {
+        return getMapDistance(a.getXPos(), a.getYPos(), a.getZPos(), b.getXPos(), b.getYPos(), b.getZPos());
     }
 
     @Override

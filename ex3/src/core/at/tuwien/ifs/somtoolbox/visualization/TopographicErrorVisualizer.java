@@ -17,9 +17,7 @@
  */
 package at.tuwien.ifs.somtoolbox.visualization;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,9 +25,11 @@ import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import at.tuwien.ifs.somtoolbox.SOMToolboxException;
+import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.data.SOMVisualisationData;
 import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
+import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
 import at.tuwien.ifs.somtoolbox.layers.quality.QualityMeasureNotFoundException;
 import at.tuwien.ifs.somtoolbox.layers.quality.TopographicError;
 import at.tuwien.ifs.somtoolbox.models.GrowingSOM;
@@ -149,8 +149,10 @@ public class TopographicErrorVisualizer extends AbstractBackgroundImageVisualize
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         double ci = 0;
         for (int y = 0; y < gsom.getLayer().getYSize(); y++) {
@@ -179,10 +181,16 @@ public class TopographicErrorVisualizer extends AbstractBackgroundImageVisualize
                     // g.setPaint(new Color(Color.HSBtoRGB((float)0.0, (float)0.5, (float)1.0))); //H-value==color==red
                 }
                 g.setColor(null);
-                g.fill(new Rectangle(x * unitWidth, y * unitHeight, unitWidth, unitHeight));
+                Shape shape = helper.shape(x, y, unitWidth, unitHeight);
+                g.fill(shape);
             }
         }
         return res;
+    }
+
+    @Override
+    public int getPreferredScaleFactor() {
+        return 1;
     }
 
     private BufferedImage createMQEImage(GrowingSOM gsom, int width, int height, String cachefile) { // gattuso
@@ -248,8 +256,10 @@ public class TopographicErrorVisualizer extends AbstractBackgroundImageVisualize
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        int unitWidth = width / gsom.getLayer().getXSize();
-        int unitHeight = height / gsom.getLayer().getYSize();
+        GridHelper helper = gsom.getLayer().getGridHelper();
+
+        double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
+        double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         double ci = 0;// gattuso: da kommt ein try-catch weg
         for (int y = 0; y < gsom.getLayer().getYSize(); y++) {
@@ -277,7 +287,8 @@ public class TopographicErrorVisualizer extends AbstractBackgroundImageVisualize
                     // g.setPaint(new Color(Color.HSBtoRGB((float)0.0, (float)0.25, (float)1.0))); //H-value==color==red
                 }
                 g.setColor(null);
-                g.fill(new Rectangle(x * unitWidth, y * unitHeight, unitWidth, unitHeight));
+                Shape shape = helper.shape(x, y, unitWidth, unitHeight);
+                g.fill(shape);
             }
         }
         return res;

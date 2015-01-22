@@ -40,6 +40,7 @@ import at.tuwien.ifs.somtoolbox.layers.quality.TopographicError;
  * @version $Id: OptionFactory.java 4283 2014-01-05 17:27:43Z mayer $
  */
 public class OptionFactory extends AbstractOptionFactory {
+
     public enum MatchMode {
         exact, withoutPath, endsWith
     }
@@ -707,6 +708,12 @@ public class OptionFactory extends AbstractOptionFactory {
     public static FlaggedOption getOptMethod() {
         return new FlaggedOption("method", JSAP.STRING_PARSER, null, true, 'm', "method",
                 "summarization method: tfxidf, location, title, combined");
+    }
+
+    public static Parameter getOptExportMapPaneTargetPath() {
+        return new FlaggedOption("exportMapPaneAndQuit", JSAP.STRING_PARSER, null, true, 'e', "export",
+                "File path where to export map pane to. Quit the SOMView after this operation. " +
+                "Use in combination with --vis and --visParams");
     }
 
     public static void main(String[] args) {

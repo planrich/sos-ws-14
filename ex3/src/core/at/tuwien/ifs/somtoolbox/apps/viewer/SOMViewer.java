@@ -205,7 +205,10 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
             OptionFactory.getOptSetSecondSOM(false),
             // Others
             OptionFactory.getSwitchDocumentMode(), OptionFactory.getSwitchNoPlayer(),
-            OptionFactory.getOptDecodeProbability(false), OptionFactory.getOptDecodedOutputDir(false) };
+            OptionFactory.getOptDecodeProbability(false), OptionFactory.getOptDecodedOutputDir(false),
+            // Auto export
+            OptionFactory.getOptExportMapPaneTargetPath(),
+    };
 
     private static final long serialVersionUID = 1L;
 
@@ -661,6 +664,10 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
                         }
                     }
 
+                    // initializes the visualisation and renders + swaps the background
+                    // visualization is not displayed if it is not updated
+                    mapPane.updateVisualization();
+
                     updatePalettePanel();
                     visControlPanel.updateVisualisationControl();
                     resetControlElements(true);
@@ -684,6 +691,17 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
             updateSOMComparison(true);
             mapPane.setShiftArrowsVisibility(true);
             mapPane.centerAndFitMapToScreen(0);
+        }
+
+        String exportFilePath = config.getString("exportMapPaneAndQuit");
+        if (exportFilePath != null) {
+            try {
+                ExportUtils.saveMapPaneAsImage(mapPane, exportFilePath, false);
+            } catch (SOMToolboxException e) {
+                e.printStackTrace();
+                System.exit(-1);
+            }
+            System.exit(0);
         }
     }
 

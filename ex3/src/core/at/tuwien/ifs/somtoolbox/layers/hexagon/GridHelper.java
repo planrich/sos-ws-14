@@ -14,6 +14,8 @@ import java.util.List;
  * Created by rich on 1/12/15.
  */
 public interface  GridHelper {
+    double getMapDistance(Unit a, Unit b);
+
     double getMapDistance(int x1, int y1, int z1, int x2, int y2, int z2);
 
     ArrayList<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException;
@@ -33,11 +35,17 @@ public interface  GridHelper {
      * @param iy index in the grid (y)
      * @param x
      * @param y
-     * @param width
-     * @param height
+     * @param unitWidth
+     * @param unitHeight
      * @return
      */
-    Shape shape(int ix, int iy, double x, double y, double width, double height);
+    Shape shape(int ix, int iy, double x, double y, double unitWidth, double unitHeight);
+
+    /**
+     * Get the shape using the unit dimensions.
+     * @return a renderable shape
+     */
+    Shape shape(int indexX, int indexY, double unitWidth, double unitHeight);
 
     double getWidthPx(int unitWidth, int xCount);
 

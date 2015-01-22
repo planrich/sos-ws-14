@@ -89,7 +89,7 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         g.setStroke(new BasicStroke(0.3f));
         for (int d = 0; d < data.numVectors(); d++) {
             Unit[] winners = gsom.getLayer().getWinners(data.getInputDatum(d), 2);
-            if (mapDistance(winners[0], winners[1]) > Math.sqrt(2)) {
+            if (helper.getMapDistance(winners[0], winners[1]) > Math.sqrt(2)) {
                 Line2D.Double line = gsom.getLayer().getGridHelper().centeredLine2dUnitAtoUnitB(winners[0], winners[1], unitWidth, unitHeight);
                 g.draw(line);
             }
@@ -120,7 +120,7 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         g.setStroke(new BasicStroke(0.3f));
         for (int d = 0; d < data.numVectors(); d++) {
             Unit[] winners = gsom.getLayer().getWinners(data.getInputDatum(d), 3);
-            if (mapDistance(winners[0], winners[1]) > mapDistance(winners[0], winners[2])) {
+            if (helper.getMapDistance(winners[0], winners[1]) > helper.getMapDistance(winners[0], winners[2])) {
                 Line2D.Double line = helper.centeredLine2dUnitAtoUnitB(winners[0], winners[1], unitWidth, unitHeight);
                 g.draw(line);
             }
@@ -128,10 +128,4 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
 
         return res;
     }
-
-    private double mapDistance(Unit unit1, Unit unit2) {
-        return Math.sqrt((unit1.getXPos() - unit2.getXPos()) * (unit1.getXPos() - unit2.getXPos())
-                + (unit1.getYPos() - unit2.getYPos()) * (unit1.getYPos() - unit2.getYPos()));
-    }
-
 }
