@@ -117,29 +117,29 @@ First there is the single threaded training calculating the neighbourhood using 
 \]
 In the function \lstinline!updateUnitsInArea! $h_{ci}$ is the used to updated the weight vectors for each unit.
 
-The second strategy is called batch SOM that, similar to the first stratgey, uses the distance to the neighbours
+The second strategy is called batch SOM that, similar to the first stratgey, uses the squared distance to the neighbours
 to mark the activation. It then updates the weight vector of every node by assigning the mean value of all mapped input
 data samples in the neighbourhood.
 
 Since the algorithms are so similar we decided not to duplicate the SOM training code contained in \lstinline!GrowingLayer! but
-rather just abstract the distance measure. Both strategies mentioned earlier soley rely on the distance measure in the grid geometry.
+rather just abstract the distance measures. Both strategies mentioned earlier soley rely on the distance measure in the grid geometry.
 Figure~\ref{fig:hci-coord-rect} illustrates the rectangular distance measurement.
-The inner dashed circle has a distance of $\sqrt{1} = 1$ to
+The inner dashed circle has an euclidean distance of $\sqrt{1} = 1$ to
 the unit center at position $(1,1)$. The geometry layout in the code does not calculate the distance from the center of
-the unit square, but from the corner (lower left). The distance for the second dashed circle has a distance of $\sqrt(2) \approx 1.14$ and finally the last ring has a distance from the unit (1/1) of $\sqrt{4} = 2$.
+the unit square, but from the corner (lower left). The distance for the second dashed circle has an euclidean distance of $\sqrt(2) \approx 1.14$ and finally the last cirle has a distance from the unit (1/1) of $\sqrt{4} = 2$.
 
 To achieve the same distances in a hexagonal grid our approach is visualized in Figure~\ref{fig:hci-coord-hex}.
-The inner circle has a distance of $\sqrt{1} = 1$ to all of his 6 neighbours. To achive this calculation a hexagon
-we use the rectangular unit space which is 1 from any neighbouring unit. Since the hexagon grid forces deformation
+The inner circle has a distance of $\sqrt{1} = 1$ to all of his 6 neighbours. To achieve this distance metric 
+we use the rectangular unit space which with an unit $u$ from any neighbouring unit. Since the hexagon grid forces deformation
 of the shapes the following forumlas are used to calculate the grid.
 
 \begin{itemize}
-    \item Hexagonal width using a reference unit $u$ (e.g cm) //
-        $ h_w(u) = u \times \frac{\sqrt{3}}{2}; h_w(1) \approx 0.86 $
+    \item Hexagonal width using a reference unit $u$ (e.g cm)
+        $ h_w(u) = u; h_w(1) = 1 $
     \item Hexagonal height using a reference unit $u$ \\
-        $ h_h(u) = u \times \frac{3}{4}; h_h(1) = 0.75 $
+        $ h_h(u) = u \times \frac{2}{\sqrt{3}} * \frac{3}{4}; h_h(1) \approx 0.86 $
     \item Hexagonal shift using a reference unit $u$ \\
-        $ h_s(u) = \frac{h_w(u)}{2}; h_s(1) \approx 0.43 $ \\
+        $ h_s(u) = \frac{h_w(u)}{2}; h_s(1) = 0.5 $ \\
         Note that the hexagonal shift only returns a non zero
         value for every second row.
     \item Euclidean distance formula. 

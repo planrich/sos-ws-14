@@ -139,7 +139,7 @@ public class HexagonGeometry implements GridGeometry {
                 }
             }
         }
-        System.out.println(String.format(">> NU: x(%d) y(%d) has %d neighbours",x,y,neighbours.size()));
+        System.out.println(String.format(">> NU: x(%d) y(%d) has %d neighbours",x,y));
 
         return new ArrayList<Unit>(neighbours);
     }
@@ -170,10 +170,10 @@ public class HexagonGeometry implements GridGeometry {
 
         int yPos = (int) y;
 
-        double height = size * 2d;
-        double width = (Math.sqrt(3d)/2d) * height;
+        double width = size;
+        double height = 2d/Math.sqrt(3d) * (3d/4d);
         double widthShift = width;
-        double heightShift = height * (3d/4d);
+        double heightShift = height;
 
         x = x * widthShift;
         y = y * heightShift;
