@@ -189,8 +189,8 @@ public class NeighbourhoodGraph extends AbstractBackgroundImageVisualizer {
         for (UnitPair pair : lines) {
             Unit first = pair.getFirst();
             Unit second = pair.getSecond();
-            Point a = helper.getPosition(first.getXPos(), first.getYPos(), unitWidth, unitHeight);
-            Point b = helper.getPosition(second.getXPos(), second.getYPos(), unitWidth, unitHeight);
+            Point a = helper.getShapeCenterPoint(first.getXPos(), first.getYPos(), unitWidth, unitHeight);
+            Point b = helper.getShapeCenterPoint(second.getXPos(), second.getYPos(), unitWidth, unitHeight);
             VisualisationUtils.drawThickLine(g, (int)a.getX(), (int)a.getY(), (int) b.getX(), (int) b.getY(), (int)unitWidth/10, (int)unitHeight/10);
         }
 

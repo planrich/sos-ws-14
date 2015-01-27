@@ -1,6 +1,8 @@
 \documentclass{acm_proc_article-sp}
 
 \usepackage{graphicx}% Include figure files
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
 \usepackage{float}
@@ -11,9 +13,6 @@
 \usepackage{xcolor}
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
-%\usepackage[section]{placeins}
-\usepackage{caption}
-\usepackage{subcaption}
 
 
 \usepackage{listings}
@@ -226,6 +225,29 @@ of the shapes the following forumlas are used to calculate the grid.
     \caption{Coordinate system and layout}
     \label{fig:coord}
 \end{figure}
+
+\section{Visualisation}
+
+
+\newcommand{\cmprecthex}[5]
+{
+    \begin{figure}
+        \begin{subfigure}{0.49\linewidth}
+            \includegraphics*[width=\linewidth]{img/#1-#2}
+            \caption{#5}
+            \label{fig:#1-#2-rect}
+        \end{subfigure}
+        \begin{subfigure}{0.49\linewidth}
+            \includegraphics[width=\linewidth]{img/#1-#2-hex}
+            \caption{#4}
+            \label{fig:#1-#2-hex}
+        \end{subfigure}
+        \caption{#3}
+        \label{fig:#1-#2}
+    \end{figure}
+}
+
+\cmprecthex{cl}{activity}{Caption}{Hexagonal}{Rectangular}
 
 \bibliography{ref}
 \bibliographystyle{plain}

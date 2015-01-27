@@ -13,7 +13,13 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Created by rich on 1/12/15.
+ * @author Richard Plangger
+ * @email e1025637@student.tuwien.ac.at
+ * @date 12. Jan 15
+ *
+ * GridGeometry helper methods to calculate distances, borders, circles and
+ * render rectangular shapes.
+ * See the interface GridGeometry for a details description of the methods.
  */
 public class RectangularGeometry implements GridGeometry {
 
@@ -96,12 +102,12 @@ public class RectangularGeometry implements GridGeometry {
     }
 
     @Override
-    public double getWidthPx(int unitWidth, int xCount) {
+    public double getMapWidthInPx(int unitWidth, int xCount) {
         return unitWidth * xCount;
     }
 
     @Override
-    public double getHeightPx(int unitHeight, int yCount) {
+    public double getMapHeightInPx(int unitHeight, int yCount) {
         return unitHeight * yCount;
     }
 
@@ -146,7 +152,7 @@ public class RectangularGeometry implements GridGeometry {
     }
 
     @Override
-    public Point getBorderPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
+    public Point getShapeBorderPointTopLeft(int xPos, int yPos, double unitWidth, double unitHeight) {
         Point p = new Point();
         p.x = (int) (xPos * unitWidth);
         p.y = (int) (yPos * unitHeight);
@@ -154,8 +160,8 @@ public class RectangularGeometry implements GridGeometry {
     }
 
     @Override
-    public Point getPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
-        Point borderPos = getBorderPosition(xPos, yPos, unitWidth, unitHeight);
+    public Point getShapeCenterPoint(int xPos, int yPos, double unitWidth, double unitHeight) {
+        Point borderPos = getShapeBorderPointTopLeft(xPos, yPos, unitWidth, unitHeight);
         borderPos.x += unitHeight/2;
         borderPos.y += unitWidth/2;
         return borderPos;
@@ -193,5 +199,15 @@ public class RectangularGeometry implements GridGeometry {
         int y2 = b.getYPos();
         return new Line2D.Double(x1 * unitWidth + halfWidth, y1 * unitHeight + halfHeight,
                                  x2 * unitWidth + halfWidth, y2 * unitHeight + halfHeight);
+    }
+
+    @Override
+    public double getHeightAspect() {
+        return 1d;
+    }
+
+    @Override
+    public double rowShift(int y, double unitWidth, int factorX) {
+        return 0;
     }
 }

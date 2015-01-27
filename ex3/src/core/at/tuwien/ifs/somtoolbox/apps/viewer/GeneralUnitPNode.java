@@ -186,7 +186,7 @@ public class GeneralUnitPNode extends PNode {
         this.u = u;
 
         GridGeometry helper = state.growingSOM.getLayer().getGridGeometry();
-        Point p = helper.getBorderPosition(u.getXPos(), u.getYPos(), width, height);
+        Point p = helper.getShapeBorderPointTopLeft(u.getXPos(), u.getYPos(), width, height);
         X = p.x;
         Y = p.y;
 

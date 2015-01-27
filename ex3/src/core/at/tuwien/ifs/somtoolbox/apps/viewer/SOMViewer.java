@@ -208,6 +208,8 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
             OptionFactory.getOptDecodeProbability(false), OptionFactory.getOptDecodedOutputDir(false),
             // Auto export
             OptionFactory.getOptExportMapPaneTargetPath(),
+            OptionFactory.getOptFlip(false),
+            OptionFactory.getOptRotation(false),
     };
 
     private static final long serialVersionUID = 1L;
@@ -566,6 +568,22 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
             state.inputDataObjects.setFileName(SOMVisualisationData.INPUT_CORRECTIONS, inputCorrectionsFileName);
         }
 
+        // flip the view if specified on the command line
+        char flip = config.getChar("flip", '\0');
+        if (flip != '\0') {
+            if (flip == 'v') {
+                flippedY = true;
+            } else if (flip == 'h') {
+                flippedX = true;
+            } else if (flip == 'b') {
+                flippedX = true;
+                flippedY = true;
+            }
+        }
+
+        // rotate the map if specified
+        rotatedQuadrants = config.getInt("rotation", 0);
+
         createAndShowGUI();
 
         // if passed as parameter - set initial palette
@@ -667,6 +685,8 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
                     // initializes the visualisation and renders + swaps the background
                     // visualization is not displayed if it is not updated
                     mapPane.updateVisualization();
+                    // if flipped or rotated this will adjust the map
+                    doAnimation(0);
 
                     updatePalettePanel();
                     visControlPanel.updateVisualisationControl();
@@ -696,7 +716,7 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
         String exportFilePath = config.getString("exportMapPaneAndQuit");
         if (exportFilePath != null) {
             try {
-                ExportUtils.saveMapPaneAsImage(mapPane, exportFilePath, false);
+                ExportUtils.saveMapPaneAsImage(mapPane, exportFilePath, true);
             } catch (SOMToolboxException e) {
                 e.printStackTrace();
                 System.exit(-1);
@@ -1249,8 +1269,11 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
     private boolean flippedX = false, flippedY = false;
 
     private void doAnimation() {
+        doAnimation(1500);
+    }
+
+    private void doAnimation(int animationDuration) {
         // Set to 0 to deactivate animation.
-        int animationDuration = 1500;
         int delta = 1000;
         Random rand = new Random();
         for (Unit u : state.growingLayer.getAllUnits()) {

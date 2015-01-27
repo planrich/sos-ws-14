@@ -481,13 +481,14 @@ public class OptionFactory extends AbstractOptionFactory {
     }
 
     public static FlaggedOption getOptRotation(boolean required) {
-        return new FlaggedOption("rotation", JSAP.INTEGER_PARSER, null, required, 'r', "rotation",
+        // 'r' as short flag not possible
+        return new FlaggedOption("rotation", JSAP.INTEGER_PARSER, null, required, JSAP.NO_SHORTFLAG, "rotation",
                 "Rotation of the new map, values are: 90, 180, 270.");
     }
 
     public static FlaggedOption getOptFlip(boolean required) {
         return new FlaggedOption("flip", JSAP.CHARACTER_PARSER, null, required, 'f', "flip",
-                "Flip the map, values are h[orizontal] or v[ertical].");
+                "Flip the map, values are h[orizontal], v[ertical] or b[oth].");
     }
 
     public static FlaggedOption getOptOutputDirectory(boolean required) {

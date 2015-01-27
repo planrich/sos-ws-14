@@ -17,6 +17,8 @@ import java.util.List;
  * @email e1025637@student.tuwien.ac.at
  * @date 12. Jan 15
  *
+ * GridGeometry helper methods to calculate distances, borders, circles and
+ * render hexagonal shapes.
  * A hexagon has 6 neighbours. This is a 2D implementation.
  *
  *
@@ -44,24 +46,25 @@ import java.util.List;
  *                     / \     / \
  *                   /     \ /     \
  *                  |  0/2  |  1/2  |  ...
- *                  |       |   c   |
+ *                  |       |       |
  *                   \     / \     / \
  *                     \ /     \ /     \
  *                      |  0/1  |  1/1  |  ...
- *                      |   b   |       |
+ *                      |       |       |
  *                     / \     / \     /
  *                   /     \ /     \ /
  *                  |  0/0  |  1/0  |  ...
- *                  |   a   |       |
+ *                  |       |       |
  *                   \     / \     /
  *                     \ /     \ /
  *
- * To get the so called 'real' coordinates I used the following source of information:
+ * To get the so called 'real' coordinates the following source of information was used:
  *
  * http://www.redblobgames.com/grids/hexagons/
  *
  * Odd-r layout (means shift right every x % 2 == 1 row)
  * Pointy topped (hexagons are rotated 30 degree to the left)
+ * See GridGeometry for details.
  */
 public class HexagonGeometry implements GridGeometry {
     private final int xSize;
@@ -147,24 +150,22 @@ public class HexagonGeometry implements GridGeometry {
     public Vector3D targetUnitToRealCoordSpace(Unit target) {
         return targetUnitToRealCoordSpace(target.getXPos(), target.getYPos(), target.getZPos(), 1);
     }
+
     /**
      * When layouting hexagons we need to convert into a real coordiante space (needed for correct distance measure.
      * Using 2D space of rectangles this is rather easy. X/Y directly are the real coordinates in 2D space.
      *
-     * To get the so called 'real' coordinates I used the following source of information:
+     * Further information can be found at:
      *
      * http://www.redblobgames.com/grids/hexagons/
      *
      * Odd-r layout (means shift right every x % 2 == 1 row)
      * Pointy topped (hexagons are rotated 30 degree to the left)
      *
-     * size is the distance from the center to any the corner or an edge (any of the of 6).
-     *
      * @param x grid coord
      * @param y grid coord
      * @param z grid coord
-     * @param size edge length
-     * @return
+     * @param  size is the distance from the center to any the corner or an edge (any of the of 6).
      */
     public Vector3D targetUnitToRealCoordSpace(double x, double y, double z, double size) {
 
@@ -172,11 +173,9 @@ public class HexagonGeometry implements GridGeometry {
 
         double width = size;
         double height = 2d/Math.sqrt(3d) * (3d/4d);
-        double widthShift = width;
-        double heightShift = height;
 
-        x = x * widthShift;
-        y = y * heightShift;
+        x = x * width;
+        y = y * height;
 
         if (yPos % 2 == 1) {
             x += width / 2d;
@@ -244,7 +243,7 @@ public class HexagonGeometry implements GridGeometry {
     }
 
     @Override
-    public Point getBorderPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
+    public Point getShapeBorderPointTopLeft(int xPos, int yPos, double unitWidth, double unitHeight) {
         Point point = new Point();
         double hexUnitWidth = unitWidth;
         double hexUnitHeight = 2*unitWidth / Math.sqrt(3);
@@ -252,8 +251,10 @@ public class HexagonGeometry implements GridGeometry {
         double x = xPos * hexUnitWidth;
         double y = yPos * (hexUnitHeight * (3d/4d));
 
+        x += rowShift(yPos, hexUnitWidth, 1);
+
         if (yPos % 2 == 1) {
-            x += (hexUnitWidth / 2d);
+            x += unitWidth / 2;
         }
 
         point.x = (int) x;
@@ -262,8 +263,8 @@ public class HexagonGeometry implements GridGeometry {
     }
 
     @Override
-    public Point getPosition(int xPos, int yPos, double unitWidth, double unitHeight) {
-        Point p = getBorderPosition(xPos, yPos, unitWidth, unitHeight);
+    public Point getShapeCenterPoint(int xPos, int yPos, double unitWidth, double unitHeight) {
+        Point p = getShapeBorderPointTopLeft(xPos, yPos, unitWidth, unitHeight);
 
         // move it to the center
         double hexUnitHeight = 2*unitWidth / Math.sqrt(3);
@@ -278,22 +279,19 @@ public class HexagonGeometry implements GridGeometry {
 
     @Override
     public Point getMarkerPos(double unitWidth, double unitHeight, int markerWidth, int markerHeight, Point2D.Double loc) {
-        Point pos = getPosition((int) loc.x, (int) loc.y, unitWidth, unitHeight);
+        Point pos = getShapeCenterPoint((int) loc.x, (int) loc.y, unitWidth, unitHeight);
         pos.translate(markerWidth / (-2), markerHeight / (-2));
         return pos;
     }
 
     @Override
     public Point getLinePos(double unitWidth, double unitHeight, Point2D.Double loc) {
-        Point pos = getPosition((int) loc.x, (int) loc.y, unitWidth, unitHeight);
+        Point pos = getShapeCenterPoint((int) loc.x, (int) loc.y, unitWidth, unitHeight);
         //pos.translate(markerWidth / (-2), markerHeight / (-2));
         return pos;
     }
 
 
-    /**
-     * The width stays as it is
-     */
     @Override
     public double adjustUnitWidth(double width, double height) {
         return width;
@@ -302,6 +300,23 @@ public class HexagonGeometry implements GridGeometry {
     @Override
     public double adjustUnitHeight(double width, double height) {
         return 2*width / Math.sqrt(3);
+    }
+
+    @Override
+    public double getHeightAspect() {
+        return 3d/4d;
+    }
+
+    @Override
+    public double rowShift(int y, double unitWidth, int factorX) {
+        double shift = 0;
+        while (factorX != 1) {
+            if (y % (factorX * 2) == factorX) {
+                shift += (unitWidth / 2d);
+            }
+            factorX /= 2;
+        }
+        return shift;
     }
 
     @Override
@@ -318,14 +333,14 @@ public class HexagonGeometry implements GridGeometry {
     }
 
     @Override
-    public double getWidthPx(int unitWidth, int xCount) {
+    public double getMapWidthInPx(int unitWidth, int xCount) {
         // width is the real width of a grid. pointy top orientation
         // because every second row is shifted the width is adjusted
         return (unitWidth * xCount + unitWidth / 2);
     }
 
     @Override
-    public double getHeightPx(int unitHeight, int yCount) {
+    public double getMapHeightInPx(int unitHeight, int yCount) {
         double hexUnitHeight = 2 * unitHeight / Math.sqrt(3);
         return hexUnitHeight + // the first row has unitHeight.
                (hexUnitHeight * (3d/4d) * (yCount - 1)); // rows 1 to n-1 have height unitHeight * 3/4
@@ -350,7 +365,7 @@ public class HexagonGeometry implements GridGeometry {
     public Shape shape(int indexX, int indexY, double unitWidth, double unitHeight) {
         Polygon polygon = new Polygon();
 
-        Point hexBorder = getBorderPosition(indexX, indexY, unitWidth, unitHeight);
+        Point hexBorder = getShapeBorderPointTopLeft(indexX, indexY, unitWidth, unitHeight);
         double hexUnitWidth = unitWidth;
         double hexUnitHeight = 2*unitWidth / Math.sqrt(3);
 
@@ -367,12 +382,8 @@ public class HexagonGeometry implements GridGeometry {
     public Shape shape(int ix, int iy, double x, double y, double unitWidth, double unitHeight) {
         Polygon polygon = new Polygon();
 
-        // center x and y. they are at the top left
-        // of the bounds rectangle
-        y = (int) (iy * unitHeight * (3d/4d));
-
         if (iy % 2 == 1) {
-            x += unitWidth/2;
+            x += unitWidth / 2;
         }
 
         Vector3D[] hexPoints = shapeLinePoints(x, y, unitWidth, unitHeight);
@@ -386,8 +397,8 @@ public class HexagonGeometry implements GridGeometry {
 
     @Override
     public Line2D.Double centeredLine2dUnitAtoUnitB(Unit a, Unit b, double unitWidth, double unitHeight) {
-        Point p1 = getPosition(a.getXPos(), a.getXPos(), unitWidth, unitHeight);
-        Point p2 = getPosition(b.getXPos(), b.getXPos(), unitWidth, unitHeight);
+        Point p1 = getShapeCenterPoint(a.getXPos(), a.getXPos(), unitWidth, unitHeight);
+        Point p2 = getShapeCenterPoint(b.getXPos(), b.getXPos(), unitWidth, unitHeight);
         return new Line2D.Double(p1.x, p1.y, p2.x, p2.y);
     }
 

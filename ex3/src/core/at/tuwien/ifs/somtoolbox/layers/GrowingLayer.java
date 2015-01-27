@@ -1971,6 +1971,7 @@ public class GrowingLayer implements Layer {
             if (specialClassMode(trainingProps) || trainingProps.datumToUnitMappings().size() > 0) {
                 trainSpecial(data, numIterations, 0, trainingProps, initialLearnrate, initialSigma, expParam,
                         expParam2, classInfo, minProbability, progressWriter);
+
             } else {
                 trainNormal(data, numIterations, 0, trainingProps, initialLearnrate, initialSigma, expParam, expParam2,
                         progressWriter);
@@ -2434,7 +2435,8 @@ public class GrowingLayer implements Layer {
                     // use squared distance directly
                     hci = learnrate * Math.exp(-1 * getMapDistanceSq(winner, units[x][y][z]) / opt1);
 
-                    if (x >= 0 && y >= 0 && x <= 5 && y <= 5 && winner.getXPos() == 2 && winner.getYPos() == 2) {
+                    if (x >= 0 && y >= 0 && x <= 5 && y <= 5 && winner.getXPos() == 1 && winner.getYPos() == 1) {
+                        // TODO DEBUG
                         System.out.println(String.format(">>> hci: %.2f x(%d), y(%d), dst^2: %.02f, alpha: %.4f 2sigma^2: %.4f",
                                 hci, x, y, getMapDistanceSq(winner,units[x][y][z]), learnrate, opt1));
                     }

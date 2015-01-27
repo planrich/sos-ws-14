@@ -17,9 +17,7 @@
  */
 package at.tuwien.ifs.somtoolbox.visualization;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
@@ -195,12 +193,14 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
             double factorY = (double) matrix.rows() / (double) gsom.getLayer().getYSize();
             g.setColor(null);
             int ci = 0;
-            int xOff = 0;
-            int yOff = 0;
+            double xOff = 0;
+            double yOff = 0;
+            double subdividedUnitWidth = unitWidth / Math.round(factorX);
+            double subdividedUnitHeight = unitHeight / Math.round(factorY);
             if (factorX != 1 && factorY != 1) {
-                xOff = helper.getXOffset(unitWidth, factorX);
-                yOff = helper.getYOffset(unitHeight, factorY);
-
+                Point center00 = helper.getShapeCenterPoint(0, 0, unitWidth, unitHeight);
+                xOff = center00.x - (subdividedUnitWidth / 2);
+                yOff = center00.y - (subdividedUnitHeight / 2);
             }
 
             for (int y = 0; y < matrix.rows(); y++) {
@@ -211,14 +211,14 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                     log.log(Level.FINER, "{0}/{1} => matrix value: {2}, colorIndex: {3}, colour {4}", new Object[] { y,
                             x, matrix.get(y, x), ci, color });
 
-                    // pixel calc (rounding/casting to int) is defered to helper.shape
+                    // pixel calc (rounding/casting to int) is deferred to helper.shape
                     // otherwise the rounding error destroys precision
-                    double rx = xOff + x * (unitWidth / factorX);
-                    double ry = yOff + y * (unitHeight / factorY);
-                    double rw = unitWidth / factorX;
-                    double rh = unitHeight / factorY;
+                    double rx = xOff + x * subdividedUnitWidth;
+                    double ry = yOff + (y * subdividedUnitHeight) * helper.getHeightAspect();
 
-                    g.fill(helper.shape(x, y, rx, ry, rw, rh));
+                    rx += helper.rowShift(y, subdividedUnitWidth, (int)Math.round(factorX));
+
+                    g.fill(helper.shape(x, y, rx, ry, subdividedUnitWidth, subdividedUnitHeight));
 
                     if (ci < minimumMatrixValue) {
                         minimumMatrixValue = ci;
@@ -234,39 +234,39 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 g.fill(new Rectangle(0, 0, (int) Math.round(unitWidth / factorX * 2), (int) Math.round(unitHeight
                         / (factorY * 2))));
                 ci = (int) Math.round(matrix.get(0, matrix.columns() - 1) * palette.maxColourIndex()); // top-right
-                g.fill(new Rectangle(xOff + matrix.columns() * (int) Math.round(unitWidth / factorX), 0,
+                g.fill(new Rectangle((int)(xOff + matrix.columns() * (int) Math.round(unitWidth / factorX)), 0,
                         (int) Math.round(unitWidth / (factorX * 2)), (int) Math.round(unitHeight / (factorY * 2))));
                 ci = (int) Math.round(matrix.get(matrix.rows() - 1, 0) * palette.maxColourIndex()); // bottom-left
-                g.fill(new Rectangle(0, yOff + matrix.rows() * (int) Math.round(unitHeight / factorY),
+                g.fill(new Rectangle(0, (int)(yOff + matrix.rows() * (int) Math.round(unitHeight / factorY)),
                         (int) Math.round(unitWidth / (factorX * 2)), (int) Math.round(unitHeight / (factorY * 2))));
                 ci = (int) Math.round(matrix.get(matrix.rows() - 1, matrix.columns() - 1) * palette.maxColourIndex()); // bottom-right
-                g.fill(new Rectangle(xOff + matrix.columns() * (int) Math.round(unitWidth / factorX), yOff
-                        + matrix.rows() * (int) Math.round(unitHeight / factorY), (int) Math.round(unitWidth
+                g.fill(new Rectangle((int)(xOff + matrix.columns() * (int) Math.round(unitWidth / factorX)), (int)(yOff
+                        + matrix.rows() * (int) Math.round(unitHeight / factorY)), (int) Math.round(unitWidth
                         / (factorX * 2)), (int) Math.round(unitHeight / (factorY * 2))));
                 for (int x = 0; x < matrix.columns(); x++) {
                     // top border
                     ci = (int) Math.round(matrix.get(0, x) * palette.maxColourIndex());
                     g.setPaint(palette.getColor(ci));
-                    g.fill(new Rectangle(xOff + x * (int) Math.round(unitWidth / factorX), 0,
+                    g.fill(new Rectangle((int)(xOff + x * (int) Math.round(unitWidth / factorX)), 0,
                             (int) Math.round(unitWidth / factorX), (int) Math.round(unitHeight / (factorY * 2))));
                     // bottom border
                     ci = (int) Math.round(matrix.get(matrix.rows() - 1, x) * palette.maxColourIndex());
                     g.setPaint(palette.getColor(ci));
-                    g.fill(new Rectangle(xOff + x * (int) Math.round(unitWidth / factorX), (yOff + matrix.rows()
-                            * (int) Math.round(unitHeight / factorY)), (int) Math.round(unitWidth / factorX),
+                    g.fill(new Rectangle((int)(xOff + x * (int) Math.round(unitWidth / factorX)), (int)((yOff + matrix.rows()
+                            * (int) Math.round(unitHeight / factorY))), (int) Math.round(unitWidth / factorX),
                             (int) Math.round(unitHeight / (factorY * 2))));
                 }
                 for (int y = 0; y < matrix.rows(); y++) {
                     // left border
                     ci = (int) Math.round(matrix.get(y, 0) * palette.maxColourIndex());
                     g.setPaint(palette.getColor(ci));
-                    g.fill(new Rectangle(0, yOff + y * (int) Math.round(unitHeight / factorY),
+                    g.fill(new Rectangle(0, (int)(yOff + y * (int) Math.round(unitHeight / factorY)),
                             (int) Math.round(unitWidth / (factorX * 2)), (int) Math.round(unitHeight / factorY)));
                     // right border
                     ci = (int) Math.round(matrix.get(y, matrix.columns() - 1) * palette.maxColourIndex());
                     g.setPaint(palette.getColor(ci));
-                    g.fill(new Rectangle((xOff + matrix.columns() * (int) Math.round(unitWidth / factorX)), yOff + y
-                            * (int) Math.round(unitHeight / factorY), (int) Math.round(unitWidth / (factorX * 2)),
+                    g.fill(new Rectangle((int)((xOff + matrix.columns() * (int) Math.round(unitWidth / factorX))), (int)(yOff + y
+                            * (int) Math.round(unitHeight / factorY)), (int) Math.round(unitWidth / (factorX * 2)),
                             (int) Math.round(unitHeight / factorY)));
                 }
             }

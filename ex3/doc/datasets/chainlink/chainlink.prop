@@ -7,3 +7,4 @@ ySize=18
 learnRate=0.7
 numIterations=10000
 sigma=7
+workingDirectory = ./
