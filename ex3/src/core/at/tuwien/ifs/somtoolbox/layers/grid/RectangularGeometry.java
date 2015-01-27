@@ -1,4 +1,4 @@
-package at.tuwien.ifs.somtoolbox.layers.hexagon;
+package at.tuwien.ifs.somtoolbox.layers.grid;
 
 import at.tuwien.ifs.commons.util.MathUtils;
 import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
@@ -10,18 +10,19 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Created by rich on 1/12/15.
  */
-public class RectangularHelper implements GridHelper {
+public class RectangularGeometry implements GridGeometry {
 
     private final Unit[][][] units;
     private final int xSize;
     private final int ySize;
     private final int zSize;
 
-    public RectangularHelper(int xSize, int ySize, int zSize, Unit[][][] units) {
+    public RectangularGeometry(int xSize, int ySize, int zSize, Unit[][][] units) {
         this.units = units;
         this.xSize = xSize;
         this.ySize = ySize;
@@ -46,7 +47,9 @@ public class RectangularHelper implements GridHelper {
         int upperLimitY = Math.min(y + rad, ySize - 1);
         int lowerLimitY = Math.max(y - rad, 0);
         int upperLimitZ = Math.min(z + rad, zSize - 1);
-        int lowerLimitZ = Math.max(z - rad, lowerLimitZ = 0);
+        int lowerLimitZ = Math.max(z - rad, 0);
+
+        Logger.getLogger("at.tuwien").info(String.format(">> NU: x[%d-%d] y[%d-%d]",lowerLimitX,upperLimitX,lowerLimitY,upperLimitY));
 
         for (int x2 = lowerLimitX; x2 <= upperLimitX; x2++) {
             for (int y2 = lowerLimitY; y2 <= upperLimitY; y2++) {

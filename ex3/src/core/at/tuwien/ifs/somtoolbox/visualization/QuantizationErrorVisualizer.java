@@ -19,14 +19,13 @@ package at.tuwien.ifs.somtoolbox.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Logger;
 
 import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
+import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import at.tuwien.ifs.somtoolbox.layers.quality.QualityMeasureNotFoundException;
 import at.tuwien.ifs.somtoolbox.layers.quality.QuantizationError;
 import at.tuwien.ifs.somtoolbox.models.GrowingSOM;
@@ -108,7 +107,7 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
 
         double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
         double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
@@ -174,7 +173,7 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
 
         double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
         double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();

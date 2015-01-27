@@ -25,9 +25,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.HexagonHelper;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.RectangularHelper;
+import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
+import at.tuwien.ifs.somtoolbox.layers.grid.HexagonGeometry;
+import at.tuwien.ifs.somtoolbox.layers.grid.RectangularGeometry;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -156,7 +156,7 @@ public class GrowingLayer implements Layer {
 
     private final int threadsUsed;
 
-    private GridHelper gridHelper = null;
+    private GridGeometry gridGeometry = null;
 
     public enum Rotation {
         ROTATE_90 {
@@ -304,7 +304,7 @@ public class GrowingLayer implements Layer {
         initCPURanges();
 
         units = new Unit[xSize][ySize][zSize];
-        gridHelper = new RectangularHelper(xSize, ySize, zSize, units);
+        gridGeometry = new RectangularGeometry(xSize, ySize, zSize, units);
         //
         // perform optional PCA?
         //
@@ -1156,7 +1156,7 @@ public class GrowingLayer implements Layer {
 
     @Override
     public double getMapDistance(int x1, int y1, int z1, int x2, int y2, int z2) {
-        return gridHelper.getMapDistance(x1,y1,z1,x2,y2,z2);
+        return gridGeometry.getMapDistance(x1,y1,z1,x2,y2,z2);
     }
 
     @Override
@@ -1165,7 +1165,7 @@ public class GrowingLayer implements Layer {
     }
 
     public double getMapDistanceSq(int x1, int y1, int z1, int x2, int y2, int z2) {
-        return gridHelper.getMapDistanceSq(x1, y1, z1, x2, y2, z2);
+        return gridGeometry.getMapDistanceSq(x1, y1, z1, x2, y2, z2);
     }
 
     public double getMapDistanceSq(Unit u1, Unit u2) {
@@ -2434,6 +2434,11 @@ public class GrowingLayer implements Layer {
                     // use squared distance directly
                     hci = learnrate * Math.exp(-1 * getMapDistanceSq(winner, units[x][y][z]) / opt1);
 
+                    if (x >= 0 && y >= 0 && x <= 5 && y <= 5 && winner.getXPos() == 2 && winner.getYPos() == 2) {
+                        System.out.println(String.format(">>> hci: %.2f x(%d), y(%d), dst^2: %.02f, alpha: %.4f 2sigma^2: %.4f",
+                                hci, x, y, getMapDistanceSq(winner,units[x][y][z]), learnrate, opt1));
+                    }
+
                     // if (hci <= CUTOFF_SIGMA) { // don't update if we are outside the update range
                     // continue;
                     // }
@@ -2640,7 +2645,7 @@ public class GrowingLayer implements Layer {
      * distance computation
      */
     public ArrayList<Unit> getNeighbouringUnits(int x, int y, int z, double radius) throws LayerAccessException {
-        return gridHelper.getNeighbouringUnits(x, y, z, radius);
+        return gridGeometry.getNeighbouringUnits(x, y, z, radius);
     }
 
     /** Computes a distance matrix between all {@link Unit}s in the {@link Layer} */
@@ -3067,14 +3072,14 @@ public class GrowingLayer implements Layer {
         this.gridLayout = gridLayout;
 
         if (gridLayout == GridLayout.rectangular) {
-            gridHelper = new RectangularHelper(xSize, ySize, zSize, units);
+            gridGeometry = new RectangularGeometry(xSize, ySize, zSize, units);
         } else if (gridLayout == Layer.GridLayout.hexagonal) {
-            gridHelper = new HexagonHelper(xSize, ySize, units);
+            gridGeometry = new HexagonGeometry(xSize, ySize, units);
         }
     }
 
-    public GridHelper getGridHelper() {
-        return gridHelper;
+    public GridGeometry getGridGeometry() {
+        return gridGeometry;
     }
 
     public void setGridTopology(GridTopology gridTopology) {

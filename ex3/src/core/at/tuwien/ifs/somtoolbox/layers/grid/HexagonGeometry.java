@@ -1,4 +1,4 @@
-package at.tuwien.ifs.somtoolbox.layers.hexagon;
+package at.tuwien.ifs.somtoolbox.layers.grid;
 
 import at.tuwien.ifs.commons.util.MathUtils;
 import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
@@ -63,13 +63,13 @@ import java.util.List;
  * Odd-r layout (means shift right every x % 2 == 1 row)
  * Pointy topped (hexagons are rotated 30 degree to the left)
  */
-public class HexagonHelper implements GridHelper {
+public class HexagonGeometry implements GridGeometry {
     private final int xSize;
     private final int ySize;
     private final int zSize;
     private Unit[][][] units;
 
-    public HexagonHelper(int xSize, int ySize, Unit[][][] units) {
+    public HexagonGeometry(int xSize, int ySize, Unit[][][] units) {
         this.xSize = xSize;
         this.ySize = ySize;
         this.zSize = 1;
@@ -139,6 +139,7 @@ public class HexagonHelper implements GridHelper {
                 }
             }
         }
+        System.out.println(String.format(">> NU: x(%d) y(%d) has %d neighbours",x,y,neighbours.size()));
 
         return new ArrayList<Unit>(neighbours);
     }
@@ -318,7 +319,7 @@ public class HexagonHelper implements GridHelper {
 
     @Override
     public double getWidthPx(int unitWidth, int xCount) {
-        // width is the real width of a hexagon. pointy top orientation
+        // width is the real width of a grid. pointy top orientation
         // because every second row is shifted the width is adjusted
         return (unitWidth * xCount + unitWidth / 2);
     }

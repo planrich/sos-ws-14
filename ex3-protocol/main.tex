@@ -8,6 +8,7 @@
 \usepackage{verbatim}
 \usepackage{tikz}
 \usepackage{hyperref}% add hypertext capabilities
+\usepackage{xcolor}
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
 %\usepackage[section]{placeins}
@@ -104,8 +105,127 @@ cell to the left.
 \end{figure}
 
 To abstract the grid neighbourhood, geometric layout and rendering from the actual 3d \lstinline!Unit! array
-representation a new interface has been introduced. The interface \lstinline!GridHelper! is the base abstraction
+representation a new interface has been introduced. The interface \lstinline!GridGeometry! is the base abstraction
 to be able to calculate shapes, center of the shapes and the grid neighbours.
+
+\section{Hexagonal Training}
+
+By examining the training process implemented in \lstinline!GrowingLayer! we have identified the following two strategies.
+First there is the single threaded training calculating the neighbourhood using the function presented in the lecture:
+\[
+    h_{ci} = \alpha \times exp(-\frac{dist(winner,unit)^2}{2\sigma^2})
+\]
+In the function \lstinline!updateUnitsInArea! $h_{ci}$ is the used to updated the weight vectors for each unit.
+
+The second strategy is called batch SOM that, similar to the first stratgey, uses the distance to the neighbours
+to mark the activation. It then updates the weight vector of every node by assigning the mean value of all mapped input
+data samples in the neighbourhood.
+
+Since the algorithms are so similar we decided not to duplicate the SOM training code contained in \lstinline!GrowingLayer! but
+rather just abstract the distance measure. Both strategies mentioned earlier soley rely on the distance measure in the grid geometry.
+Figure~\ref{fig:hci-coord-rect} illustrates the rectangular distance measurement.
+The inner dashed circle has a distance of $\sqrt{1} = 1$ to
+the unit center at position $(1,1)$. The geometry layout in the code does not calculate the distance from the center of
+the unit square, but from the corner (lower left). The distance for the second dashed circle has a distance of $\sqrt(2) \approx 1.14$ and finally the last ring has a distance from the unit (1/1) of $\sqrt{4} = 2$.
+
+To achieve the same distances in a hexagonal grid our approach is visualized in Figure~\ref{fig:hci-coord-hex}.
+The inner circle has a distance of $\sqrt{1} = 1$ to all of his 6 neighbours. To achive this calculation a hexagon
+we use the rectangular unit space which is 1 from any neighbouring unit. Since the hexagon grid forces deformation
+of the shapes the following forumlas are used to calculate the grid.
+
+\begin{itemize}
+    \item Hexagonal width using a reference unit $u$ (e.g cm) //
+        $ h_w(u) = u \times \frac{\sqrt{3}}{2}; h_w(1) \approx 0.86 $
+    \item Hexagonal height using a reference unit $u$ \\
+        $ h_h(u) = u \times \frac{3}{4}; h_h(1) = 0.75 $
+    \item Hexagonal shift using a reference unit $u$ \\
+        $ h_s(u) = \frac{h_w(u)}{2}; h_s(1) \approx 0.43 $ \\
+        Note that the hexagonal shift only returns a non zero
+        value for every second row.
+    \item Euclidean distance formula. 
+    \begin{align*}
+        d(p_1,p_2) & = \sqrt{ A^2 + B^2 }\\
+        A & = (h_w(1) * p_2.x + h_s(1)) \\
+          &- (h_w(1) * p_1.x + h_s(1))\\
+        B & = (h_h(1) * p_2.y) - (h_h(1) * p_1.y)
+    \end{align*}
+    $p_x$ is a point in the rectangular grid. The dot-operator $x$ and $y$
+    (e.g. $p_1.x$) get the rectangular position. Thus $d(p_1,p_2)$ is just the
+    euclidean distance adjusted by the hexagonal shape width and height
+    and every second row shifted by half of the width.
+\end{itemize}
+
+\colorlet{c1}{red}
+\colorlet{c2}{violet}
+\colorlet{c3}{cyan}
+
+\begin{figure}
+    \begin{subfigure}{1\linewidth}
+    \centering
+    \begin{tikzpicture}
+        \foreach \off / \x / \y in {0/0/0,0/1/0,0/2/0,0/3/0,
+                         0.43cm/0/1,0.43cm/1/1,0.43cm/2/1,0.43cm/3/1,
+                         0/0/2,0/1/2,0/2/2,0/3/2,
+                         0.43cm/0/3,0.43cm/1/3,0.43cm/2/3,0.43cm/3/3} {
+            \draw ({\off + \x*0.86cm},{0.75cm * \y}) -- ++(30:0.5cm)
+              \foreach \r in {90,150,210,270,330} { -- ++(\r:0.5cm) }
+              -- cycle;
+          \draw ({\off + \x*0.86cm},{0.75cm * \y + 0.5cm}) node {\x/\y};
+        };
+
+        \draw [fill,black] ({0.86cm * 1 + 0.43cm},{0.75cm * 1 + 0.5cm}) circle [radius=0.06cm];
+
+        \draw [dashed,c1] ({0.86cm * 1 + 0.43cm},{0.75cm * 1 + 0.5cm}) circle [radius=0.86cm];
+        \draw [dashed,c2] ({0.86cm * 1 + 0.43cm},{0.75cm * 1 + 0.5cm}) circle [radius={0.75cm * 2}];
+        \draw [dashed,c3] ({0.86cm * 1 + 0.43cm},{0.75cm * 1 + 0.5cm}) circle [radius={2.2821cm}];
+        \foreach \off / \x / \y in {0/1/0,0/2/0,0.43cm/0/1,0.43cm/2/1,0/1/2,0/2/2} {
+            \draw [fill,c1] ({\off + 0.86cm * \x},{0.75cm * \y + 0.5cm}) circle [radius=0.06cm];
+        };
+        \foreach \off / \x / \y in {0/0/0,0/0/2,0/3/2,0/3/0,0.43cm/1/3} {
+            \draw [fill, c2] ({\off + 0.86cm * \x},{0.75cm * \y + 0.5cm}) circle [radius=0.06cm];
+        };
+        \draw [fill,c3] ({0.43cm + 0.86cm * 3},{0.75cm * 3 + 0.5cm}) circle [radius=0.06cm];
+    \end{tikzpicture}
+    \caption{hexagonal}
+    \label{fig:hci-coord-hex}
+    \end{subfigure}
+
+    \begin{subfigure}{1\linewidth}
+        \centering
+    \begin{tikzpicture}
+        \foreach \off / \x / \y in {0/0/0,0/1/0,0/2/0,0.43cm/0/1,0.43cm/1/1,0.43cm/2/1,0/0/2,0/1/2,0/2/2} {
+            \draw ({0.8cm * \x},{0.8cm * \y})
+              -- ++({0.8cm},{0})
+              -- ++({0},{0.8cm})
+              -- ++({-0.8cm},{0})
+              -- cycle;
+          \draw ({\x*0.8cm + 0.4cm},{0.8cm * \y + 0.4cm}) node {\x/\y};
+        };
+
+        \draw [dashed,c1] ({0.8cm * 1},{0.8cm * 1}) circle [radius=0.8cm];
+        \draw [fill,c1] ({0.8cm * 1},{0.8cm * 0}) circle [radius=0.06cm];
+        \draw [fill,c1] ({0.8cm * 0},{0.8cm * 1}) circle [radius=0.06cm];
+        \draw [fill,c1] ({0.8cm * 2},{0.8cm * 1}) circle [radius=0.06cm];
+        \draw [fill,c1] ({0.8cm * 1},{0.8cm * 2}) circle [radius=0.06cm];
+
+        \draw [fill,black] ({0.8cm * 1},{0.8cm * 1}) circle [radius=0.06cm];
+
+        \draw [dashed,c2] ({0.8cm * 1},{0.8cm * 1}) circle [radius={1.1313cm}];
+        \foreach \x / \y in {0/0,2/0,2/2,0/2} {
+            \draw [fill,c2] ({0.8cm * \x},{0.8cm * \y}) circle [radius=0.06cm];
+        }
+
+        \draw [dashed,c3] ({0.8cm * 1},{0.8cm * 1}) circle [radius={0.8cm * 2}];
+        \foreach \x / \y in {3/1,1/3} {
+            \draw [fill,c3] ({0.8cm * \x},{0.8cm * \y}) circle [radius=0.06cm];
+        }
+    \end{tikzpicture}
+    \caption{rectangular}
+    \label{fig:hci-coord-rect}
+    \end{subfigure}
+    \caption{Coordinate system and layout}
+    \label{fig:coord}
+\end{figure}
 
 \bibliography{ref}
 \bibliographystyle{plain}

@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
+import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -895,7 +895,7 @@ public class MapPNode extends PNode {
     }
 
     private int getScaledBackgroundImageWidth(BackgroundImageVisualizer visualization) {
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
         return (int) (helper.getWidthPx(UNIT_WIDTH,gsom.getLayer().getXSize()) / visualization.getPreferredScaleFactor());
     }
 
@@ -904,17 +904,17 @@ public class MapPNode extends PNode {
     }
 
     private int getScaledBackgroundImageHeight(BackgroundImageVisualizer visualization) {
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
         return (int) (helper.getHeightPx(UNIT_HEIGHT,gsom.getLayer().getYSize()) / visualization.getPreferredScaleFactor());
     }
 
     private int getBackgroundImageWidth() {
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
         return (int) helper.getWidthPx(UNIT_WIDTH,gsom.getLayer().getXSize());
     }
 
     private int getBackgroundImageHeight() {
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
         return (int) (helper.getHeightPx(UNIT_HEIGHT,gsom.getLayer().getYSize()));
     }
 
@@ -1043,14 +1043,14 @@ public class MapPNode extends PNode {
     /** Return the map width in pixels, i.e. the unit width times the xSize of the map. */
     @Override
     public double getWidth() {
-        GridHelper helper = state.growingSOM.getLayer().getGridHelper();
+        GridGeometry helper = state.growingSOM.getLayer().getGridGeometry();
         return helper.getWidthPx(UNIT_WIDTH, gsom.getLayer().getXSize());
     }
 
     /** Return the map height in pixels, i.e. the height width times the ySize of the map. */
     @Override
     public double getHeight() {
-        GridHelper helper = state.growingSOM.getLayer().getGridHelper();
+        GridGeometry helper = state.growingSOM.getLayer().getGridGeometry();
         return helper.getHeightPx(UNIT_HEIGHT, gsom.getLayer().getYSize());
     }
 

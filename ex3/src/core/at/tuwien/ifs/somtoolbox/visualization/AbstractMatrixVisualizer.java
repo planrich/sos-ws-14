@@ -23,9 +23,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
-import at.tuwien.ifs.somtoolbox.apps.viewer.GeneralUnitPNode;
 import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
+import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import flanagan.interpolation.BiCubicSplineFast;
@@ -143,7 +142,7 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
         BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
 
         if (contourMode == ContourMode.Full) {
             drawContour(g, matrix, width, height, true);

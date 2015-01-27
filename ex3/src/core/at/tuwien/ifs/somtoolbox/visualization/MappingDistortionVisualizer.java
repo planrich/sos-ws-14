@@ -28,7 +28,7 @@ import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.data.InputData;
 import at.tuwien.ifs.somtoolbox.data.SOMVisualisationData;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
-import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
+import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import at.tuwien.ifs.somtoolbox.models.GrowingSOM;
 
 /**
@@ -80,7 +80,7 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         g.setPaint(Color.WHITE);
         g.fillRect(0, 0, width, height);
 
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
 
         double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
         double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
@@ -90,7 +90,7 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         for (int d = 0; d < data.numVectors(); d++) {
             Unit[] winners = gsom.getLayer().getWinners(data.getInputDatum(d), 2);
             if (helper.getMapDistance(winners[0], winners[1]) > Math.sqrt(2)) {
-                Line2D.Double line = gsom.getLayer().getGridHelper().centeredLine2dUnitAtoUnitB(winners[0], winners[1], unitWidth, unitHeight);
+                Line2D.Double line = gsom.getLayer().getGridGeometry().centeredLine2dUnitAtoUnitB(winners[0], winners[1], unitWidth, unitHeight);
                 g.draw(line);
             }
         }
@@ -111,7 +111,7 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         g.setPaint(Color.WHITE);
         g.fillRect(0, 0, width, height);
 
-        GridHelper helper = gsom.getLayer().getGridHelper();
+        GridGeometry helper = gsom.getLayer().getGridGeometry();
 
         double unitWidth = helper.adjustUnitWidth(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
         double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();

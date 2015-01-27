@@ -1,4 +1,4 @@
-package at.tuwien.ifs.somtoolbox.layers.hexagon;
+package at.tuwien.ifs.somtoolbox.layers.grid;
 
 import at.tuwien.ifs.somtoolbox.layers.LayerAccessException;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
@@ -9,12 +9,11 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by rich on 1/12/15.
  */
-public interface  GridHelper {
+public interface GridGeometry {
     double getMapDistance(Unit a, Unit b);
 
     double getMapDistance(int x1, int y1, int z1, int x2, int y2, int z2);

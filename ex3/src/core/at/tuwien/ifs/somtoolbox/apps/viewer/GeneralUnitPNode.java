@@ -24,7 +24,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import at.tuwien.ifs.somtoolbox.layers.hexagon.GridHelper;
+import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PNode;
@@ -185,7 +185,7 @@ public class GeneralUnitPNode extends PNode {
         this.state = state;
         this.u = u;
 
-        GridHelper helper = state.growingSOM.getLayer().getGridHelper();
+        GridGeometry helper = state.growingSOM.getLayer().getGridGeometry();
         Point p = helper.getBorderPosition(u.getXPos(), u.getYPos(), width, height);
         X = p.x;
         Y = p.y;
@@ -272,7 +272,7 @@ public class GeneralUnitPNode extends PNode {
      */
     private void initPNodeProperties(double width, double height) {
         border = new Rectangle2D.Double();
-        GridHelper helper = state.growingLayer.getGridHelper();
+        GridGeometry helper = state.growingLayer.getGridGeometry();
         this.width = helper.adjustUnitWidth(width, height);
         this.height = helper.adjustUnitHeight(width, height);
         border.setRect(X, Y, width, height);
@@ -635,7 +635,7 @@ public class GeneralUnitPNode extends PNode {
         }
 
         if (drawBorder) {
-            GridHelper helper = state.growingSOM.getLayer().getGridHelper();
+            GridGeometry helper = state.growingSOM.getLayer().getGridGeometry();
             Vector3D[] v = helper.shapeLinePoints(X, Y, width, height);
 
             g2d.setStroke(borderStroke);
