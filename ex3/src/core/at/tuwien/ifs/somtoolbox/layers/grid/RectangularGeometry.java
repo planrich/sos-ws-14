@@ -112,7 +112,7 @@ public class RectangularGeometry implements GridGeometry {
     }
 
     @Override
-    public boolean shouldFillBorder() {
+    public boolean isRectangularGrid() {
         return true;
     }
 

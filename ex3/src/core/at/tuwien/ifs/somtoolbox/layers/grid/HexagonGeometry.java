@@ -312,7 +312,7 @@ public class HexagonGeometry implements GridGeometry {
         double shift = 0;
         while (factorX != 1) {
             if (y % (factorX * 2) == factorX) {
-                shift += (unitWidth / 2d);
+                shift += (unitWidth / 2d) * 2;
             }
             factorX /= 2;
         }
@@ -347,7 +347,7 @@ public class HexagonGeometry implements GridGeometry {
     }
 
     @Override
-    public boolean shouldFillBorder() {
+    public boolean isRectangularGrid() {
         return false;
     }
 

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 
 import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
+import at.tuwien.ifs.somtoolbox.util.ImageUtils;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.impl.DenseDoubleMatrix2D;
 import flanagan.interpolation.BiCubicSplineFast;
@@ -137,7 +138,7 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
     protected BufferedImage createImage(GrowingSOM gsom, DoubleMatrix2D matrix, int width, int height,
             boolean interpolate) throws SOMToolboxException {
         /** drawing stuff * */
-        BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage res = ImageUtils.createEmptyImage(width, height);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
         GridGeometry helper = gsom.getLayer().getGridGeometry();
@@ -166,7 +167,7 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 for (int x = 0; x < width; x++) {
                     // adapted to mnemonic (sparse) SOMs
                     try {
-                        if (gsom.getLayer().getUnit((int)(x / width), (int)(y / height)) != null) {
+                        if (gsom.getLayer().getUnit((x / width), (y / height)) != null) {
                             elevation = (int) Math.round(bcs.interpolate(y, x) * palette.maxColourIndex());
                             g.setPaint(palette.getColorConstrained(elevation));
                             g.fill(new Rectangle(x, y, 1, 1));
@@ -229,17 +230,21 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
                 }
             }
 
-            if (factorX != 1 && factorY != 1 && helper.shouldFillBorder()) { // border
+            if (factorX != 1 && factorY != 1 && helper.isRectangularGrid()) { // border
                 ci = (int) Math.round(matrix.get(0, 0) * palette.maxColourIndex()); // top-left
+                g.setPaint(palette.getColor(ci));
                 g.fill(new Rectangle(0, 0, (int) Math.round(unitWidth / factorX * 2), (int) Math.round(unitHeight
                         / (factorY * 2))));
                 ci = (int) Math.round(matrix.get(0, matrix.columns() - 1) * palette.maxColourIndex()); // top-right
-                g.fill(new Rectangle((int)(xOff + matrix.columns() * (int) Math.round(unitWidth / factorX)), 0,
+                g.setPaint(palette.getColor(ci));
+                g.fill(new Rectangle((int) (xOff + matrix.columns() * (int) Math.round(unitWidth / factorX)), 0,
                         (int) Math.round(unitWidth / (factorX * 2)), (int) Math.round(unitHeight / (factorY * 2))));
                 ci = (int) Math.round(matrix.get(matrix.rows() - 1, 0) * palette.maxColourIndex()); // bottom-left
-                g.fill(new Rectangle(0, (int)(yOff + matrix.rows() * (int) Math.round(unitHeight / factorY)),
+                g.setPaint(palette.getColor(ci));
+                g.fill(new Rectangle(0, (int) (yOff + matrix.rows() * (int) Math.round(unitHeight / factorY)),
                         (int) Math.round(unitWidth / (factorX * 2)), (int) Math.round(unitHeight / (factorY * 2))));
                 ci = (int) Math.round(matrix.get(matrix.rows() - 1, matrix.columns() - 1) * palette.maxColourIndex()); // bottom-right
+                g.setPaint(palette.getColor(ci));
                 g.fill(new Rectangle((int)(xOff + matrix.columns() * (int) Math.round(unitWidth / factorX)), (int)(yOff
                         + matrix.rows() * (int) Math.round(unitHeight / factorY)), (int) Math.round(unitWidth
                         / (factorX * 2)), (int) Math.round(unitHeight / (factorY * 2))));

@@ -69,7 +69,7 @@ public class FuzzyColourCodingVisualiser extends AbstractBackgroundImageVisualiz
     public FuzzyColourCodingVisualiser() {
         NUM_VISUALIZATIONS = 1;
         VISUALIZATION_NAMES = new String[] { "Fuzzy Colouring" };
-        VISUALIZATION_SHORT_NAMES = VISUALIZATION_NAMES;
+        VISUALIZATION_SHORT_NAMES = new String[] { "FuzzyColouring" };
         VISUALIZATION_DESCRIPTIONS = new String[] { "Inplementation of Fuzzy Colouring as described in \""
                 + "Johan Himberg. A SOM based cluster visualization and its application for false coloring.\n"
                 + " In Proceedings of the IEEE-INNS-ENNS International Joint Conference on Neural Networks (IJCNN 2000), vol. 3, pp. 587-592,\n"

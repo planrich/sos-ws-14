@@ -117,10 +117,9 @@ public interface GridGeometry {
     double getMapDistanceSq(int x1, int y1, int z1, int x2, int y2, int z2);
 
     /**
-     * TODO DOCU
-     * @return
+     * Returns true for a rectangular grid.
      */
-    boolean shouldFillBorder();
+    boolean isRectangularGrid();
 
     /**
      * TODO DOCU or remove

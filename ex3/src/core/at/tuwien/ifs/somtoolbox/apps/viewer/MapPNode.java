@@ -1261,8 +1261,6 @@ public class MapPNode extends PNode {
 
         Graphics2D g2d = paintContext.getGraphics();
         g2d.setStroke(new BasicStroke(1.0f));
-        g2d.setColor(Color.BLACK);
-        g2d.drawRect(0,0,(int)getWidth(),(int)getHeight());
     }
 
     public BufferedImage getBackgroundImage() {
