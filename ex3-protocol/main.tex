@@ -122,14 +122,16 @@ to mark the activation. It then updates the weight vector of every node by assig
 data samples in the neighborhood.
 
 Since the algorithms are so similar we decided not to duplicate the SOM training code contained in \lstinline!GrowingLayer! but
-rather just abstract the distance measures. Both strategies mentioned earlier solely rely on the distance measure in the grid geometry.
+rather just abstract the distance measures. The main advantage of our approach is that all features of the growing layer (such as adding and removing columns for a non static SOM) can now also be used with a hexagonal grid.
+
+Both strategies mentioned earlier solely rely on the distance measure in the grid geometry.
 Figure~\ref{fig:hci-coord-rect} illustrates the rectangular distance measurement.
 The inner dashed circle has an euclidean distance of $\sqrt{1} = 1$ to
 the unit center at position $(1,1)$. The geometry layout in the code does not calculate the distance from the center of
-the unit square, but from the corner (lower left). The distance for the second dashed circle has an euclidean distance of $\sqrt(2) \approx 1.14$ and finally the last circle has a distance from the unit (1/1) of $\sqrt{4} = 2$.
+the unit square, but from the corner (lower left). The distance for the second dashed circle has an euclidean distance of $\sqrt{2} \approx 1.14$ and finally the last circle has a distance from the unit (1/1) of $\sqrt{4} = 2$.
 
 To achieve the same distances in a hexagonal grid our approach is visualized in Figure~\ref{fig:hci-coord-hex}.
-The inner circle has a distance of $\sqrt{1} = 1$ to all of his 6 neighbors. To achieve this distance metric 
+The inner circle has a distance of $1$ to all of his 6 neighbors. To achieve this distance metric 
 we use the rectangular unit space which with an unit $u$ from any neighboring unit. The hexagon grid forces deformation
 of the shapes the following formulas are used to calculate the grid.
 
@@ -261,34 +263,65 @@ Figure~\ref{fig:hci-coord-hex} and~\ref{fig:hci-coord-rect} show the activation 
 
 \section{Visualisation}
 
+We have picked two data sets that we will compare in the Sections~\ref{sec:iris} and~\ref{sec:chain-link}. In the following we compiled a list of visualizations that we modified to work for both grid systems.
+
+\begin{itemize}
+	\item Activity Histogram
+	\item Hit Histogram
+	\item U-Matrix
+	\item D-Matrix
+	\item P-Matrix
+	\item Fuzzy Colouring
+	\item Neighbourhood Graph radius
+	\item Neighbourhood Graph KNN (K-nearest neighbour)
+	
+	\item Quantization Error
+	\item Mean Quantization Error
+	\item Topographic Error (4/8 units)
+\end{itemize}
+
+In every Figure we show the rectangular SOM on the left and the hexagonal on the right hand side.
 
 \newcommand{\cmprecthex}[5]
 {
-    \begin{figure}
-        \begin{subfigure}{0.49\linewidth}
-            \includegraphics*[width=\linewidth]{img/#1-#2}
-            \caption{#5}
-            \label{fig:#1-#2-rect}
-        \end{subfigure}
-        \begin{subfigure}{0.49\linewidth}
-            \includegraphics[width=\linewidth]{img/#1-#2-hex}
-            \caption{#4}
-            \label{fig:#1-#2-hex}
-        \end{subfigure}
-        \caption{#3}
-        \label{fig:#1-#2}
-    \end{figure}
+	\begin{figure}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics*[width=\linewidth]{img/#1-#2}
+			\caption{#5}
+			\label{fig:#1-#2-rect}
+		\end{subfigure}
+		\begin{subfigure}{0.49\linewidth}
+			\includegraphics[width=\linewidth]{img/#1-#2-hex}
+			\caption{#4}
+			\label{fig:#1-#2-hex}
+		\end{subfigure}
+		\caption{#3}
+		\label{fig:#1-#2}
+	\end{figure}
 }
+
+
+\subsection{Iris}
+\label{sec:iris}
+
+\subsection{Chain Link}
+\label{sec:chain-link}
 
 \cmprecthex{cl}{activity}{Activity histogram. Default referent unit}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{dmatrix}{D-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{pmatrix}{P-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{umatrix}{U-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{dist}{Distortion}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{qe}{Distortion}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{mqe}{Distortion}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{qe}{QE}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{mqe}{MQE}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{mqe}{Topo 4}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{fuzzy-colouring}{Fuzzy coloring}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-knn-1}{Neighbourhood KNN 1}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-knn-2}{Neighbourhood KNN 2}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-knn-3}{Neighbourhood KNN 3}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-radius-0,1}{Neighbourhood Graph Radius 0.1}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-radius-0,2}{Neighbourhood Graph Radius 0.2}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-radius-0,3}{Neighbourhood Graph Radius 0.3}{Hexagonal}{Rectangular}
 
 
 

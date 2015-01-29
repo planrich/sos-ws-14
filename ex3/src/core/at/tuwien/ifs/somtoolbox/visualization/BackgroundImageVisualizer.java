@@ -116,6 +116,12 @@ public interface BackgroundImageVisualizer extends Comparable<BackgroundImageVis
     public VisualizationControlPanel getControlPanel();
 
     /**
+     * Set the parameters for this visualization.
+     * @param parameter
+     */
+    public void setVisualizationParameter(String parameter);
+
+    /**
      * Checks whether this visualisation still needs some input files to generate an image.
      * 
      * @return an array containing the names of the input objects needed

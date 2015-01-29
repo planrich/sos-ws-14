@@ -147,6 +147,11 @@ public abstract class AbstractBackgroundImageVisualizer implements BackgroundIma
      */
     protected int preferredScaleFactor = DEFAULT_BACKGROUND_VISUALIZATION_SCALE;
 
+    @Override
+    public void setVisualizationParameter(String parameter) {
+        // empty. should be overwritten in the subclass
+    }
+
     /**
      * Initialises the control panel, if {@link GraphicsEnvironment#isHeadless()} reports to be in a non-headless
      * environment.

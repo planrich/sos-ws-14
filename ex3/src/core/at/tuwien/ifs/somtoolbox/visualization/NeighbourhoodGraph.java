@@ -32,6 +32,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import at.tuwien.ifs.commons.gui.jsap.IntegerEditor;
 import at.tuwien.ifs.somtoolbox.apps.viewer.MapPNode;
 import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import org.apache.commons.math.util.MathUtils;
@@ -195,6 +196,12 @@ public class NeighbourhoodGraph extends AbstractBackgroundImageVisualizer {
         }
 
         return res;
+    }
+
+    @Override
+    public void setVisualizationParameter(String parameter) {
+        radius = Double.parseDouble(parameter);
+        k = ((int) radius);
     }
 
     /**

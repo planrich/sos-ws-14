@@ -17,9 +17,7 @@
  */
 package at.tuwien.ifs.somtoolbox.visualization;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 
@@ -30,6 +28,7 @@ import at.tuwien.ifs.somtoolbox.data.SOMVisualisationData;
 import at.tuwien.ifs.somtoolbox.layers.Unit;
 import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import at.tuwien.ifs.somtoolbox.models.GrowingSOM;
+import at.tuwien.ifs.somtoolbox.util.ImageUtils;
 
 /**
  * @author Michael Dittenbach
@@ -74,11 +73,8 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         // future?
         // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage res = ImageUtils.createEmptyImage(width, height);
         Graphics2D g = (Graphics2D) res.getGraphics();
-        g.setColor(Color.WHITE);
-        g.setPaint(Color.WHITE);
-        g.fillRect(0, 0, width, height);
 
         GridGeometry helper = gsom.getLayer().getGridGeometry();
 
@@ -86,7 +82,7 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         g.setColor(Color.RED);
-        g.setStroke(new BasicStroke(0.3f));
+        g.setStroke(new BasicStroke((float) (unitWidth/10)));
         for (int d = 0; d < data.numVectors(); d++) {
             Unit[] winners = gsom.getLayer().getWinners(data.getInputDatum(d), 2);
             if (helper.getMapDistance(winners[0], winners[1]) > Math.sqrt(2)) {
@@ -105,11 +101,8 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         }
         // FIXME: sparsity!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage res = ImageUtils.createEmptyImage(width, height);
         Graphics2D g = (Graphics2D) res.getGraphics();
-        g.setColor(Color.WHITE);
-        g.setPaint(Color.WHITE);
-        g.fillRect(0, 0, width, height);
 
         GridGeometry helper = gsom.getLayer().getGridGeometry();
 
@@ -117,7 +110,7 @@ public class MappingDistortionVisualizer extends AbstractBackgroundImageVisualiz
         double unitHeight = helper.adjustUnitHeight(MapPNode.DEFAULT_UNIT_WIDTH, MapPNode.DEFAULT_UNIT_HEIGHT) / getPreferredScaleFactor();
 
         g.setColor(Color.RED);
-        g.setStroke(new BasicStroke(0.3f));
+        g.setStroke(new BasicStroke((float) (unitWidth/10)));
         for (int d = 0; d < data.numVectors(); d++) {
             Unit[] winners = gsom.getLayer().getWinners(data.getInputDatum(d), 3);
             if (helper.getMapDistance(winners[0], winners[1]) > helper.getMapDistance(winners[0], winners[2])) {

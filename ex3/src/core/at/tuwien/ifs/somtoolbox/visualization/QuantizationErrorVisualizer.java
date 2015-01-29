@@ -29,6 +29,7 @@ import at.tuwien.ifs.somtoolbox.layers.grid.GridGeometry;
 import at.tuwien.ifs.somtoolbox.layers.quality.QualityMeasureNotFoundException;
 import at.tuwien.ifs.somtoolbox.layers.quality.QuantizationError;
 import at.tuwien.ifs.somtoolbox.models.GrowingSOM;
+import at.tuwien.ifs.somtoolbox.util.ImageUtils;
 
 /**
  * Visualization of some aspects of Quantization Error <br>
@@ -104,7 +105,7 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
         minimumMatrixValue = minQE;
         maximumMatrixValue = maxQE;
 
-        BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage res = ImageUtils.createEmptyImage(width, height);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
         GridGeometry helper = gsom.getLayer().getGridGeometry();
@@ -170,7 +171,7 @@ public class QuantizationErrorVisualizer extends AbstractMatrixVisualizer implem
         minimumMatrixValue = minMQE;
         maximumMatrixValue = maxMQE;
 
-        BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage res = ImageUtils.createEmptyImage(width, height);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
         GridGeometry helper = gsom.getLayer().getGridGeometry();

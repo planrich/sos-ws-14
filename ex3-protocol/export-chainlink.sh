@@ -14,8 +14,8 @@ function ep() {
     ID=$2
     PARAM=$3
 
-    bash som.sh chainlink-hex chainlink "--vis '$VIS'--visParam $PARAM -e $PDIR/cl-$ID-hex.png"
-    bash som.sh chainlink chainlink "--vis '$VIS' --visParam $PARAM -e $PDIR/cl-$ID.png"
+    bash som.sh chainlink-hex chainlink "--vis $VIS --visParams $PARAM -e $PDIR/cl-$ID-hex.png"
+    bash som.sh chainlink chainlink "--vis $VIS --visParams $PARAM -e $PDIR/cl-$ID.png --flip b"
 }
 
 #e 'ActivityHistogram' 'activity'
@@ -27,11 +27,11 @@ function ep() {
 #e "FuzzyColouring" 'fuzzy-colouring'
 #e 'MeanQuantizationErr' 'mqe'
 #e 'TopographicError4Units' 'topo-4'
-#e 'DistortionSqrt' 'dist'
-ep 'NeighbourhoodKnn' 'nh-knn-0,1' '0.1'
-#ep 'NeighbourhoodKnn' 'nh-knn-0,2' '0.2'
-#ep 'NeighbourhoodKnn' 'nh-knn-0,3' '0.3'
-#ep 'NeighbourhoodRadius' 'nh-radius-0.1' '0.1'
-#ep 'NeighbourhoodRadius' 'nh-radius-0.3' '0.2'
-#ep 'NeighbourhoodRadius' 'nh-radius-0.2' '0.3'
+e 'DistortionSqrt' 'dist'
+#ep 'NeighbourhoodKnn' 'nh-knn-1' '1'
+#ep 'NeighbourhoodKnn' 'nh-knn-2' '2'
+#ep 'NeighbourhoodKnn' 'nh-knn-3' '3'
+#ep 'NeighbourhoodRadius' 'nh-radius-0,1' '0.1'
+#ep 'NeighbourhoodRadius' 'nh-radius-0,3' '0.2'
+#ep 'NeighbourhoodRadius' 'nh-radius-0,2' '0.3'
 

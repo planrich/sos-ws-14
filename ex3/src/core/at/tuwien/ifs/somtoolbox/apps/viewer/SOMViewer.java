@@ -665,6 +665,8 @@ public class SOMViewer extends MaximisedJFrame implements ActionListener, Observ
                             for (String string : soms) {
                                 compVis.addSOM(string);
                             }
+                        } else {
+                            initialVisualisation.setVisualizationParameter(initialVisParams);
                         }
                     }
 
