@@ -53,7 +53,7 @@ Rene Koller\\
 
 For this assignment we used the SOM Toolbox~\cite{somtoolbox}. Our solution
 is based on the source code found in the section ``Download Latest'' and is
-identified by the version ``0.7.5-4.svn4332''.
+identified by the version ``0.7.5-4.svn4332''. In the deliverable of this assignment we attached a patch that can be applied to the root folder of the project. It is called ``hexagonal.diff''. The modified source code can also be obtained from the repository located at~\url{https://github.com/planrich/sos-ws-14} and is located in the subfolder ex3.
 
 \section{Terminology}
 
@@ -113,7 +113,7 @@ to be able to calculate shapes, center of the shapes and the grid neighbors.
 By examining the training process implemented in \lstinline!GrowingLayer! we have identified the following two strategies.
 First there is the single threaded training calculating the neighborhood using the function presented in the lecture:
 \[
-    h_{ci} = \alpha \times exp(-\frac{dist(winner,unit)^2}{2\sigma^2})
+    h_{ci} = \alpha \times exp \left(-\frac{dist(winner,unit)^2}{2\sigma^2}\right)
 \]
 In the function \lstinline!updateUnitsInArea! $h_{ci}$ is the used to updated the weight vectors for each unit.
 
@@ -132,7 +132,7 @@ the unit square, but from the corner (lower left). The distance for the second d
 
 To achieve the same distances in a hexagonal grid our approach is visualized in Figure~\ref{fig:hci-coord-hex}.
 The inner circle has a distance of $1$ to all of his 6 neighbors. To achieve this distance metric 
-we use the rectangular unit space which with an unit $u$ from any neighboring unit. The hexagon grid forces deformation
+we use the rectangular unit space which with an distance metric $u$ from any neighboring unit. The hexagon grid forces deformation
 of the shapes the following formulas are used to calculate the grid.
 
 \begin{itemize}
@@ -183,7 +183,7 @@ of the shapes the following formulas are used to calculate the grid.
 \end{table}
 
 Table~\ref{tab:neighbours} shows the amount of neighbors in a $100\times100$ grid. The unit to measure the distance from is located at index $(50,50)$. Notably using the squared euclidean distance it can happen that for a radius of 2 hexagonal grid has less neighbors than the rectangular one. This can also be observed in Figure~\ref{fig:hci-coord-hex} at position $(0,0)$. The squared distance from $(1,1)$ is 3 which is greater than 2. The black solid circle shows a radius of distance 2.
-For all others we have observed and for the subset we added to the table hexagonal has always more neighbors than the rectangular one.
+For all others, we have observed and for the subset we added to the table, hexagonal has always more neighbors than the rectangular one.
 
 Figure~\ref{fig:hci-coord-hex} and~\ref{fig:hci-coord-rect} show the activation of neighbors using three dashed circles. Each circle intersects exactly with 6 nodes centers in the hexagonal grid and 4 nodes in the rectangular grid.
 
@@ -280,7 +280,8 @@ We have picked two data sets that we will compare in the Sections~\ref{sec:iris}
 	\item Topographic Error (4/8 units)
 \end{itemize}
 
-In every Figure we show the rectangular SOM on the left and the hexagonal on the right hand side.
+In every figure we show the rectangular SOM on the left and the hexagonal on the right hand side.
+If not noted otherwise the default settings of the visualization is used.
 
 \newcommand{\cmprecthex}[5]
 {
@@ -307,15 +308,43 @@ In every Figure we show the rectangular SOM on the left and the hexagonal on the
 \subsection{Chain Link}
 \label{sec:chain-link}
 
+The chain link dataset describes three dimensional points of two rings that are chained together. Training settings are for both as follows:
+\begin{itemize}
+	\item Size $x = 12, y = 18$
+	\item Learnrate $\alpha = 0.7$
+	\item Neighbourhood radius $\sigma = 7$
+	\item Iteration count $i = 10000$
+\end{itemize}
+
+At a first glance all visualizations produce a very similar result. This is a good sign and indicates that we did preserve the semantics of the training algorithm.
+
+\cmprecthex{cl}{hit}{Hit Histogram}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{activity}{Activity histogram. Default referent unit}{Hexagonal}{Rectangular}
+
+By observing Figure~\ref{fig:cl-hit} and~\ref{fig:cl-activity} especially at the latter the
+bottom units have different amounts of input data mapped to it. There seems to be one topology
+violation in the mid right of both grids. The hexagonal unit (mid right) with 25 units mapped to it has a blue
+color. The same is true for the rectangular unit but the topology violation is mapped to two units
+having 13 and 15 input mapped to it in Figure~\ref{fig:cl-activity-rect}.
+
+There are 72 interpolating unit on the rectangular grid whereas hexagonal has 76 counted in Figure~\ref{fig:cl-hit}. The major difference between the two Hit histograms are that in the
+hexagonal case there are more cases where units have a higher amount of input vectors mapped
+to them and the average seems to have a more balanced input vector count. These cases occur mostly
+on the mid right and left below and above the interpolating units.
+
 \cmprecthex{cl}{dmatrix}{D-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{pmatrix}{P-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{umatrix}{U-Matrix}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{dist}{Distortion}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{qe}{QE}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{mqe}{MQE}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{mqe}{Topo 4}{Hexagonal}{Rectangular}
+
+In both cases of P-Matrix~\ref{fig:cl-pmatrix} and D-Matrix~\ref{fig:cl-pmatrix} there is no notable difference we are aware of.
+
+For the U-Matrix visualization in Figure~\ref{fig:cl-umatrix-hex} we did not interpolate the colors
+of the edges of the hexagons that do not have a neighbor. This is done in the rectangular case. Interestingly the hexagonal SOM seems to have more broader mountain regions. The red/orange/yellow line that forms the digit ``2'' or the letter ``Z'' have a stronger orange color meaning that there are higher values in the neighborhood. This could give the impression that coherent regions are better separated in the hexagonal case.
+
 \cmprecthex{cl}{fuzzy-colouring}{Fuzzy coloring}{Hexagonal}{Rectangular}
+
+% TODO
+
 \cmprecthex{cl}{nh-knn-1}{Neighbourhood KNN 1}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{nh-knn-2}{Neighbourhood KNN 2}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{nh-knn-3}{Neighbourhood KNN 3}{Hexagonal}{Rectangular}
@@ -323,7 +352,29 @@ In every Figure we show the rectangular SOM on the left and the hexagonal on the
 \cmprecthex{cl}{nh-radius-0,2}{Neighbourhood Graph Radius 0.2}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{nh-radius-0,3}{Neighbourhood Graph Radius 0.3}{Hexagonal}{Rectangular}
 
+Figure~\ref{fig:cl-nh-knn-1},\ref{fig:cl-nh-knn-2} and \ref{fig:cl-nh-knn-3} show the Neighborhood Graph using KNN with different $k$ values. All of them look similar to their hexagonal neighborhood graph. It can be observed that the hexagonal graph has a staggering pattern in the top and the bottom of the map.
+This is considered a good sign because the neighbors are aligned good on the hexagonal grid.
+Figure~\ref{fig:cl-nh-knn-3} and the neighborhood graph using a radius in Figure~\ref{fig:cl-nh-radius-0,1} look very similar.  It was mentioned earlier that there is a unit with 25 input samples mapped to it. Above it there is a unit with only two. These units are both connected to an unit in the upper center. This forms a triangle that is not present in the rectangular case.
 
+By examining the neighborhood graph with a higher radius in Figure~\ref{fig:cl-nh-radius-0,2} and~\ref{fig:cl-nh-radius-0,3} the hexagonal unit have more red lines that connect neighbors than the rectangular ones.
+
+\cmprecthex{cl}{qe}{Quantization Error (QE)}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{mqe}{Mean Quantization Error (MQE)}{Hexagonal}{Rectangular}
+
+The QE shown in Figure~\ref{fig:cl-qe} does not differ very much comparing the two grid layouts.
+But the MQE shown in Figure~\ref{fig:cl-mqe} has much higher values in the hexagonal grid system. Earlier it was already observed that there is a more balanced distribution of unit to mapped input vectors in the hexagonal case. This might be one the reason for the result shown in~\ref{fig:cl-mqe}. The other explanation we could think of is that in the hexagonal case more neighbors are pulled in the training phase. This keeps unit regions until the fine tuning of the map closer together leading to a higher distance to some input samples.
+
+\cmprecthex{cl}{topo-4}{Topographic Error 4}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{dist}{Distortion $\sqrt{2}$}{Hexagonal}{Rectangular}
+
+The topographic error in Figure~\ref{fig:cl-topo-4} seems worse in the hexagonal case. Figure~\ref{fig:cl-dist} shows the distortion that is constrainted only to two areas in the hexagonal case.
+
+\section{Conclusion}
+
+For this last assignment of the lecture Self-Orgainzing Systems we have implemented a hexagonal grid that can be used to train SOM maps. Our implementation is tightly integraded into the current SOM training mechanisms.
+In addition to that we have updated many different visualizations to work correctly with the hexagonal grid and compared them using 2 well known datasets (Iris and Chainlink).
+Whether or not a hexagonal SOM is superior to a rectangular cannot be answered. We have observed several positive effects such as slightly better cluster separation in the UMatrix. In contrast to that we \textbf{once} observed that the mean quantization error was much higher in the hexagonal case.
+In many cases this might just be a question of aesthetics whether one grid looks better than the other.
 
 \bibliography{ref}
 \bibliographystyle{plain}
