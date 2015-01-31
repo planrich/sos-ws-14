@@ -33,7 +33,7 @@ Richard Plangger\\
 \email{e1025637@student.tuwien.ac.at}
 \alignauthor
 Rene Koller\\
-\email{eXXXXXXX@student.tuwien.ac.at}
+\email{e0925021@student.tuwien.ac.at}
 \alignauthor
 }
 
@@ -131,7 +131,7 @@ the unit center at position $(1,1)$. The geometry layout in the code does not ca
 the unit square, but from the corner (lower left). The distance for the second dashed circle has an euclidean distance of $\sqrt{2} \approx 1.14$ and finally the last circle has a distance from the unit (1/1) of $\sqrt{4} = 2$.
 
 To achieve the same distances in a hexagonal grid our approach is visualized in Figure~\ref{fig:hci-coord-hex}.
-The inner circle has a distance of $1$ to all of his 6 neighbors. To achieve this distance metric 
+The inner circle has a distance of $1$ to all of his 6 neighbors. To achieve this distance metric
 we use the rectangular unit space which with an distance metric $u$ from any neighboring unit. The hexagon grid forces deformation
 of the shapes the following formulas are used to calculate the grid.
 
@@ -148,8 +148,8 @@ of the shapes the following formulas are used to calculate the grid.
                    0 & \mathrm{otherwise}
                \end{array}
                \right.\]
-        
-    \item Euclidean distance formula. 
+
+    \item Euclidean distance formula.
     \begin{align*}
         d(p_1,p_2) & = \sqrt{ A^2 + B^2 }\\
         A & = (h_w(1) * p_2.x + h_s(1)) \\
@@ -179,7 +179,7 @@ of the shapes the following formulas are used to calculate the grid.
 		\hline
 	\end{tabular}
 	\caption{Neighbouring units using different grid layout and distance measures. Columns show different radius values $r$.}
-	\label{tab:neighbours} 
+	\label{tab:neighbours}
 \end{table}
 
 Table~\ref{tab:neighbours} shows the amount of neighbors in a $100\times100$ grid. The unit to measure the distance from is located at index $(50,50)$. Notably using the squared euclidean distance it can happen that for a radius of 2 hexagonal grid has less neighbors than the rectangular one. This can also be observed in Figure~\ref{fig:hci-coord-hex} at position $(0,0)$. The squared distance from $(1,1)$ is 3 which is greater than 2. The black solid circle shows a radius of distance 2.
@@ -274,7 +274,7 @@ We have picked two data sets that we will compare in the Sections~\ref{sec:iris}
 	\item Fuzzy Colouring
 	\item Neighbourhood Graph radius
 	\item Neighbourhood Graph KNN (K-nearest neighbour)
-	
+
 	\item Quantization Error
 	\item Mean Quantization Error
 	\item Topographic Error (4/8 units)
@@ -301,9 +301,6 @@ If not noted otherwise the default settings of the visualization is used.
 	\end{figure}
 }
 
-
-\subsection{Iris}
-\label{sec:iris}
 
 \subsection{Chain Link}
 \label{sec:chain-link}
@@ -368,6 +365,41 @@ But the MQE shown in Figure~\ref{fig:cl-mqe} has much higher values in the hexag
 \cmprecthex{cl}{dist}{Distortion $\sqrt{2}$}{Hexagonal}{Rectangular}
 
 The topographic error in Figure~\ref{fig:cl-topo-4} seems worse in the hexagonal case. Figure~\ref{fig:cl-dist} shows the distortion that is constrainted only to two areas in the hexagonal case.
+
+\subsection{Iris}
+\label{sec:iris}
+
+The Iris flower data set or Fisher's Iris data set is a multivariate data set introduced by Sir Ronald Fisher (1936) as an example of discriminant analysis.
+The data set consists of 50 samples from each of three species of Iris (Iris setosa, Iris virginica and Iris versicolor). Four features were measured from each sample: the length and the width of the sepals and petals, in centimetres.
+
+Training settings are for both as follows:
+\begin{itemize}
+  \item Size $x = 10, y = 10$
+  \item Learnrate $\alpha = 0.7$
+  \item Iteration count $i = 10000$
+\end{itemize}
+
+\cmprecthex{iris}{hit}{Hit Histogram}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{activity}{Activity histogram. Default referent unit}{Hexagonal}{Rectangular}
+
+%TODO
+
+\cmprecthex{iris}{dmatrix}{D-Matrix}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{pmatrix}{P-Matrix}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{umatrix}{U-Matrix}{Hexagonal}{Rectangular}
+
+
+\cmprecthex{iris}{fuzzy-colouring}{Fuzzy coloring}{Hexagonal}{Rectangular}
+
+% TODO
+
+\cmprecthex{iris}{nh-knn-1}{Neighbourhood KNN 1}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-knn-2}{Neighbourhood KNN 2}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-knn-3}{Neighbourhood KNN 3}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-radius-0,1}{Neighbourhood Graph Radius 0.1}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-radius-0,2}{Neighbourhood Graph Radius 0.2}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-radius-0,3}{Neighbourhood Graph Radius 0.3}{Hexagonal}{Rectangular}
+
 
 \section{Conclusion}
 
