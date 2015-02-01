@@ -263,7 +263,7 @@ Figure~\ref{fig:hci-coord-hex} and~\ref{fig:hci-coord-rect} show the activation 
 
 \section{Visualisation}
 
-We have picked two data sets that we will compare in the Sections~\ref{sec:iris} and~\ref{sec:chain-link}. In the following we compiled a list of visualizations that we modified to work for both grid systems.
+We have picked two data sets that we will compare in the Sections~\ref{sec:chain-link} and~\ref{sec:chain-iris}. In the following we compiled a list of visualizations that we modified to work for both grid systems.
 
 \begin{itemize}
 	\item Activity Histogram
@@ -324,7 +324,7 @@ violation in the mid right of both grids. The hexagonal unit (mid right) with 25
 color. The same is true for the rectangular unit but the topology violation is mapped to two units
 having 13 and 15 input mapped to it in Figure~\ref{fig:cl-activity-rect}.
 
-There are 72 interpolating unit on the rectangular grid whereas hexagonal has 76 counted in Figure~\ref{fig:cl-hit}. The major difference between the two Hit histograms are that in the
+There are 72 interpolating units on the rectangular grid whereas hexagonal has 76 counted in Figure~\ref{fig:cl-hit}. The major difference between the two Hit histograms are that in the
 hexagonal case there are more cases where units have a higher amount of input vectors mapped
 to them and the average seems to have a more balanced input vector count. These cases occur mostly
 on the mid right and left below and above the interpolating units.
@@ -382,16 +382,26 @@ Training settings are for both as follows:
 \cmprecthex{iris}{hit}{Hit Histogram}{Hexagonal}{Rectangular}
 \cmprecthex{iris}{activity}{Activity histogram. Default referent unit}{Hexagonal}{Rectangular}
 
-%TODO
+Looking at Figure~\ref{fig:iris-hit} and~\ref{fig:iris-activity} we can see that the overall pattern is nearly identical.
+Upon closer inspection we can see that in the lower left region the units in Figure~\ref{fig:iris-activity-rect} with more data mapped to it
+got more evenly spread out in Figure~\ref{fig:iris-activity-hex}. The top left corner on the other hand shows exactly inverse behaviour where the input data
+is more compact a nd pushed to the edge in Figure~\ref{fig:iris-activity-hex}.
+
+Generally the hexagonal map seems more evenly distributed, even though it also has the unit with the the highest number of input data mapped to it.
 
 \cmprecthex{iris}{dmatrix}{D-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{iris}{pmatrix}{P-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{iris}{umatrix}{U-Matrix}{Hexagonal}{Rectangular}
 
+While the P-Matrix in Figure~\ref{fig:iris-pmatrix} shows no notable differences the hexagonal D-Matrix in Figure~\ref{fig:iris-dmatrix-hex} differs quit a bit from the rectangular on in Figure~\ref{fig:iris-activity-rect}. The first difference can be found in the shape of the colored region, they both start at the same x-position on the top border but the region in rectangular map curves to the bottom left corner while the region in the hexagonal map stays straight.
+The hexagonal Map shows a more defined cluster boundary, most noticable in the center of the mountain region where only the rectengular map leaves room for interpretation.
+
+The U-Matrix for the Iris dataset in Figure~\ref{fig:iris-umatrix} shows the same differences as the U-Matrix for the Chainlink dataset in Figure~\ref{fig:cl-umatrix}, with a broader more well defined mountain region.
 
 \cmprecthex{iris}{fuzzy-colouring}{Fuzzy coloring}{Hexagonal}{Rectangular}
 
 % TODO
+
 
 \cmprecthex{iris}{nh-knn-1}{Neighbourhood KNN 1}{Hexagonal}{Rectangular}
 \cmprecthex{iris}{nh-knn-2}{Neighbourhood KNN 2}{Hexagonal}{Rectangular}
@@ -400,6 +410,20 @@ Training settings are for both as follows:
 \cmprecthex{iris}{nh-radius-0,2}{Neighbourhood Graph Radius 0.2}{Hexagonal}{Rectangular}
 \cmprecthex{iris}{nh-radius-0,3}{Neighbourhood Graph Radius 0.3}{Hexagonal}{Rectangular}
 
+Figures~\ref{fig:iris-nh-knn-1},~\ref{fig:iris-nh-knn-2} and ~\ref{fig:iris-nh-knn-3} show the Neighborhood Graph using KNN with different $k$ values. All hexagonal maps look very similar to their rectangular counterparts.
+While Figures~\ref{fig:iris-nh-radius-0,1} and~\ref{fig:iris-nh-radius-0,2} show less red lines for the hexagonal grid, the inverse is true for Figure~\ref{fig:iris-nh-radius-0,3} where the hexagonal map shows more tightly connected red lines.
+
+\cmprecthex{iris}{qe}{Quantization Error (QE)}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{mqe}{Mean Quantization Error (MQE)}{Hexagonal}{Rectangular}
+
+The QE shonw in Figure~\ref{fig:iris-qe} and the MQE shown in Figure~\ref{fig:iris-mqe} do not differ greatly between the two grid layouts.
+
+
+\cmprecthex{iris}{topo-4}{Topographic Error 4}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{dist}{Distortion $\sqrt{2}$}{Hexagonal}{Rectangular}
+
+The topographic error shown in Figure~\ref{fig:iris-topo-4} seems worse on the edges, especially on the bottom right, for the hexagonal map but better in the center of the map when compared to the rectangular map.
+Figure~\ref{fig:iris-dist}
 
 \section{Conclusion}
 
