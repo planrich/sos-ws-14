@@ -178,11 +178,11 @@ of the shapes the following formulas are used to calculate the grid.
 		Hex. $\mathrm{euclidean}$ & 6 & 18 & 36 & 60 \\
 		\hline
 	\end{tabular}
-	\caption{Neighbouring units using different grid layout and distance measures. Columns show different radius values $r$.}
-	\label{tab:neighbours}
+	\caption{Neighboring units using different grid layout and distance measures. Columns show different radius values $r$.}
+	\label{tab:neighbors}
 \end{table}
 
-Table~\ref{tab:neighbours} shows the amount of neighbors in a $100\times100$ grid. The unit to measure the distance from is located at index $(50,50)$. Notably using the squared euclidean distance it can happen that for a radius of 2 hexagonal grid has less neighbors than the rectangular one. This can also be observed in Figure~\ref{fig:hci-coord-hex} at position $(0,0)$. The squared distance from $(1,1)$ is 3 which is greater than 2. The black solid circle shows a radius of distance 2.
+Table~\ref{tab:neighbors} shows the amount of neighbors in a $100\times100$ grid. The unit to measure the distance from is located at index $(50,50)$. Notably using the squared euclidean distance it can happen that for a radius of 2 hexagonal grid has less neighbors than the rectangular one. This can also be observed in Figure~\ref{fig:hci-coord-hex} at position $(0,0)$. The squared distance from $(1,1)$ is 3 which is greater than 2. The black solid circle shows a radius of distance 2.
 For all others, we have observed and for the subset we added to the table, hexagonal has always more neighbors than the rectangular one.
 
 Figure~\ref{fig:hci-coord-hex} and~\ref{fig:hci-coord-rect} show the activation of neighbors using three dashed circles. Each circle intersects exactly with 6 nodes centers in the hexagonal grid and 4 nodes in the rectangular grid.
@@ -271,8 +271,8 @@ We have picked two data sets that we will compare in the Sections~\ref{sec:chain
 	\item U-Matrix
 	\item D-Matrix
 	\item P-Matrix
-	\item Neighbourhood Graph radius
-	\item Neighbourhood Graph KNN (K-nearest neighbour)
+	\item Neighborhood Graph radius
+	\item Neighborhood Graph KNN (K-nearest neighbor)
 
 	\item Quantization Error
 	\item Mean Quantization Error
@@ -308,7 +308,7 @@ The chain link dataset describes three dimensional points of two rings that are 
 \begin{itemize}
 	\item Size $x = 12, y = 18$
 	\item Learnrate $\alpha = 0.7$
-	\item Neighbourhood radius $\sigma = 7$
+	\item Neighborhood radius $\sigma = 7$
 	\item Iteration count $i = 10000$
 \end{itemize}
 
@@ -337,12 +337,12 @@ In both cases of P-Matrix~\ref{fig:cl-pmatrix} and D-Matrix~\ref{fig:cl-pmatrix}
 For the U-Matrix visualization in Figure~\ref{fig:cl-umatrix-hex} we did not interpolate the colors
 of the edges of the hexagons that do not have a neighbor. This is done in the rectangular case. Interestingly the hexagonal SOM seems to have more broader mountain regions. The red/orange/yellow line that forms the digit ``2'' or the letter ``Z'' have a stronger orange color meaning that there are higher values in the neighborhood. This could give the impression that coherent regions are better separated in the hexagonal case.
 
-\cmprecthex{cl}{nh-knn-1}{Neighbourhood KNN 1}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{nh-knn-2}{Neighbourhood KNN 2}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{nh-knn-3}{Neighbourhood KNN 3}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{nh-radius-0,1}{Neighbourhood Graph Radius 0.1}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{nh-radius-0,2}{Neighbourhood Graph Radius 0.2}{Hexagonal}{Rectangular}
-\cmprecthex{cl}{nh-radius-0,3}{Neighbourhood Graph Radius 0.3}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-knn-1}{Neighborhood KNN 1}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-knn-2}{Neighborhood KNN 2}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-knn-3}{Neighborhood KNN 3}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-radius-0,1}{Neighborhood Graph Radius 0.1}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-radius-0,2}{Neighborhood Graph Radius 0.2}{Hexagonal}{Rectangular}
+\cmprecthex{cl}{nh-radius-0,3}{Neighborhood Graph Radius 0.3}{Hexagonal}{Rectangular}
 
 Figure~\ref{fig:cl-nh-knn-1},\ref{fig:cl-nh-knn-2} and \ref{fig:cl-nh-knn-3} show the Neighborhood Graph using KNN with different $k$ values. All of them look similar to their hexagonal neighborhood graph. It can be observed that the hexagonal graph has a staggering pattern in the top and the bottom of the map.
 This is considered a good sign because the neighbors are aligned good on the hexagonal grid.
@@ -393,12 +393,12 @@ The hexagonal Map shows a more defined cluster boundary, most noticable in the c
 
 The U-Matrix for the Iris dataset in Figure~\ref{fig:iris-umatrix} shows the same differences as the U-Matrix for the Chainlink dataset in Figure~\ref{fig:cl-umatrix}, with a broader more well defined mountain region.
 
-\cmprecthex{iris}{nh-knn-1}{Neighbourhood KNN 1}{Hexagonal}{Rectangular}
-\cmprecthex{iris}{nh-knn-2}{Neighbourhood KNN 2}{Hexagonal}{Rectangular}
-\cmprecthex{iris}{nh-knn-3}{Neighbourhood KNN 3}{Hexagonal}{Rectangular}
-\cmprecthex{iris}{nh-radius-0,1}{Neighbourhood Graph Radius 0.1}{Hexagonal}{Rectangular}
-\cmprecthex{iris}{nh-radius-0,2}{Neighbourhood Graph Radius 0.2}{Hexagonal}{Rectangular}
-\cmprecthex{iris}{nh-radius-0,3}{Neighbourhood Graph Radius 0.3}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-knn-1}{Neighborhood KNN 1}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-knn-2}{Neighborhood KNN 2}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-knn-3}{Neighborhood KNN 3}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-radius-0,1}{Neighborhood Graph Radius 0.1}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-radius-0,2}{Neighborhood Graph Radius 0.2}{Hexagonal}{Rectangular}
+\cmprecthex{iris}{nh-radius-0,3}{Neighborhood Graph Radius 0.3}{Hexagonal}{Rectangular}
 
 Figures~\ref{fig:iris-nh-knn-1},~\ref{fig:iris-nh-knn-2} and ~\ref{fig:iris-nh-knn-3} show the Neighborhood Graph using KNN with different $k$ values. All hexagonal maps look very similar to their rectangular counterparts.
 While Figures~\ref{fig:iris-nh-radius-0,1} and~\ref{fig:iris-nh-radius-0,2} show less red lines for the hexagonal grid, the inverse is true for Figure~\ref{fig:iris-nh-radius-0,3} where the hexagonal map shows more, tightly connected red lines.
