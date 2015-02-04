@@ -380,7 +380,7 @@ Training settings are for both as follows:
 Looking at Figure~\ref{fig:iris-hit} and~\ref{fig:iris-activity} we can see that the overall pattern is nearly identical.
 Upon closer inspection we can see that in the lower left region the units in Figure~\ref{fig:iris-activity-rect} with more data mapped to it
 got more evenly spread out in Figure~\ref{fig:iris-activity-hex}. The top left corner on the other hand shows exactly inverse behaviour where the input data
-is more compact a nd pushed to the edge in Figure~\ref{fig:iris-activity-hex}.
+is more compact and pushed to the edge in Figure~\ref{fig:iris-activity-hex}.
 
 Generally the hexagonal map seems more evenly distributed, even though it also has the unit with the the highest number of input data mapped to it.
 
@@ -388,8 +388,8 @@ Generally the hexagonal map seems more evenly distributed, even though it also h
 \cmprecthex{iris}{pmatrix}{P-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{iris}{umatrix}{U-Matrix}{Hexagonal}{Rectangular}
 
-While the P-Matrix in Figure~\ref{fig:iris-pmatrix} shows no notable differences the hexagonal D-Matrix in Figure~\ref{fig:iris-dmatrix-hex} differs quit a bit from the rectangular on in Figure~\ref{fig:iris-activity-rect}. The first difference can be found in the shape of the colored region, they both start at the same x-position on the top border but the region in rectangular map curves to the bottom left corner while the region in the hexagonal map stays straight.
-The hexagonal Map shows a more defined cluster boundary, most noticable in the center of the mountain region where only the rectengular map leaves room for interpretation.
+While the P-Matrix in Figure~\ref{fig:iris-pmatrix} shows no notable differences the hexagonal D-Matrix in Figure~\ref{fig:iris-dmatrix-hex} differs quit a bit from the rectangular on in Figure~\ref{fig:iris-dmatrix-rect}. The first difference can be found in the shape of the colored region, they both start at the same x-position on the top border but the region in the rectangular map curves to the bottom left corner while the region in the hexagonal map stays straight.
+The hexagonal Map shows a more defined cluster boundary, most noticable in the center of the mountain region where only the rectengular map has a lower mountain hight.
 
 The U-Matrix for the Iris dataset in Figure~\ref{fig:iris-umatrix} shows the same differences as the U-Matrix for the Chainlink dataset in Figure~\ref{fig:cl-umatrix}, with a broader more well defined mountain region.
 
@@ -401,7 +401,7 @@ The U-Matrix for the Iris dataset in Figure~\ref{fig:iris-umatrix} shows the sam
 \cmprecthex{iris}{nh-radius-0,3}{Neighbourhood Graph Radius 0.3}{Hexagonal}{Rectangular}
 
 Figures~\ref{fig:iris-nh-knn-1},~\ref{fig:iris-nh-knn-2} and ~\ref{fig:iris-nh-knn-3} show the Neighborhood Graph using KNN with different $k$ values. All hexagonal maps look very similar to their rectangular counterparts.
-While Figures~\ref{fig:iris-nh-radius-0,1} and~\ref{fig:iris-nh-radius-0,2} show less red lines for the hexagonal grid, the inverse is true for Figure~\ref{fig:iris-nh-radius-0,3} where the hexagonal map shows more tightly connected red lines.
+While Figures~\ref{fig:iris-nh-radius-0,1} and~\ref{fig:iris-nh-radius-0,2} show less red lines for the hexagonal grid, the inverse is true for Figure~\ref{fig:iris-nh-radius-0,3} where the hexagonal map shows more, tightly connected red lines.
 
 \cmprecthex{iris}{qe}{Quantization Error (QE)}{Hexagonal}{Rectangular}
 \cmprecthex{iris}{mqe}{Mean Quantization Error (MQE)}{Hexagonal}{Rectangular}
