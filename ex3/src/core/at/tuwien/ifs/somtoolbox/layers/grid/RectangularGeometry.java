@@ -16,7 +16,8 @@ import java.util.logging.Logger;
  * @author Richard Plangger
  * @email e1025637@student.tuwien.ac.at
  * @date 12. Jan 15
- *
+ * @author Rene Koller
+ * @email e0925021@student.tuwien.ac.at
  * GridGeometry helper methods to calculate distances, borders, circles and
  * render rectangular shapes.
  * See the interface GridGeometry for a details description of the methods.
@@ -114,17 +115,6 @@ public class RectangularGeometry implements GridGeometry {
     @Override
     public boolean isRectangularGrid() {
         return true;
-    }
-
-
-    @Override
-    public int getXOffset(double unitWidth, double factorX) {
-        return (int) Math.round(unitWidth / (factorX * 2 ));
-    }
-
-    @Override
-    public int getYOffset(double unitHeight, double factorY) {
-        return (int) Math.round(unitHeight / (factorY * 2));
     }
 
     @Override
