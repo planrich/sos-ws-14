@@ -67,7 +67,7 @@
 			<pathelement location="${lib}/ant/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
-	<!-end of extra ant tasks -->
+	<!-- end of extra ant tasks -->
 
 	<fileset dir="${lib}" id="libs">
 		<include name="*.jar" />
