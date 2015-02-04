@@ -67,7 +67,7 @@ four but six direct neighbors.
 The neighbors\footnote{$(X/Y)$ are the indices to address a cell} in Figure~\ref{fig:coord-rect}
 are $\{(1/2),(2/1),(1/0),(0/1)\}$. In Figure~\ref{fig:coord-hex} they are $\{(1/2),(2/2),(2/1),(2/0),(1/0),(0/1)\}$.
 
-The hexagonal grid is rendered ``pointy top''\footnote{The hexagon is rotated in such a way that an edge points up} and every second row is shifted half width of a
+The hexagonal grid is rendered ``pointy top''\footnote{The hexagon is rotated in such a way that an edge points up. We use the same terminology as it is found in~\cite{hex-rgg}} and every second row is shifted half width of a
 cell to the left.
 
 \begin{figure}
@@ -416,9 +416,9 @@ Figure~\ref{fig:iris-dist} shows that the distorion is reduced in the hexagonal 
 
 \section{Conclusion}
 
-For this last assignment of the lecture Self-Orgainzing Systems we have implemented a hexagonal grid that can be used to train SOM maps. Our implementation is tightly integraded into the current SOM training mechanisms.
-In addition to that we have updated many different visualizations to work correctly with the hexagonal grid and compared them using 2 well known datasets (Iris and Chainlink).
-Whether or not a hexagonal SOM is superior to a rectangular cannot be answered. We have observed several positive effects such as slightly better cluster separation in the UMatrix. In contrast to that we \textbf{once} observed that the mean quantization error was much higher in the hexagonal case.
+For this last assignment of the lecture Self-Orgainzing Systems we have implemented a hexagonal grid that can be used to train SOM maps. Our implementation is tightly integraded into the current SOM training mechanism.
+In addition to that we have updated many different visualizations to work correctly with the hexagonal grid and compared them using two well known datasets (Iris and Chainlink).
+Whether or not a hexagonal SOM is superior to a rectangular cannot be answered. We have observed several positive effects such as slightly better cluster separation in the UMatrix. In contrast to that we once observed that the mean quantization error was much higher in the hexagonal case.
 In many cases this might just be a question of aesthetics whether one grid looks better than the other.
 
 \bibliography{ref}

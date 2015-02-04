@@ -231,6 +231,10 @@ public abstract class AbstractMatrixVisualizer extends AbstractBackgroundImageVi
             }
 
             if (factorX != 1 && factorY != 1 && helper.isRectangularGrid()) { // border
+
+                factorX = Math.round(factorX);
+                factorY = Math.round(factorY);
+
                 ci = (int) Math.round(matrix.get(0, 0) * palette.maxColourIndex()); // top-left
                 g.setPaint(palette.getColor(ci));
                 g.fill(new Rectangle(0, 0, (int) Math.round(unitWidth / factorX * 2), (int) Math.round(unitHeight
