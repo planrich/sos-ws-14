@@ -15,6 +15,8 @@ import java.util.List;
 /**
  * @author Richard Plangger
  * @email e1025637@student.tuwien.ac.at
+ * @author Rene Koller
+ * @email e0925021@student.tuwien.ac.at
  * @date 12. Jan 15
  *
  * GridGeometry helper methods to calculate distances, borders, circles and

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 /**
  * @author Richard Plangger
  * @email e1025637@student.tuwien.ac.at
+ * @author Rene Koller
+ * @email e0925021@student.tuwien.ac.at
  * @date 12. Jan 15
  */
 public interface GridGeometry {
@@ -122,22 +124,12 @@ public interface GridGeometry {
     boolean isRectangularGrid();
 
     /**
-     * TODO DOCU or remove
-     */
-    int getXOffset(double unitWidth, double factorX);
-
-    /**
-     * TODO DOCU or remove
-     */
-    int getYOffset(double unitHeight, double factorY);
-
-    /**
-     * TODO DOCU
+     * Calculates the Marker Position for the Fuzzy Coloring Visualization
      */
     Point getMarkerPos(double unitWidth, double unitHeight, int markerWidth, int markerHeight, Point2D.Double loc);
 
     /**
-     * TODO DOCU
+     * Calculates the Line Position (start or end) for the Fuzzy Coloring Visualizaton
      */
     Point getLinePos(double unitWidth, double unitHeight, Point2D.Double aDouble);
 
