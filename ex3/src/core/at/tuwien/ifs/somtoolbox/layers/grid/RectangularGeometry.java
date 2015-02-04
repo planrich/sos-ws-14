@@ -117,17 +117,6 @@ public class RectangularGeometry implements GridGeometry {
         return true;
     }
 
-
-    @Override
-    public int getXOffset(double unitWidth, double factorX) {
-        return (int) Math.round(unitWidth / (factorX * 2 ));
-    }
-
-    @Override
-    public int getYOffset(double unitHeight, double factorY) {
-        return (int) Math.round(unitHeight / (factorY * 2));
-    }
-
     @Override
     public Point getMarkerPos(double unitWidth, double unitHeight, int markerWidth, int markerHeight, Point2D.Double loc) {
         return new Point((int) Math.round(loc.x * unitWidth + (unitWidth - markerWidth) / 2), (int) Math.round(loc.y
