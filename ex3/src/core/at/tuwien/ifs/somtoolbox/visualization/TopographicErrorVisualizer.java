@@ -147,7 +147,8 @@ public class TopographicErrorVisualizer extends AbstractBackgroundImageVisualize
             }
         }
 
-        BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        //BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage res = ImageUtils.createEmptyImage(width, height);
         Graphics2D g = (Graphics2D) res.getGraphics();
 
         GridGeometry helper = gsom.getLayer().getGridGeometry();
