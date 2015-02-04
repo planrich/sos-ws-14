@@ -39,7 +39,7 @@
 
 	<property name="app.version.file" location="${src}/${component-main}/at/tuwien/ifs/somtoolbox/SOMToolboxMetaConstants.java" />
 
-	<!-- some extra ant-tasks...
+    <!-- some extra ant-tasks... -->
 	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask">
 		<classpath>
 			<pathelement location="${lib}/ant/xmltask.jar" />
@@ -138,7 +138,6 @@
 			<format property="vDATE" pattern="yyyyMMdd" />
 			<format property="vTIME" pattern="HHmm" />
 		</tstamp>
-		<!--
 		<svn javahl="false" svnkit="true" failonerror="false">
 			<status path="${wcopy}" textstatusproperty="_svn.stat" />
 		</svn>
@@ -168,7 +167,7 @@
 					</else>
 				</if>
 			</else>
-		</if>-->
+		</if>
 		<echo level="info">${app.name}: ${app.version}</echo>
 		<echo level="info">Major: ${app.version.major}</echo>
 		<echo level="info">Minor: ${app.version.minor}</echo>
