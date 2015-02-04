@@ -62,9 +62,9 @@ use the same coordinate system to reference nodes from their memory.
 There was no need to modify the array cell layout, but only adjust the
 calculation for the grid neighbors. The major
 difference while using hexagonal grid system is that there are not only
-four direct neighbors but six.
+four but six direct neighbors.
 
-The neighbors using $(X/Y)$ as coordinate indices of $(1/1)$ in Figure~\ref{fig:coord-rect}
+The neighbors\footnote{$(X/Y)$ are the indices to address a cell} in Figure~\ref{fig:coord-rect}
 are $\{(1/2),(2/1),(1/0),(0/1)\}$. In Figure~\ref{fig:coord-hex} they are $\{(1/2),(2/2),(2/1),(2/0),(1/0),(0/1)\}$.
 
 The hexagonal grid is rendered ``pointy top''\footnote{The hexagon is rotated in such a way that an edge points up} and every second row is shifted half width of a
@@ -104,9 +104,8 @@ cell to the left.
     \label{fig:coord}
 \end{figure}
 
-To abstract the grid neighborhood, geometric layout and rendering from the actual 3d \lstinline!Unit! array
-representation a new interface has been introduced. The interface \lstinline!GridGeometry! is the base abstraction
-to be able to calculate shapes, center of the shapes and the grid neighbors.
+To abstract the grid neighborhood we have separated geometric layout and rendering of the actual 3d \lstinline!Unit! array
+representation. A new interface \lstinline!GridGeometry! has been added and forms the base abstraction to be able to calculate shapes, center of the shapes, bounds and the grid neighbors.
 
 \section{Hexagonal Training}
 
@@ -127,8 +126,8 @@ rather just abstract the distance measures. The main advantage of our approach i
 Both strategies mentioned earlier solely rely on the distance measure in the grid geometry.
 Figure~\ref{fig:hci-coord-rect} illustrates the rectangular distance measurement.
 The inner dashed circle has an euclidean distance of $\sqrt{1} = 1$ to
-the unit center at position $(1,1)$. The geometry layout in the code does not calculate the distance from the center of
-the unit square, but from the corner (lower left). The distance for the second dashed circle has an euclidean distance of $\sqrt{2} \approx 1.14$ and finally the last circle has a distance from the unit (1/1) of $\sqrt{4} = 2$.
+the unit center at position $(1/1)$. The geometry layout in the code does not calculate the distance from the center of
+the unit square, but from the corner (lower left). The distance for the second dashed circle has an euclidean distance of $\sqrt{2} \approx 1.14$ and finally the last circle has a distance from the unit $(1/1)$ of $\sqrt{4} = 2$.
 
 To achieve the same distances in a hexagonal grid our approach is visualized in Figure~\ref{fig:hci-coord-hex}.
 The inner circle has a distance of $1$ to all of his 6 neighbors. To achieve this distance metric
@@ -258,7 +257,7 @@ Figure~\ref{fig:hci-coord-hex} and~\ref{fig:hci-coord-rect} show the activation 
     \label{fig:hci-coord-rect}
     \end{subfigure}
     \caption{Coordinate system and layout}
-    \label{fig:coord}
+    \label{fig:hci-coord}
 \end{figure}
 
 \section{Visualisation}
@@ -332,7 +331,7 @@ on the mid right and left below and above the interpolating units.
 \cmprecthex{cl}{pmatrix}{P-Matrix}{Hexagonal}{Rectangular}
 \cmprecthex{cl}{umatrix}{U-Matrix}{Hexagonal}{Rectangular}
 
-In both cases of P-Matrix~\ref{fig:cl-pmatrix} and D-Matrix~\ref{fig:cl-pmatrix} there is no notable difference we are aware of.
+In both cases in the Subfigures of~\ref{fig:cl-pmatrix} the P-Matrix and D-Matrix show no notable difference we are aware of.
 
 For the U-Matrix visualization in Figure~\ref{fig:cl-umatrix-hex} we did not interpolate the colors
 of the edges of the hexagons that do not have a neighbor. This is done in the rectangular case. Interestingly the hexagonal SOM seems to have more broader mountain regions. The red/orange/yellow line that forms the digit ``2'' or the letter ``Z'' have a stronger orange color meaning that there are higher values in the neighborhood. This could give the impression that coherent regions are better separated in the hexagonal case.
